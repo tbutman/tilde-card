@@ -1,0 +1,7 @@
+brotli==1.2.0
+fonttools==4.60.2
+numpy==2.0.2
+opencv-python-headless==5.0.0.93
+pillow==11.3.0
+segno==1.6.6
+trimesh==4.12.2
