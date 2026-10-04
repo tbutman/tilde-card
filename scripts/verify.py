@@ -1,12 +1,13 @@
 """Check the exported STLs, not the source: the QR code decodes and the text strokes are printable.
 
 Every colour body must be manifold (each edge shared by exactly two triangles), or the slicer
-will flag it for repair. Then it rasterises the top-facing triangles of each colour body at the card's top surface into a
-top-down image in its print colour, then:
+will flag it for repair. Then it rasterises each face of the card from the STLs, in print
+colours: the front from the top-facing triangles at the top surface, the back from the
+bottom-facing triangles at z = 0, flipped so it reads as it will when the card is turned over.
 
-- decodes the QR code with OpenCV at full resolution, at a low resolution and blurred (closer
-  to what a phone camera sees), and requires exactly the expected URL each time;
-- opens the text masks with a 0.5 mm disk and fails if any stroke thinner than that is lost.
+- The QR code on the front must decode with OpenCV to exactly the expected URL, at full
+  resolution, at a low resolution and blurred (closer to what a phone camera sees).
+- Opening each text mask with a 0.5 mm disk must lose nothing: no stroke is thinner than that.
   Sharp glyph corners always lose a sliver, so fragments under 0.06 mm^2 are ignored.
 
     .venv/bin/python scripts/verify.py [expected-url]
@@ -18,13 +19,14 @@ from pathlib import Path
 import cv2
 import numpy as np
 import trimesh
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageOps
 
 ROOT = Path(__file__).resolve().parent.parent
 EXPECTED = sys.argv[1] if len(sys.argv) > 1 else "https://tbutman.com/hello"
 PX_PER_MM = 20
 MIN_STROKE_MM = 0.5
 CORNER_SLIVER_MM2 = 0.06
+QR_FIELD_X_MM = 38.0  # the front's light text is left of the QR field
 PARTS = {  # print colours: black PLA, white PLA, orange PLA
     "body": (22, 24, 27),
     "light": (241, 239, 232),
@@ -32,21 +34,21 @@ PARTS = {  # print colours: black PLA, white PLA, orange PLA
 }
 
 
-def top_surface_image(px_per_mm=PX_PER_MM):
-    meshes = {name: trimesh.load(ROOT / "out" / f"card-{name}.stl") for name in PARTS}
-    top_z = max(mesh.bounds[1][2] for mesh in meshes.values())
+def surface_image(meshes, face, px_per_mm=PX_PER_MM):
+    """The card's front ("top") or back ("bottom", as seen from behind) in print colours."""
+    lo = min(mesh.bounds[0][2] for mesh in meshes.values())
+    hi = max(mesh.bounds[1][2] for mesh in meshes.values())
+    z, sign = (hi, 1) if face == "top" else (lo, -1)
     width_mm, height_mm = meshes["body"].extents[:2]
-    size = (round(width_mm * px_per_mm), round(height_mm * px_per_mm))
-    image = Image.new("RGB", size, (128, 128, 128))  # matches no print colour
+    image = Image.new("RGB", (round(width_mm * px_per_mm), round(height_mm * px_per_mm)), (128, 128, 128))
     draw = ImageDraw.Draw(image)
     for name, colour in PARTS.items():
         mesh = meshes[name]
-        up = (mesh.face_normals[:, 2] > 0.99) & (np.abs(mesh.triangles[:, :, 2] - top_z).max(axis=1) < 1e-3)
-        for triangle in mesh.triangles[up]:
+        facing = (sign * mesh.face_normals[:, 2] > 0.99) & (np.abs(mesh.triangles[:, :, 2] - z).max(axis=1) < 1e-3)
+        for triangle in mesh.triangles[facing]:
             # Image rows run top to bottom; model y runs bottom to top.
-            points = [(x * px_per_mm, (height_mm - y) * px_per_mm) for x, y, _ in triangle]
-            draw.polygon(points, fill=colour)
-    return image
+            draw.polygon([(x * px_per_mm, (height_mm - y) * px_per_mm) for x, y, _ in triangle], fill=colour)
+    return image if face == "top" else ImageOps.mirror(image)
 
 
 def decode(image_rgb):
@@ -55,29 +57,12 @@ def decode(image_rgb):
     return text
 
 
-failed = False
-for name in PARTS:
-    mesh = trimesh.load(ROOT / "out" / f"card-{name}.stl")
-    _, counts = np.unique(np.sort(mesh.edges, axis=1), axis=0, return_counts=True)
-    bad = int((counts != 2).sum())
-    failed |= bad > 0
-    print(f"{'PASS' if not bad else 'FAIL'}  card-{name}.stl manifold" + (f": {bad} bad edges" if bad else ""))
-
-image = top_surface_image()
-out = ROOT / "out" / "card-top-surface.png"
-image.save(out)
-
-checks = {
-    "top surface, 20 px/mm": image,
-    "top surface, 4 px/mm": image.resize((image.width // 5, image.height // 5), Image.LANCZOS),
-    "top surface, blurred": Image.fromarray(cv2.GaussianBlur(np.asarray(image), (0, 0), 6)),
-}
 def thin_strokes(image, colour, max_x_mm=None, px_per_mm=PX_PER_MM):
     """Places where `colour` is thinner than MIN_STROKE_MM, as (x, y, area) in mm."""
     rgb = np.asarray(image).astype(int)
     mask = (np.abs(rgb - colour).max(axis=2) < 40).astype(np.uint8)
     if max_x_mm is not None:
-        mask[:, round(max_x_mm * px_per_mm):] = 0
+        mask[:, round(max_x_mm * px_per_mm) :] = 0
     r = round(MIN_STROKE_MM * px_per_mm / 2)
     disk = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * r + 1, 2 * r + 1))
     lost = mask & (1 - cv2.morphologyEx(mask, cv2.MORPH_OPEN, disk))
@@ -90,16 +75,39 @@ def thin_strokes(image, colour, max_x_mm=None, px_per_mm=PX_PER_MM):
     ]
 
 
-for label, img in checks.items():
+def report(ok, label, detail=""):
+    print(f"{'PASS' if ok else 'FAIL'}  {label}" + (f": {detail}" if detail else ""))
+    return not ok
+
+
+meshes = {name: trimesh.load(ROOT / "out" / f"card-{name}.stl") for name in PARTS}
+failed = False
+for name, mesh in meshes.items():
+    _, counts = np.unique(np.sort(mesh.edges, axis=1), axis=0, return_counts=True)
+    bad = int((counts != 2).sum())
+    failed |= report(not bad, f"card-{name}.stl manifold", f"{bad} bad edges" if bad else "")
+
+front = surface_image(meshes, "top")
+back = surface_image(meshes, "bottom")
+front.save(ROOT / "out" / "card-top-surface.png")
+back.save(ROOT / "out" / "card-back-surface.png")
+
+for label, img in {
+    "front QR, 20 px/mm": front,
+    "front QR, 4 px/mm": front.resize((front.width // 5, front.height // 5), Image.LANCZOS),
+    "front QR, blurred": Image.fromarray(cv2.GaussianBlur(np.asarray(front), (0, 0), 6)),
+}.items():
     text = decode(img)
-    ok = text == EXPECTED
-    failed |= not ok
-    print(f"{'PASS' if ok else 'FAIL'}  {label}: decoded {text!r}")
-# The name is the light colour left of the QR field; the accent colour is all text.
-field_x_mm = 38.0
-for label, colour, max_x in [("name", PARTS["light"], field_x_mm), ("accent text", PARTS["accent"], None)]:
-    thin = thin_strokes(image, colour, max_x)
-    failed |= bool(thin)
-    print(f"{'PASS' if not thin else 'FAIL'}  {label} strokes >= {MIN_STROKE_MM} mm" + (f": thin at {thin}" if thin else ""))
-print(f"wrote {out.relative_to(ROOT)}")
+    failed |= report(text == EXPECTED, label, f"decoded {text!r}")
+
+for label, img, colour, max_x in [
+    ("front light text", front, PARTS["light"], QR_FIELD_X_MM),
+    ("front accent text", front, PARTS["accent"], None),
+    ("back light text", back, PARTS["light"], None),
+    ("back accent text", back, PARTS["accent"], None),
+]:
+    thin = thin_strokes(img, colour, max_x)
+    failed |= report(not thin, f"{label} strokes >= {MIN_STROKE_MM} mm", f"thin at {thin}" if thin else "")
+
+print("wrote out/card-top-surface.png, out/card-back-surface.png")
 sys.exit(1 if failed else 0)

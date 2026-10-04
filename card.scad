@@ -1,7 +1,9 @@
 // Business card for tbutman.com: QR code and NFC tag, both opening https://tbutman.com/hello.
 //
 // One colour body per printable part. The light and accent parts are flush inlays in the top of
-// the card; the dark QR modules are the black body showing through the light field.
+// the card (the front) and in the bottom (the back, which prints against the plate, mirrored so
+// it reads correctly when the card is turned over). The dark QR modules are the black body
+// showing through the light field.
 //
 // Render one part at a time with -D part="body" | "light" | "accent"; "preview" shows them all.
 // Regenerate qr_matrix.scad with scripts/gen_qr.py whenever qr_url changes.
@@ -20,6 +22,7 @@ corner_r = 3.2;
 card_t = 1.6;      // total thickness
 layer_h = 0.2;     // slicer layer height (first layer included); thicknesses below are multiples of it
 inlay_t = 0.6;     // depth of the light and accent inlays (3 layers): opaque enough over black
+back_inlay_t = 0.6; // depth of the inlays on the back (the first 3 layers)
 
 /* [QR code] */
 qr_url = "https://tbutman.com/hello";
@@ -42,18 +45,44 @@ name_font = "Inter:style=ExtraBold";
 name_size = 5.2;
 name_leading = 1.45;                  // baseline-to-baseline, as a multiple of name_size
 name_baseline = 30.5;                 // baseline of the first name line, from the bottom edge
-accent_w = 10.0;                      // amber rule under the name
-accent_h = 0.8;
-accent_gap = 3.4;                     // last name baseline to the top of the rule
+// "tap" marker over the NFC tag: generic NFC waves (not the EMVCo payment symbol) and a label,
+// centred between the name and the domain.
+tap_label = "tap";
+tap_font = "Inter:style=ExtraBold";
+tap_size = 3.4;                       // at 3.2 the "a" joint is just under 0.5 mm
+tap_dot_d = 1.1;                      // the source dot
+tap_radii = [2.0, 3.2, 4.4];          // the waves, opening to the right
+tap_stroke = 0.75;
+tap_spread = 100;                     // degrees covered by each wave
+tap_gap = 1.6;                        // icon to label
 domain_text = "tbutman.com";
 domain_font = "Inter:style=ExtraBold";
 domain_size = 3.2;
+
+/* [Back] */
+back_enabled = true;
+back_email = "tbutman@gmail.com";
+// Terminal lines: [amber prompt, light text]. The last line ends in an amber cursor block.
+back_lines = [
+    ["$ ", "whoami"],
+    ["", "thomas butman"],
+    ["", "senior product engineer"],
+    ["", back_email],
+    ["$ ", ""],
+];
+back_font = "JetBrains Mono:style=ExtraBold";
+back_size = 3.6;
+back_bolden = 0.05;                   // the mono "m" and "a" joints are just under 0.5 mm at this size
+back_prompt_bolden = 0.15;            // the mono "$" has a hairline bar
+back_leading = 1.75;                  // baseline-to-baseline, as a multiple of back_size
+back_x = 8.0;                         // left margin, seen from the back
+back_cursor = [2.0, 3.6];             // cursor block width and height
 
 /* [NFC tag] */
 nfc_d = 25.0;            // tag diameter (25 mm round NTAG215 sticker)
 nfc_clearance = 0.3;     // added to the diameter
 nfc_tag_t = 0.2;         // measured tag thickness; the pocket rounds this up to whole layers
-nfc_floor_t = 0.4;       // plastic under the tag (2 layers)
+nfc_floor_t = 0.6;       // plastic under the tag: at least the back inlay's 3 layers
 nfc_center = [20.0, card_h / 2];
 
 /* [Preview colours] */
@@ -81,7 +110,10 @@ assert(qr_url == qr_matrix_url, str("qr_matrix.scad encodes ", qr_matrix_url, ";
 assert(qr_module >= 1, "QR modules must be at least 1 mm");
 assert(qr_quiet >= 4, "QR needs a 4-module quiet zone");
 assert(inlay_t >= 0.4, "contrast layer must be at least 0.4 mm");
-assert(min(mark_size, name_size, domain_size) >= 3, "cap height must be at least 3 mm");
+assert(min(mark_size, name_size, domain_size, tap_size, back_size) >= 3, "cap height must be at least 3 mm");
+assert(min(tap_stroke, tap_dot_d) >= 0.5, "strokes must be at least 0.5 mm");
+assert(!back_enabled || back_inlay_t >= 0.4, "contrast layer must be at least 0.4 mm");
+assert(!back_enabled || nfc_floor_t >= back_inlay_t, "the NFC pocket must sit above the back inlays");
 assert(cover_layers >= 2, "the NFC tag needs at least two layers over it");
 assert(pocket_top <= card_t - inlay_t, "the NFC pocket must sit below the inlays");
 assert(nfc_center[0] + pocket_d / 2 <= field_x - 1, "the NFC pocket must not sit under the QR field");
@@ -92,7 +124,11 @@ echo(str("QR ", qr_matrix_designator, ": ", qr_matrix_size, "x", qr_matrix_size,
          " mm each; light field ", field, " mm"));
 echo(str("NFC pocket: d=", pocket_d, " mm, z ", nfc_floor_t, " to ", pocket_top, " mm, ", cover_layers,
          " layers above it; pause before layer ", pause_layer, " (top at ", pause_layer * layer_h, " mm)"));
-echo(str("Colour change: inlays start at z=", card_t - inlay_t, " mm, layer ", round((card_t - inlay_t) / layer_h) + 1));
+if (back_enabled)
+    echo(str("Colour layers: back inlays in layers 1-", round(back_inlay_t / layer_h), "; front inlays from layer ",
+             round((card_t - inlay_t) / layer_h) + 1));
+else
+    echo(str("Colour layers: front inlays from layer ", round((card_t - inlay_t) / layer_h) + 1));
 
 // ---- 2D artwork ----
 module rounded_rect(size, r) {
@@ -131,12 +167,68 @@ module mark_prefix_2d() {
         offset(delta = mark_bolden) text(mark_prefix, size = mark_size, font = mark_font);
 }
 
+// A stroke with round ends through `points`, as a chain of hulls.
+module stroke_2d(points, width) {
+    for (i = [0 : len(points) - 2])
+        hull() {
+            translate(points[i]) circle(d = width, $fn = 24);
+            translate(points[i + 1]) circle(d = width, $fn = 24);
+        }
+}
+
+module tap_icon_2d() {
+    circle(d = tap_dot_d, $fn = 32);
+    for (r = tap_radii)
+        stroke_2d([for (a = [-tap_spread / 2 : 5 : tap_spread / 2]) r * [cos(a), sin(a)]], tap_stroke);
+}
+
+module tap_2d() {
+    last_baseline = name_baseline - (len(name_lines) - 1) * name_size * name_leading;
+    centre_y = (last_baseline + field_y + domain_size) / 2;
+    icon_x = text_x + tap_dot_d / 2;
+    icon_right = icon_x + max(tap_radii) + tap_stroke / 2;
+    translate([icon_x, centre_y]) tap_icon_2d();
+    translate([icon_right + tap_gap, centre_y - tap_size / 2]) text(tap_label, size = tap_size, font = tap_font);
+}
+
 module accent_2d() {
     // The mark sits on the top edge of the QR field; the domain sits on its bottom edge.
     mark_prefix_2d();
-    last_baseline = name_baseline - (len(name_lines) - 1) * name_size * name_leading;
-    translate([text_x, last_baseline - accent_gap - accent_h]) square([accent_w, accent_h]);
+    tap_2d();
     translate([text_x, field_y]) text(domain_text, size = domain_size, font = domain_font);
+}
+
+// ---- The back, drawn as seen from behind ----
+back_pitch = back_size * back_leading;
+back_top = (card_h + (len(back_lines) - 1) * back_pitch) / 2 - back_size / 2;
+
+module back_line_2d(i, s, bolden = back_bolden) {
+    translate([back_x, back_top - i * back_pitch])
+        offset(delta = bolden) text(s, size = back_size, font = back_font);
+}
+
+module back_accent_view_2d() {
+    for (i = [0 : len(back_lines) - 1])
+        if (back_lines[i][0] != "") back_line_2d(i, back_lines[i][0], back_prompt_bolden);
+    // Cursor block after the last prompt; mono advance is 0.6 em and an em is size / 0.73.
+    last = len(back_lines) - 1;
+    advance = 0.6 * back_size / 0.73;
+    translate([back_x + len(str(back_lines[last][0], back_lines[last][1])) * advance, back_top - last * back_pitch - 0.3])
+        square(back_cursor);
+}
+
+module back_light_view_2d() {
+    for (i = [0 : len(back_lines) - 1])
+        if (back_lines[i][1] != "")
+            difference() {
+                back_line_2d(i, str(back_lines[i][0], back_lines[i][1]));
+                if (back_lines[i][0] != "") back_line_2d(i, back_lines[i][0], back_prompt_bolden);
+            }
+}
+
+// Turning the card over swaps left and right.
+module from_behind() {
+    translate([card_w, 0]) mirror([1, 0]) children();
 }
 
 module light_2d() {
@@ -149,9 +241,13 @@ module light_2d() {
 }
 
 // ---- 3D parts ----
-// `extra` lets the cut through the body overshoot the top face; the printed parts end flush.
+// `extra` lets the cut through the body overshoot the outer face; the printed parts end flush.
 module inlay(extra = 0) {
     translate([0, 0, card_t - inlay_t]) linear_extrude(inlay_t + extra) children();
+}
+
+module back_inlay(extra = 0) {
+    if (back_enabled) translate([0, 0, -extra]) linear_extrude(back_inlay_t + extra) from_behind() children();
 }
 
 module body() {
@@ -159,18 +255,25 @@ module body() {
         linear_extrude(card_t) rounded_rect([card_w, card_h], corner_r);
         inlay(0.01) light_2d();
         inlay(0.01) accent_2d();
+        back_inlay(0.01) back_light_view_2d();
+        back_inlay(0.01) back_accent_view_2d();
         translate([nfc_center[0], nfc_center[1], nfc_floor_t]) cylinder(d = pocket_d, h = pocket_depth);
     }
 }
 
 module light() {
     inlay() light_2d();
+    back_inlay() back_light_view_2d();
 }
 
 module accent() {
     inlay() difference() {
         accent_2d();
         light_2d();
+    }
+    back_inlay() difference() {
+        back_accent_view_2d();
+        back_light_view_2d();
     }
 }
 

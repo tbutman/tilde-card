@@ -8,8 +8,11 @@ too: keep the 0.2 mm layer height and adapt the rest.
 | File | Colour | AMS slot (suggested) |
 | --- | --- | --- |
 | `out/card-body.stl` | black: the card, the QR modules | 1 |
-| `out/card-light.stl` | white: the QR field, the name and `tbutman` in the header mark | 2 |
-| `out/card-accent.stl` | orange: `~/`, the rule, `tbutman.com` | 3 |
+| `out/card-light.stl` | white: front QR field, name and `tbutman`; back terminal text | 2 |
+| `out/card-accent.stl` | orange: front `~/`, tap marker and `tbutman.com`; back `$` prompts and cursor | 3 |
+
+The front prints facing up. The back prints against the plate, so in Bambu Studio its text looks
+mirrored: that is correct, and it reads normally when you turn the finished card over.
 
 ## Set up the plate in Bambu Studio
 
@@ -36,8 +39,9 @@ The geometry is built on 0.2 mm layers, so the height settings matter. The other
 | Top surface pattern | Monotonic line | An even sheen across the QR field |
 | Ironing | Off for the first print | Try it later if the top looks rough |
 | Brim | None | |
+| Elephant foot compensation | **0 mm** | It shrinks first-layer outlines, which can open hairline gaps around the back lettering |
 | Prime tower | On (the default with the AMS) | |
-| Build plate | Textured PEI is fine | It gives the back of the card a fine texture |
+| Build plate | Textured PEI is fine | It gives the back a fine, matte texture; wipe it clean of fingerprints so the small first-layer letters stick |
 
 If the white field looks grey or speckled, raise the black → white flushing volume (the
 **Flushing volumes** button next to the filament list).
@@ -48,18 +52,18 @@ The card is 1.6 mm thick: 8 layers of 0.2 mm.
 
 | Layer | Height (top of layer) | Contents |
 | --- | --- | --- |
-| 1–2 | 0.20–0.40 mm | Black floor |
-| 3 | 0.60 mm | Black, with the open NFC pocket (25.3 mm round, behind the name) |
+| 1–3 | 0.20–0.60 mm | The back: black, white and orange inlays; the AMS swaps colours on each layer |
+| 4 | 0.80 mm | Black, with the open NFC pocket (25.3 mm round, behind the name) |
 | — | — | **Pause: drop in the NFC tag** |
-| 4–5 | 0.80–1.00 mm | Black, printed over the tag |
-| 6–8 | 1.20–1.60 mm | Black, white and orange inlays; the AMS swaps colours on each layer |
+| 5 | 1.00 mm | Black, printed over the tag |
+| 6–8 | 1.20–1.60 mm | The front: black, white and orange inlays |
 
-### The NFC pause: before layer 4 (0.80 mm)
+### The NFC pause: before layer 5 (1.00 mm)
 
-1. In **Preview**, drag the layer slider to **layer 4 (0.80 mm)**. Check that layer 3 shows the
-   open round pocket and that layer 4 covers it.
+1. In **Preview**, drag the layer slider to **layer 5 (1.00 mm)**. Check that layer 4 shows the
+   open round pocket and that layer 5 covers it.
 2. Right-click the **+** on the slider handle and choose **Add pause**. The printer finishes
-   layer 3, parks and waits.
+   layer 4, parks and waits.
 3. When it pauses: peel the backing off a (pre-written, see below) sticker and press it flat,
    adhesive side down, into the pocket of every card on the plate. Run a fingernail over it: nothing
    may stand proud of the pocket rim, or the nozzle will catch it. Keep your fingers off the hot
@@ -69,7 +73,7 @@ The card is 1.6 mm thick: 8 layers of 0.2 mm.
 The pocket is 0.2 mm deep, which assumes a tag no thicker than 0.2 mm. **Measure your tags with
 calipers when they arrive.** If they are thicker, set `nfc_tag_t` in `card.scad` and run
 `./build.sh`: the pocket deepens to whole layers, and the build output prints the new pause layer
-(for a 0.2–0.4 mm tag it moves to layer 5).
+(for a 0.2–0.4 mm tag it moves to layer 6).
 
 ## First-print checklist
 
@@ -80,6 +84,9 @@ Print one card, then check:
 - [ ] The white field is white, not grey, with no black specks in it.
 - [ ] The QR modules are crisp, with square corners and no colour bleeding between them.
 - [ ] The text is legible: the `m`s in `tbutman.com` and `~/tbutman`, and the `~/` fully formed.
+- [ ] The back reads correctly (not mirrored), and its first-layer letters are complete, with no
+      lifted or missing pieces and no gaps around them.
+- [ ] The tap marker is clear, and tapping there opens the page.
 - [ ] The QR code opens `https://tbutman.com/hello` from the camera app on an **iPhone** and on
       an **Android** phone, at arm's length and close up, and in dim light.
 - [ ] Tapping the card opens the same URL on the iPhone (top edge of the phone, near the camera)
