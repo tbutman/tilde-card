@@ -71,30 +71,26 @@ domain_size = 3.2;
 back_enabled = true;
 back_email = "tbutman@gmail.com";
 // Terminal lines: [amber prompt, light text]. The last line ends in an amber cursor block.
-back_website = "tbutman.com";
 back_lines = [
     ["$ ", "whoami"],
     ["", "thomas butman"],
     ["", "senior product engineer"],
-    ["$ ", "contact"],
     ["", back_email],
-    ["$ ", "website"],
-    ["", back_website],
     ["$ ", ""],
 ];
 back_font = "JetBrains Mono:style=ExtraBold";
-back_size = 3.0;                      // the minimum: eight lines and the window bar only just fit
+back_size = 3.6;
 back_bolden = 0.05;                   // the mono "m" and "a" joints are just under 0.5 mm at this size
 back_prompt_bolden = 0.15;            // the mono "$" has a hairline bar
-back_leading = 1.5;                   // baseline-to-baseline, as a multiple of back_size; terminal-tight
+back_leading = 1.75;                  // baseline-to-baseline, as a multiple of back_size
 back_x = 6.0;                         // left margin, seen from the back (matches the front)
 // Terminal window bar at the top: three dots and a rule, in their own "chrome" part (gray).
-back_bar_top = 4.5;                   // card edge to the top of the dots
+back_bar_top = 6.0;                   // card edge to the top of the dots
 back_dot_d = 2.2;
 back_dot_pitch = 3.6;
 back_rule_h = 0.6;
-back_rule_gap = 1.8;                  // dots to rule
-back_text_gap = 2.2;                  // rule to the top of the first line's capitals
+back_rule_gap = 2.4;                  // dots to rule
+back_text_gap = 2.8;                  // rule to the top of the first line's capitals
 back_cursor = [2.0, 3.6];             // cursor block width and height
 
 /* [NFC tag] */
