@@ -45,16 +45,21 @@ name_font = "Inter:style=ExtraBold";
 name_size = 5.2;
 name_leading = 1.45;                  // baseline-to-baseline, as a multiple of name_size
 name_baseline = 30.5;                 // baseline of the first name line, from the bottom edge
-// "tap" marker over the NFC tag: generic NFC waves (not the EMVCo payment symbol) and a label,
-// centred between the name and the domain.
+accent_w = 10.0;                      // amber rule under the name
+accent_h = 0.8;
+accent_gap = 3.4;                     // last name baseline to the top of the rule
+// "tap" marker in the strip right of the QR code, over the NFC tag: generic NFC waves (not the
+// EMVCo payment symbol) and a label, turned to read upwards.
 tap_label = "tap";
+tap_label_len = 7.4;                  // measured length of the label, to centre the turned group
 tap_font = "Inter:style=ExtraBold";
 tap_size = 3.4;                       // at 3.2 the "a" joint is just under 0.5 mm
 tap_dot_d = 1.1;                      // the source dot
-tap_radii = [2.0, 3.2, 4.4];          // the waves, opening to the right
-tap_stroke = 0.75;
-tap_spread = 100;                     // degrees covered by each wave
+tap_radii = [1.4, 2.55, 3.7];         // the waves, radiating towards the label; 1.15 mm apart
+tap_stroke = 0.6;                     // leaves 0.55 mm of black between waves
+tap_spread = 80;                      // degrees covered by each wave; sets the icon's width in the strip
 tap_gap = 1.6;                        // icon to label
+tap_bolden = 0.05;                    // the label's "a" joint is just under 0.5 mm
 domain_text = "tbutman.com";
 domain_font = "Inter:style=ExtraBold";
 domain_size = 3.2;
@@ -90,7 +95,9 @@ nfc_d = 25.0;            // tag diameter (25 mm round NTAG215 sticker)
 nfc_clearance = 0.3;     // added to the diameter
 nfc_tag_t = 0.2;         // measured tag thickness; the pocket rounds this up to whole layers
 nfc_floor_t = 0.6;       // plastic under the tag: at least the back inlay's 3 layers
-nfc_center = [20.0, card_h / 2];
+nfc_wall = 2.0;          // plastic between the pocket and the card edge
+// Against the right edge, under the QR code and the tap marker.
+nfc_center = [card_w - nfc_wall - (nfc_d + nfc_clearance) / 2, card_h / 2];
 
 /* [Preview colours] */
 body_color = "#16181b";
@@ -120,14 +127,18 @@ assert(qr_quiet >= 4, "QR needs a 4-module quiet zone");
 assert(inlay_t >= 0.4, "contrast layer must be at least 0.4 mm");
 assert(min(mark_size, name_size, domain_size, tap_size, back_size) >= 3, "cap height must be at least 3 mm");
 assert(min(tap_stroke, tap_dot_d) >= 0.5, "strokes must be at least 0.5 mm");
+// Black between the dot and the first wave, and between waves, must also print.
+assert(tap_radii[0] - tap_stroke / 2 - tap_dot_d / 2 >= 0.5
+       && min([for (i = [1 : len(tap_radii) - 1]) tap_radii[i] - tap_radii[i - 1]]) - tap_stroke >= 0.5,
+       "the tap waves need at least 0.5 mm of black between them");
 assert(!back_enabled || back_inlay_t >= 0.4, "contrast layer must be at least 0.4 mm");
 assert(!back_enabled || nfc_floor_t >= back_inlay_t, "the NFC pocket must sit above the back inlays");
 assert(min(back_dot_d, back_rule_h) >= 0.5, "strokes must be at least 0.5 mm");
 assert(cover_layers >= 2, "the NFC tag needs at least two layers over it");
 assert(pocket_top <= card_t - inlay_t, "the NFC pocket must sit below the inlays");
-assert(nfc_center[0] + pocket_d / 2 <= field_x - 1, "the NFC pocket must not sit under the QR field");
-assert(nfc_center[0] - pocket_d / 2 >= 2 && abs(nfc_center[1] - card_h / 2) + pocket_d / 2 <= card_h / 2 - 2,
-       "the NFC pocket needs a 2 mm wall to the card edge");
+assert(nfc_center[0] - pocket_d / 2 >= nfc_wall - 1e-6 && nfc_center[0] + pocket_d / 2 <= card_w - nfc_wall + 1e-6
+       && abs(nfc_center[1] - card_h / 2) + pocket_d / 2 <= card_h / 2 - nfc_wall + 1e-6,
+       "the NFC pocket needs a wall to every card edge");
 
 echo(str("QR ", qr_matrix_designator, ": ", qr_matrix_size, "x", qr_matrix_size, " modules, ", qr_module,
          " mm each; light field ", field, " mm"));
@@ -191,18 +202,24 @@ module tap_icon_2d() {
         stroke_2d([for (a = [-tap_spread / 2 : 5 : tap_spread / 2]) r * [cos(a), sin(a)]], tap_stroke);
 }
 
+// Laid out left to right around the dot at the origin, then turned to read upwards.
+module tap_group_2d() {
+    tap_icon_2d();
+    translate([max(tap_radii) + tap_stroke / 2 + tap_gap, -tap_size / 2])
+        offset(delta = tap_bolden) text(tap_label, size = tap_size, font = tap_font);
+}
+
 module tap_2d() {
-    last_baseline = name_baseline - (len(name_lines) - 1) * name_size * name_leading;
-    centre_y = (last_baseline + field_y + domain_size) / 2;
-    icon_x = text_x + tap_dot_d / 2;
-    icon_right = icon_x + max(tap_radii) + tap_stroke / 2;
-    translate([icon_x, centre_y]) tap_icon_2d();
-    translate([icon_right + tap_gap, centre_y - tap_size / 2]) text(tap_label, size = tap_size, font = tap_font);
+    start = -tap_dot_d / 2;
+    end = max(tap_radii) + tap_stroke / 2 + tap_gap + tap_label_len;
+    translate([card_w - qr_right_margin / 2, card_h / 2]) rotate(90) translate([-(start + end) / 2, 0]) tap_group_2d();
 }
 
 module accent_2d() {
     // The mark sits on the top edge of the QR field; the domain sits on its bottom edge.
     mark_prefix_2d();
+    last_baseline = name_baseline - (len(name_lines) - 1) * name_size * name_leading;
+    translate([text_x, last_baseline - accent_gap - accent_h]) square([accent_w, accent_h]);
     tap_2d();
     translate([text_x, field_y]) text(domain_text, size = domain_size, font = domain_font);
 }

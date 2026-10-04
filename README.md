@@ -13,8 +13,9 @@ PLA (plus gray for the back's window bar), with the tag sealed inside during a p
 - **Size:** ID-1 (85.60 × 53.98 mm, 3.2 mm corners), 1.6 mm thick.
 - **QR code:** version 2-M, 25 × 25 modules of 1.2 mm, black modules on a white field that
   includes the full 4-module quiet zone. The white is a 0.6 mm inlay, flush with the top.
-- **NFC:** a 25 mm NTAG215 sticker in a 25.3 mm pocket behind the name, under 4 solid layers. An
-  amber "tap" marker (generic NFC waves, not the EMVCo payment symbol) sits over it.
+- **NFC:** a 25 mm NTAG215 sticker in a 25.3 mm pocket against the right edge, under the QR code,
+  with 4 solid layers over it. An amber "tap" marker (generic NFC waves, not the EMVCo payment
+  symbol), turned to read upwards, sits in the strip right of the QR code, over the tag.
 - **Back:** a terminal window: a gray title bar (three dots and a rule), then a session
   (`$ whoami`, name, role, email, cursor) anchored under it. Inlaid 0.6 mm into the side that
   prints against the plate, mirrored so it reads correctly when the card is turned over.
@@ -52,7 +53,7 @@ OpenSCAD and switch `part` in the Customizer.
 
 `card.scad` refuses to render if `qr_url` no longer matches `qr_matrix.scad`, if a module is
 under 1 mm, if the inlay is under 0.4 mm, if text is under 3 mm, or if the NFC pocket has fewer
-than two layers over it or sits under the QR field.
+than two layers over it or less than 2 mm of wall to any edge.
 
 ## Checks
 
@@ -79,8 +80,11 @@ not been scanned or tapped yet; see the print log.
   bowl and stem, so the mark's outline grows by 0.05 mm (`mark_bolden`). The back's mono text
   grows by 0.05 mm too, and its `$` prompts by 0.15 mm, because the font draws the `$` bar as a
   hairline.
-- The amber rule under the name became the tap marker: the rule floated in an empty gap, and
-  most people don't expect a printed card to be tappable.
+- The tap marker sits right of the QR code, where the NFC tag now is. The tag first sat behind
+  the name, under a non-QR area as the original brief asked; it moved so the marker could go
+  in that strip and still point at the tag. Phones read NFC from only 1–3 cm away, so a marker
+  away from the tag would send people to a dead spot. The trade-off: the tag is under the QR
+  code, so check on the first print that the QR face stays flat over it.
 - In OpenSCAD 2026.09, `text(size = s)` gives a cap height of about `s` mm for both fonts
   (measured: an `H` at size 10 is 10.1 mm), so the sizes above are cap heights.
 

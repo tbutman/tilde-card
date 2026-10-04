@@ -57,7 +57,7 @@ The card is 1.6 mm thick: 8 layers of 0.2 mm.
 | Layer | Height (top of layer) | Contents |
 | --- | --- | --- |
 | 1–3 | 0.20–0.60 mm | The back: black, white, orange and gray inlays; the AMS swaps colours on each layer |
-| 4 | 0.80 mm | Black, with the open NFC pocket (25.3 mm round, behind the name) |
+| 4 | 0.80 mm | Black, with the open NFC pocket (25.3 mm round, against the right edge, under the QR code) |
 | — | — | **Pause: drop in the NFC tag** |
 | 5 | 1.00 mm | Black, printed over the tag |
 | 6–8 | 1.20–1.60 mm | The front: black, white and orange inlays |
@@ -91,6 +91,7 @@ Print one card, then check:
 - [ ] The back reads correctly (not mirrored), and its first-layer letters are complete, with no
       lifted or missing pieces and no gaps around them.
 - [ ] The tap marker is clear, and tapping there opens the page.
+- [ ] The QR face is flat over the tag (lay a ruler across it), and the QR code still scans.
 - [ ] The QR code opens `https://tbutman.com/hello` from the camera app on an **iPhone** and on
       an **Android** phone, at arm's length and close up, and in dim light.
 - [ ] Tapping the card opens the same URL on the iPhone (top edge of the phone, near the camera)
