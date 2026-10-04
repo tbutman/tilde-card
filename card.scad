@@ -1,6 +1,6 @@
 // Business card for tbutman.com: QR code and NFC tag, both opening https://tbutman.com/hello.
 //
-// One colour body per printable part. The light and accent parts are flush inlays in the top of
+// One colour body per printable part (body, light, accent, and chrome for the back's window bar). The light and accent parts are flush inlays in the top of
 // the card (the front) and in the bottom (the back, which prints against the plate, mirrored so
 // it reads correctly when the card is turned over). The dark QR modules are the black body
 // showing through the light field.
@@ -13,7 +13,7 @@ use <fonts/Inter-ExtraBold.ttf>
 use <fonts/JetBrainsMono-ExtraBold.ttf>
 
 /* [Output] */
-part = "preview"; // [preview, body, light, accent]
+part = "preview"; // [preview, body, light, accent, chrome]
 
 /* [Card] */
 card_w = 85.60;    // ID-1 width
@@ -75,7 +75,14 @@ back_size = 3.6;
 back_bolden = 0.05;                   // the mono "m" and "a" joints are just under 0.5 mm at this size
 back_prompt_bolden = 0.15;            // the mono "$" has a hairline bar
 back_leading = 1.75;                  // baseline-to-baseline, as a multiple of back_size
-back_x = 8.0;                         // left margin, seen from the back
+back_x = 6.0;                         // left margin, seen from the back (matches the front)
+// Terminal window bar at the top: three dots and a rule, in their own "chrome" part (gray).
+back_bar_top = 6.0;                   // card edge to the top of the dots
+back_dot_d = 2.2;
+back_dot_pitch = 3.6;
+back_rule_h = 0.6;
+back_rule_gap = 2.4;                  // dots to rule
+back_text_gap = 2.8;                  // rule to the top of the first line's capitals
 back_cursor = [2.0, 3.6];             // cursor block width and height
 
 /* [NFC tag] */
@@ -89,6 +96,7 @@ nfc_center = [20.0, card_h / 2];
 body_color = "#16181b";
 light_color = "#f1efe8";
 accent_color = "#ff9f1c";
+chrome_color = "#8e9089";
 
 $fn = 96;
 
@@ -114,6 +122,7 @@ assert(min(mark_size, name_size, domain_size, tap_size, back_size) >= 3, "cap he
 assert(min(tap_stroke, tap_dot_d) >= 0.5, "strokes must be at least 0.5 mm");
 assert(!back_enabled || back_inlay_t >= 0.4, "contrast layer must be at least 0.4 mm");
 assert(!back_enabled || nfc_floor_t >= back_inlay_t, "the NFC pocket must sit above the back inlays");
+assert(min(back_dot_d, back_rule_h) >= 0.5, "strokes must be at least 0.5 mm");
 assert(cover_layers >= 2, "the NFC tag needs at least two layers over it");
 assert(pocket_top <= card_t - inlay_t, "the NFC pocket must sit below the inlays");
 assert(nfc_center[0] + pocket_d / 2 <= field_x - 1, "the NFC pocket must not sit under the QR field");
@@ -200,7 +209,14 @@ module accent_2d() {
 
 // ---- The back, drawn as seen from behind ----
 back_pitch = back_size * back_leading;
-back_top = (card_h + (len(back_lines) - 1) * back_pitch) / 2 - back_size / 2;
+back_dots_y = card_h - back_bar_top - back_dot_d / 2;
+back_rule_y = back_dots_y - back_dot_d / 2 - back_rule_gap - back_rule_h;
+back_top = back_rule_y - back_text_gap - back_size; // first baseline, anchored under the bar
+
+module back_chrome_view_2d() {
+    for (i = [0 : 2]) translate([back_x + back_dot_d / 2 + i * back_dot_pitch, back_dots_y]) circle(d = back_dot_d, $fn = 48);
+    translate([back_x, back_rule_y]) square([card_w - 2 * back_x, back_rule_h]);
+}
 
 module back_line_2d(i, s, bolden = back_bolden) {
     translate([back_x, back_top - i * back_pitch])
@@ -257,6 +273,7 @@ module body() {
         inlay(0.01) accent_2d();
         back_inlay(0.01) back_light_view_2d();
         back_inlay(0.01) back_accent_view_2d();
+        back_inlay(0.01) back_chrome_view_2d();
         translate([nfc_center[0], nfc_center[1], nfc_floor_t]) cylinder(d = pocket_d, h = pocket_depth);
     }
 }
@@ -277,11 +294,17 @@ module accent() {
     }
 }
 
+module chrome() {
+    back_inlay() back_chrome_view_2d();
+}
+
 if (part == "body") body();
 else if (part == "light") light();
 else if (part == "accent") accent();
+else if (part == "chrome") chrome();
 else {
     color(body_color) body();
     color(light_color) light();
     color(accent_color) accent();
+    color(chrome_color) chrome();
 }

@@ -13,7 +13,7 @@ import trimesh
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parent.parent
-PARTS = {"body": (22, 24, 27), "light": (241, 239, 232), "accent": (255, 159, 28)}
+PARTS = {"body": (22, 24, 27), "light": (241, 239, 232), "accent": (255, 159, 28), "chrome": (142, 144, 137)}
 BACKGROUND = np.array([214, 211, 204])
 WIDTH, HEIGHT, SUPERSAMPLE = 1600, 1100, 2
 TILT_DEG, TURN_DEG = 52, -18

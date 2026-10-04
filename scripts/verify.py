@@ -26,11 +26,13 @@ EXPECTED = sys.argv[1] if len(sys.argv) > 1 else "https://tbutman.com/hello"
 PX_PER_MM = 20
 MIN_STROKE_MM = 0.5
 CORNER_SLIVER_MM2 = 0.06
+OFF_CARD = (255, 0, 255)  # matches no print colour
 QR_FIELD_X_MM = 38.0  # the front's light text is left of the QR field
 PARTS = {  # print colours: black PLA, white PLA, orange PLA
     "body": (22, 24, 27),
     "light": (241, 239, 232),
     "accent": (255, 159, 28),
+    "chrome": (142, 144, 137),  # gray PLA: the back's window bar
 }
 
 
@@ -40,7 +42,7 @@ def surface_image(meshes, face, px_per_mm=PX_PER_MM):
     hi = max(mesh.bounds[1][2] for mesh in meshes.values())
     z, sign = (hi, 1) if face == "top" else (lo, -1)
     width_mm, height_mm = meshes["body"].extents[:2]
-    image = Image.new("RGB", (round(width_mm * px_per_mm), round(height_mm * px_per_mm)), (128, 128, 128))
+    image = Image.new("RGB", (round(width_mm * px_per_mm), round(height_mm * px_per_mm)), OFF_CARD)
     draw = ImageDraw.Draw(image)
     for name, colour in PARTS.items():
         mesh = meshes[name]
@@ -89,8 +91,15 @@ for name, mesh in meshes.items():
 
 front = surface_image(meshes, "top")
 back = surface_image(meshes, "bottom")
-front.save(ROOT / "out" / "card-top-surface.png")
-back.save(ROOT / "out" / "card-back-surface.png")
+def save(image, name):
+    """Saves with the off-card background transparent, so the rounded corners show cleanly."""
+    rgba = np.dstack([np.asarray(image), np.full(image.size[::-1], 255, np.uint8)])
+    rgba[(rgba[:, :, :3] == OFF_CARD).all(axis=2), 3] = 0
+    Image.fromarray(rgba).save(ROOT / "out" / name)
+
+
+save(front, "card-top-surface.png")
+save(back, "card-back-surface.png")
 
 for label, img in {
     "front QR, 20 px/mm": front,
@@ -105,6 +114,7 @@ for label, img, colour, max_x in [
     ("front accent text", front, PARTS["accent"], None),
     ("back light text", back, PARTS["light"], None),
     ("back accent text", back, PARTS["accent"], None),
+    ("back window bar", back, PARTS["chrome"], None),
 ]:
     thin = thin_strokes(img, colour, max_x)
     failed |= report(not thin, f"{label} strokes >= {MIN_STROKE_MM} mm", f"thin at {thin}" if thin else "")

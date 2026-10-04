@@ -10,6 +10,9 @@ too: keep the 0.2 mm layer height and adapt the rest.
 | `out/card-body.stl` | black: the card, the QR modules | 1 |
 | `out/card-light.stl` | white: front QR field, name and `tbutman`; back terminal text | 2 |
 | `out/card-accent.stl` | orange: front `~/`, tap marker and `tbutman.com`; back `$` prompts and cursor | 3 |
+| `out/card-chrome.stl` | gray: the back's terminal window bar (three dots and a rule) | 4 |
+
+No gray loaded? Assign `card-chrome` to white or orange instead; nothing in the model changes.
 
 The front prints facing up. The back prints against the plate, so in Bambu Studio its text looks
 mirrored: that is correct, and it reads normally when you turn the finished card over.
@@ -18,9 +21,10 @@ mirrored: that is correct, and it reads normally when you turn the finished card
 
 1. Choose the **Bambu Lab A1 mini 0.4 nozzle** printer, the **0.20mm Standard** process and your
    PLA profiles.
-2. Drag all three STLs in at once, then answer **Yes** when asked whether to load them as a single
+2. Drag all four STLs in at once, then answer **Yes** when asked whether to load them as a single
    object with multiple parts. They are already in position relative to each other.
-3. In the object list, set each part's filament: body → black, light → white, accent → orange.
+3. In the object list, set each part's filament: body → black, light → white, accent → orange,
+   chrome → gray.
 4. Print one card first (see the checklist below). For a batch, right-click the card, choose
    **Clone**, then click **Arrange**. Leave room for the prime tower. Two or three cards per plate
    is a comfortable fit on the 180 × 180 mm bed. The card count is up to you.
@@ -52,7 +56,7 @@ The card is 1.6 mm thick: 8 layers of 0.2 mm.
 
 | Layer | Height (top of layer) | Contents |
 | --- | --- | --- |
-| 1–3 | 0.20–0.60 mm | The back: black, white and orange inlays; the AMS swaps colours on each layer |
+| 1–3 | 0.20–0.60 mm | The back: black, white, orange and gray inlays; the AMS swaps colours on each layer |
 | 4 | 0.80 mm | Black, with the open NFC pocket (25.3 mm round, behind the name) |
 | — | — | **Pause: drop in the NFC tag** |
 | 5 | 1.00 mm | Black, printed over the tag |

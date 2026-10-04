@@ -9,7 +9,7 @@ url=$(sed -n 's/^qr_url = "\(.*\)";.*/\1/p' card.scad)
 .venv/bin/python scripts/gen_qr.py "$url"
 
 mkdir -p out
-for part in body light accent; do
+for part in body light accent chrome; do
   docker run --rm -v "$PWD":/w -w /w openscad/openscad:dev \
     openscad --backend=manifold -D "part=\"$part\"" --export-format binstl -o "out/card-$part.stl" card.scad 2>&1 |
     grep -E '^(ECHO|WARNING|ERROR)' | sort -u || true
