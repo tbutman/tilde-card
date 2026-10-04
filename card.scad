@@ -51,9 +51,12 @@ accent_gap = 3.4;                     // last name baseline to the top of the ru
 // "tap" marker in the strip right of the QR code, over the NFC tag: generic NFC waves (not the
 // EMVCo payment symbol) and a label, turned to read upwards.
 tap_label = "tap";
-tap_label_len = 7.4;                  // measured length of the label, to centre the turned group
 tap_font = "Inter:style=ExtraBold";
-tap_size = 3.4;                       // at 3.2 the "a" joint is just under 0.5 mm
+tap_size = 3.0;
+// Measured on Inter ExtraBold "tap", per mm of size: length, and the middle of its ink (from the
+// p's descender to the t's top) above the baseline. Used to centre the label on the icon's axis.
+tap_label_len = 2.18 * tap_size;
+tap_label_mid = 0.328 * tap_size;
 tap_dot_d = 1.1;                      // the source dot
 tap_radii = [1.4, 2.55, 3.7];         // the waves, radiating towards the label; 1.15 mm apart
 tap_stroke = 0.6;                     // leaves 0.55 mm of black between waves
@@ -68,26 +71,30 @@ domain_size = 3.2;
 back_enabled = true;
 back_email = "tbutman@gmail.com";
 // Terminal lines: [amber prompt, light text]. The last line ends in an amber cursor block.
+back_website = "tbutman.com";
 back_lines = [
     ["$ ", "whoami"],
     ["", "thomas butman"],
     ["", "senior product engineer"],
+    ["$ ", "contact"],
     ["", back_email],
+    ["$ ", "website"],
+    ["", back_website],
     ["$ ", ""],
 ];
 back_font = "JetBrains Mono:style=ExtraBold";
-back_size = 3.6;
+back_size = 3.0;                      // the minimum: eight lines and the window bar only just fit
 back_bolden = 0.05;                   // the mono "m" and "a" joints are just under 0.5 mm at this size
 back_prompt_bolden = 0.15;            // the mono "$" has a hairline bar
-back_leading = 1.75;                  // baseline-to-baseline, as a multiple of back_size
+back_leading = 1.5;                   // baseline-to-baseline, as a multiple of back_size; terminal-tight
 back_x = 6.0;                         // left margin, seen from the back (matches the front)
 // Terminal window bar at the top: three dots and a rule, in their own "chrome" part (gray).
-back_bar_top = 6.0;                   // card edge to the top of the dots
+back_bar_top = 4.5;                   // card edge to the top of the dots
 back_dot_d = 2.2;
 back_dot_pitch = 3.6;
 back_rule_h = 0.6;
-back_rule_gap = 2.4;                  // dots to rule
-back_text_gap = 2.8;                  // rule to the top of the first line's capitals
+back_rule_gap = 1.8;                  // dots to rule
+back_text_gap = 2.2;                  // rule to the top of the first line's capitals
 back_cursor = [2.0, 3.6];             // cursor block width and height
 
 /* [NFC tag] */
@@ -205,7 +212,7 @@ module tap_icon_2d() {
 // Laid out left to right around the dot at the origin, then turned to read upwards.
 module tap_group_2d() {
     tap_icon_2d();
-    translate([max(tap_radii) + tap_stroke / 2 + tap_gap, -tap_size / 2])
+    translate([max(tap_radii) + tap_stroke / 2 + tap_gap, -tap_label_mid])
         offset(delta = tap_bolden) text(tap_label, size = tap_size, font = tap_font);
 }
 
@@ -229,6 +236,10 @@ back_pitch = back_size * back_leading;
 back_dots_y = card_h - back_bar_top - back_dot_d / 2;
 back_rule_y = back_dots_y - back_dot_d / 2 - back_rule_gap - back_rule_h;
 back_top = back_rule_y - back_text_gap - back_size; // first baseline, anchored under the bar
+
+// The last line's descenders must keep at least the bar's margin from the bottom edge.
+assert(!back_enabled || back_top - (len(back_lines) - 1) * back_pitch - 0.3 * back_size >= back_bar_top,
+       "the back's lines run off the bottom: shrink back_size or back_leading, or drop a line");
 
 module back_chrome_view_2d() {
     for (i = [0 : 2]) translate([back_x + back_dot_d / 2 + i * back_dot_pitch, back_dots_y]) circle(d = back_dot_d, $fn = 48);

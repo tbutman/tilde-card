@@ -16,10 +16,11 @@ PLA (plus gray for the back's window bar), with the tag sealed inside during a p
 - **NFC:** a 25 mm NTAG215 sticker in a 25.3 mm pocket against the right edge, under the QR code,
   with 4 solid layers over it. An amber "tap" marker (generic NFC waves, not the EMVCo payment
   symbol), turned to read upwards, sits in the strip right of the QR code, over the tag.
-- **Back:** a terminal window: a gray title bar (three dots and a rule), then a session
-  (`$ whoami`, name, role, email, cursor) anchored under it. Inlaid 0.6 mm into the side that
+- **Back:** a terminal window: a gray title bar (three dots and a rule), then a session anchored
+  under it: `$ whoami` (name, role), `$ contact` (email), `$ website` (domain) and a cursor, at
+  the 3 mm minimum cap height. Inlaid 0.6 mm into the side that
   prints against the plate, mirrored so it reads correctly when the card is turned over.
-  The email is one parameter, `back_email`.
+  The email and website are parameters (`back_email`, `back_website`).
 - **Type:** Inter ExtraBold and JetBrains Mono ExtraBold, the site's own typefaces. Cap heights
   are 3.2 mm or more, and every stroke is at least 0.5 mm on both faces.
 
