@@ -68,6 +68,20 @@ not been scanned or tapped yet; see the print log.
 - In OpenSCAD 2026.09, `text(size = s)` gives a cap height of about `s` mm for both fonts
   (measured: an `H` at size 10 is 10.1 mm), so the sizes above are cap heights.
 
+## Counting scans
+
+The site promises 0 cookies and 0 trackers, so there are no analytics. Count visits from nginx's
+own access log instead. The nginx container logs to stdout, so on the server, in the site's
+Docker Compose directory:
+
+```bash
+sudo docker compose logs --no-log-prefix website | grep -c '"GET /hello'
+```
+
+This counts requests, not people. The QR code and the NFC tag open the same URL, so they can't be
+told apart. Link-preview bots and reloads count too. The log only goes back to when the
+container was last recreated (for example, by an nginx image update).
+
 ## Print log
 
 | Date | Cards | Result |
