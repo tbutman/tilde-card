@@ -64,7 +64,10 @@ not been scanned or tapped yet; see the print log.
   separate dark part. Dark modules are grown by 0.02 mm (`qr_overlap`), so diagonal neighbours
   overlap instead of meeting at a zero-width edge. That edge would make both STLs non-manifold.
 - `JetBrains Mono` set the domain at first, but its narrow `m` has stems under 0.5 mm at this
-  size. Inter's `m` is wider. The mono face stays for the `~/` mark.
+  size. Inter's `m` is wider. The mono face stays for the `~/tbutman` mark, which matches the
+  site header: amber `~/`, light `tbutman`. It is set as one string and split by colour, so the
+  spacing is the font's own. At 4 mm its `m` passes, but the mono `a` has a thin joint between
+  bowl and stem, so the mark's outline grows by 0.05 mm (`mark_bolden`).
 - In OpenSCAD 2026.09, `text(size = s)` gives a cap height of about `s` mm for both fonts
   (measured: an `H` at size 10 is 10.1 mm), so the sizes above are cap heights.
 

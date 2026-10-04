@@ -32,9 +32,11 @@ qr_overlap = 0.02;      // grows dark modules so diagonal neighbours overlap ins
 
 /* [Text] */
 text_x = 6.0;                         // left edge of the text column
-mark_text = "~/";
+mark_prefix = "~/";                   // amber, like the site header's "~/tbutman"
+mark_name = "tbutman";                // light
 mark_font = "JetBrains Mono:style=ExtraBold";
-mark_size = 3.6;                      // in this OpenSCAD build, size = cap height in mm
+mark_size = 4.0;                      // in this OpenSCAD build, size = cap height in mm
+mark_bolden = 0.05;                   // grows each stroke edge: the mono "a" joint is thinner than 0.5 mm
 name_lines = ["Thomas", "Butman"];
 name_font = "Inter:style=ExtraBold";
 name_size = 5.2;
@@ -118,9 +120,20 @@ module name_2d() {
             text(name_lines[i], size = name_size, font = name_font);
 }
 
+// The header mark is set as one string so the spacing matches the site, then split by colour.
+module mark_2d() {
+    translate([text_x, field_y + field - mark_size])
+        offset(delta = mark_bolden) text(str(mark_prefix, mark_name), size = mark_size, font = mark_font);
+}
+
+module mark_prefix_2d() {
+    translate([text_x, field_y + field - mark_size])
+        offset(delta = mark_bolden) text(mark_prefix, size = mark_size, font = mark_font);
+}
+
 module accent_2d() {
-    // "~/" sits on the top edge of the QR field; the domain sits on its bottom edge.
-    translate([text_x, field_y + field - mark_size]) text(mark_text, size = mark_size, font = mark_font);
+    // The mark sits on the top edge of the QR field; the domain sits on its bottom edge.
+    mark_prefix_2d();
     last_baseline = name_baseline - (len(name_lines) - 1) * name_size * name_leading;
     translate([text_x, last_baseline - accent_gap - accent_h]) square([accent_w, accent_h]);
     translate([text_x, field_y]) text(domain_text, size = domain_size, font = domain_font);
@@ -129,6 +142,10 @@ module accent_2d() {
 module light_2d() {
     qr_light_2d();
     name_2d();
+    difference() {
+        mark_2d();
+        mark_prefix_2d();
+    }
 }
 
 // ---- 3D parts ----

@@ -8,7 +8,7 @@ too: keep the 0.2 mm layer height and adapt the rest.
 | File | Colour | AMS slot (suggested) |
 | --- | --- | --- |
 | `out/card-body.stl` | black: the card, the QR modules | 1 |
-| `out/card-light.stl` | white: the QR field and the name | 2 |
+| `out/card-light.stl` | white: the QR field, the name and `tbutman` in the header mark | 2 |
 | `out/card-accent.stl` | orange: `~/`, the rule, `tbutman.com` | 3 |
 
 ## Set up the plate in Bambu Studio
@@ -79,7 +79,7 @@ Print one card, then check:
 - [ ] After the print, the area over the tag is flat: no bump under the name.
 - [ ] The white field is white, not grey, with no black specks in it.
 - [ ] The QR modules are crisp, with square corners and no colour bleeding between them.
-- [ ] The text is legible: the `m`s in `tbutman.com`, and the `~/` fully formed.
+- [ ] The text is legible: the `m`s in `tbutman.com` and `~/tbutman`, and the `~/` fully formed.
 - [ ] The QR code opens `https://tbutman.com/hello` from the camera app on an **iPhone** and on
       an **Android** phone, at arm's length and close up, and in dim light.
 - [ ] Tapping the card opens the same URL on the iPhone (top edge of the phone, near the camera)
