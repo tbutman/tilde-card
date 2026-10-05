@@ -1,176 +1,147 @@
 # Printing the card
 
-Written for a Bambu Lab A1 mini with an AMS lite and PLA. Other printers work too: keep the layer
-height and adapt the rest.
+This guide is written for a Bambu Lab A1 mini with an AMS lite, using Bambu Studio. Other
+multi-colour printers work too; the steps are much the same.
 
-## Choose a version
+## What you need
 
-`./build.sh` exports two versions of the same card, one per nozzle. Everything else is identical.
+- **A printer that prints several colours in one go**, such as a Bambu Lab printer with an AMS or
+  AMS lite. The card changes colour about 30 times, which is too many to do by hand.
+- **PLA in black, white and orange**, plus **grey** for a small detail on the back (optional: use
+  white or orange instead).
+- **A 0.2 mm or 0.4 mm nozzle.** See [Choose a nozzle](#choose-a-nozzle).
+- **A 25 mm round NFC sticker** for each card. See [Buying NFC tags](#buying-nfc-tags).
+- **A phone with NFC** and the free app NFC Tools, to put your link on the sticker.
+- **A textured PEI plate** (recommended). It gives the front a matte finish, which also stops the
+  QR code reflecting light.
 
-| | `out/nozzle-0.2/` (final) | `out/nozzle-0.4/` (baseline) |
+## Choose a nozzle
+
+The card comes in two versions, one for each nozzle size. They look the same from arm's length;
+the difference is in the small text and the print time.
+
+| | 0.2 mm nozzle | 0.4 mm nozzle |
 | --- | --- | --- |
-| Nozzle | 0.2 mm | 0.4 mm |
-| Layer height | 0.10 mm (16 layers) | 0.20 mm (8 layers) |
-| Bambu Studio | A1 mini **0.2 nozzle** printer, a 0.10 mm process | A1 mini **0.4 nozzle** printer, 0.20mm Standard |
-| Tap label | "tap to connect" (Inter Bold, 2.6 mm) | "tap" (Inter ExtraBold, 3.0 mm) |
-| Letterforms | Exactly as the fonts draw them | Thickened by 0.05 mm (0.15 mm for `$`) to reach 0.5 mm strokes |
-| Known limits | None: every stroke ≥ 0.3 mm, every gap ≥ 0.22 mm | Some gaps inside small letters (the back's mono `m`, `@`, `e`; the `$`) are narrower than the 0.4 mm nozzle prints, so they may partly fill in |
-| NFC pause | **Before layer 11 (1.10 mm)** | **Before layer 6 (1.20 mm)** |
+| **Files** | `out/nozzle-0.2/` | `out/nozzle-0.4/` |
+| **Small text** | Sharp. Every letter prints exactly as designed | The front is clean. Small letters on the back (`m`, `@`, `$`) can come out a little soft or partly filled in |
+| **Tap label** | "tap to connect" | "tap" (the full phrase is too fine for this nozzle) |
+| **Layers** | 16 layers of 0.1 mm | 8 layers of 0.2 mm |
+| **Colour changes** | About 30 per plate | About half as many |
+| **Print time** | About 4½ hours for one card | Shorter (time to be confirmed) |
+| **Filament** | About 9 g in the card, plus about 12 g purged during colour changes | Similar in the card, less purge |
+| **Best for** | The best-looking card, if you have a 0.2 mm nozzle | Most printers come with a 0.4 mm nozzle; the quicker option |
 
-## Files
+**The time is mostly colour changes, not the cards.** Colour changes happen once per layer for the
+whole plate, so printing two or three cards at once takes only a little longer than printing one,
+and wastes almost no extra filament. If you're printing a stack of cards, fill the plate.
 
-Each version folder holds the same four files:
+The 0.2 mm time and filament figures are Bambu Studio's estimates for one card on an A1 mini
+(5 October 2026). Your printer and settings may differ.
 
-| File | Colour | AMS slot (suggested) |
-| --- | --- | --- |
-| `card-body.stl` | black: the card, the QR modules | 1 |
-| `card-light.stl` | white: front QR field, name, `tbutman` and the tap label; back terminal text | 2 |
-| `card-accent.stl` | orange: front `~/`, rule, tap waves and `tbutman.com`; back `$` prompts and cursor | 3 |
-| `card-chrome.stl` | gray: the back's terminal window bar (three dots and a rule) | 4 |
+## Buying NFC tags
 
-No gray loaded? Assign `card-chrome` to white or orange instead; nothing in the model changes.
+You need **25 mm round NFC stickers with an NTAG215 chip**, one per card. They're usually sold in
+packs of 10 to 100.
 
-**The front prints face-down.** The plate side comes out flat and matte, and the 0.4 mm sample
-(5 October 2026) showed it is clearly the better face, so the STLs are exported already lying
-front-down: import them as they are, without flipping. In Bambu Studio you see the back on top,
-upside down. That is correct: the card is turned over about its long side, so both faces read
-normally in your hand.
+- **Thickness matters.** The tag sits in a pocket 0.2 mm deep, so look for stickers no thicker
+  than 0.2 mm. "Wet inlay" stickers (about 0.12 mm) are the safest. Many paper stickers are
+  thicker; if a listing doesn't say, measure one before printing.
+- **Avoid "coins", "anti-metal" tags and hard plastic discs.** They're 0.6 mm or thicker and won't
+  fit.
+- **NTAG215** holds 504 bytes, enough for a link or a contact card. NTAG216 (888 bytes) also
+  works. NTAG213 (144 bytes) is enough for a link only.
 
-## Set up the plate in Bambu Studio
+Some options, with prices as listed on 5 October 2026:
 
-1. Fit the matching hotend, then choose the printer and process from the table above and your PLA
-   profiles.
-2. Drag all four STLs from one version folder in at once, then answer **Yes** when asked whether to load them as a single
-   object with multiple parts. They are already in position relative to each other.
-3. In the object list, set each part's filament: body → black, light → white, accent → orange,
-   chrome → gray.
-4. Print one card first (see the checklist below). For a batch, right-click the card, choose
-   **Clone**, then click **Arrange**. Leave room for the prime tower. Two or three cards per plate
-   is a comfortable fit on the 180 × 180 mm bed. The card count is up to you.
+| Where | What | Thickness | Price |
+| --- | --- | --- | --- |
+| [Seritag](https://seritag.com/nfc-tags/25mm-ntag215-wet) (UK, prices in £/€/$) | 25 mm NTAG215 wet inlay | 0.12 mm: fits | £0.42 each for 10–99, £0.36 for 100+ |
+| [Tagstand](https://www.tagstand.com/products/ntag215-round-sticker-25mm-diameter/) (US) | 25 mm NTAG215 paper sticker | Not listed: measure | $0.62 each, $0.44 for 100+ |
+| [GoToTags](https://store.gototags.com/nfc-sticker-ntag215-25-mm-circle/) (US) | 25 mm NTAG215 paper sticker | 0.35 mm: **too thick** for the standard pocket | $0.54 each in 10s |
+| Amazon, AliExpress | 25 mm NTAG215 sticker multipacks | Rarely listed: measure | Often $0.25–0.40 each in packs of 50–100 |
 
-## Slicer settings
+**Expect to pay about $0.25 to $0.65 per tag**, or roughly $5–10 for a small pack.
 
-The geometry is built on whole layers, so the height settings matter. The others are suggestions.
-Where the versions differ, the 0.2 mm value comes first.
+## Set up the print in Bambu Studio
 
-| Setting | Value | Why |
-| --- | --- | --- |
-| Layer height | **0.10 mm** / **0.20 mm** | The pocket and the inlays are whole layers |
-| Initial layer height | **0.10 mm** / **0.20 mm** | Same reason |
-| Line widths | Profile defaults | |
-| Wall loops | 2 | |
-| Top / bottom shell layers | 8 / 8, or 5 / 3 | Either way the card is solid all through |
-| Sparse infill density | **100 %** | The shells cover only 12 of the 16 layers at 0.1 mm, so at the default 15 % the middle of the card is hollow. Bambu Studio switches the pattern to Rectilinear, because Grid can't do 100 % |
-| Wall generator | **Arachne** | Varies the line width, so strokes between one and two lines wide (much of the small text) are filled instead of gapped. "Detect thin wall" greys out when it is on |
-| Ironing | Off for the first print | Try it later if the top looks rough |
-| Brim | None | |
-| Elephant foot compensation | **0 mm** | It shrinks first-layer outlines, which can open hairline gaps around the front's lettering and QR modules |
-| Bottom surface pattern | **Monotonic line** | The first layer is the front: an even texture instead of the concentric rings visible on the sample |
-| Top surface pattern | Monotonic line | The back. Ironing can smooth its ridges further; test it on one card first, because ironing can smear colours at the inlay edges |
-| Prime tower | On (the default with the AMS) | |
-| Build plate | Textured PEI | It gives the front its matte texture, which also cuts glare on the QR code. Wipe it clean of fingerprints so the small first-layer letters stick |
+1. Fit the nozzle you chose. In Bambu Studio, pick your printer with that nozzle (for example
+   **Bambu Lab A1 mini 0.2 nozzle**) and a process with the matching layer height: **0.10 mm** for
+   the 0.2 mm nozzle, **0.20mm Standard** for the 0.4 mm nozzle.
+2. Drag in all four files from that version's folder at once (`card-body.stl`, `card-light.stl`,
+   `card-accent.stl`, `card-chrome.stl`). When asked whether to load them as **a single object with
+   multiple parts**, choose **Yes**.
+3. In the list of parts, set each one's filament: **body** → black, **light** → white,
+   **accent** → orange, **chrome** → grey.
+4. Change these settings (most are under **Quality** and **Strength**):
 
-If the white field looks grey or speckled, raise the black → white flushing volume (the
-**Flushing volumes** button next to the filament list).
+   | Setting | Set to | Why |
+   | --- | --- | --- |
+   | Initial layer height | Same as the layer height (0.10 or 0.20 mm) | The card is built from whole layers |
+   | Sparse infill density | **100 %** | Makes the card solid all the way through |
+   | Wall generator | **Arachne** | Fills thin letter strokes properly |
+   | Bottom surface pattern | **Monotonic line** | Gives the front an even finish |
+   | Top surface pattern | **Monotonic line** | Gives the back an even finish |
+   | Elephant foot compensation | **0 mm** | Stops small gaps opening around the front's letters |
+   | Brim | None | |
 
-The 0.2 mm version takes much longer: half-width lines on half-height layers, and twice as many
-colour layers (12 instead of 6), so twice the AMS swaps and purge per plate.
+5. Leave room on the plate for the **prime tower** (the small block the printer purges into when
+   it changes colour). Drag it onto an empty spot if it's off the plate.
+6. Print one card first. For more, right-click the card, choose **Clone**, then **Arrange**. Two
+   or three cards fit comfortably on the A1 mini's plate.
 
-With those settings, the 0.2 mm version of one card slices to about 9.1 g of filament in the card,
-about 12 g of purge and prime tower, 30 colour changes and 4.5 hours (Bambu Studio, 5 October
-2026). The swaps and the tower are per plate, not per card, so a plate of two or three cards costs
-little more time or waste than one.
+**The card prints face-down, and that's correct.** The side touching the plate comes out
+smoothest, so the files are already turned over: you'll see the back facing up, upside down. Don't
+flip them.
 
-## What happens at each layer
+## Add the pause for the NFC tag
 
-The card is 1.6 mm thick. With the 0.2 mm nozzle that is 16 layers of 0.1 mm:
+The printer needs to stop halfway so you can put the tag in.
 
-| Layer | Height (top of layer) | Contents |
-| --- | --- | --- |
-| 1–6 | 0.10–0.60 mm | The front, face-down: black, white and orange inlays; the AMS swaps colours on each layer |
-| 7–8 | 0.70–0.80 mm | Black |
-| 9–10 | 0.90–1.00 mm | Black, with the open NFC pocket (25.3 mm round, under the QR code, against the card's right edge as seen from the front) |
-| — | — | **Pause: drop in the NFC tag** |
-| 11–16 | 1.10–1.60 mm | The back, printed over the tag: black, white, orange and gray inlays |
+1. Click **Slice plate**, then use the layer slider on the right of the preview.
+2. Go to **layer 11** (0.2 mm nozzle) or **layer 6** (0.4 mm nozzle). The layer just below it
+   should show an open round pocket; this layer should cover it.
+3. Right-click the **+** on the slider and choose **Add pause**.
 
-With the 0.4 mm nozzle it is 8 layers of 0.2 mm:
+When the printer pauses:
 
-| Layer | Height (top of layer) | Contents |
-| --- | --- | --- |
-| 1–3 | 0.20–0.60 mm | The front, face-down: black, white and orange inlays |
-| 4 | 0.80 mm | Black |
-| 5 | 1.00 mm | Black, with the open NFC pocket |
-| — | — | **Pause: drop in the NFC tag** |
-| 6–8 | 1.20–1.60 mm | The back, printed over the tag: black, white, orange and gray inlays |
+1. Peel the backing off a sticker (with your link already on it; see below) and press it flat into
+   the round pocket, sticky side down. Do this for every card on the plate.
+2. Run a fingernail over it. Nothing may stick up above the pocket's edge, or the nozzle will
+   catch it.
+3. Keep your fingers away from the hot nozzle, then press **Resume** on the printer.
 
-### The NFC pause: before layer 11 (0.2 mm nozzle) or layer 6 (0.4 mm nozzle)
+## Put your link on the tag
 
-1. In **Preview**, drag the layer slider to the first layer over the pocket: **layer 11 (1.10 mm)**
-   or **layer 6 (1.20 mm)**. Check that the layer below it shows the open round pocket and that
-   this layer covers it.
-2. Right-click the **+** on the slider handle and choose **Add pause**. The printer finishes the
-   layer below, parks and waits.
-3. When it pauses: peel the backing off a (pre-written, see below) sticker and press it flat,
-   adhesive side down, into the pocket of every card on the plate. Run a fingernail over it: nothing
-   may stand proud of the pocket rim, or the nozzle will catch it. Keep your fingers off the hot
-   nozzle.
-4. Resume from the printer's screen.
+Do this **before** the sticker goes in the card, so a faulty sticker only costs you the sticker.
+(You can also rewrite a tag through the finished card later.)
 
-The pocket is 0.2 mm deep, which assumes a tag no thicker than 0.2 mm. **Measure your tags with
-calipers when they arrive.** If they are thicker, set `nfc_tag_t` in `card.scad` and run
-`./build.sh`: the pocket deepens to whole layers, and the build output prints the new pause layer
-for each version.
+1. Install **NFC Tools** (free, by wakdev, for iPhone and Android).
+2. Open it and go to **Write** → **Add a record** → **URL / URI**, and type your website address.
+3. Tap **Write** and hold your phone against the sticker until it confirms.
+4. To check: go to **Read** and hold the phone to the sticker. It should show your link.
 
-## First-print checklist
+**Locking is optional and permanent.** NFC Tools can lock a tag (Other → Lock tag) so nobody can
+change it, but then you can't change it either, ever. If you lock it, only do it once the finished
+card works.
 
-Print one card, then check:
+## Check your first card
 
-- [ ] Before the pause, the pocket is clean, round and free of strings.
-- [ ] After the print, both faces are flat over the tag: no bump in the QR field's right half, or
-      on the back opposite it.
-- [ ] The white field is white, not grey, with no black specks in it.
-- [ ] The QR modules are crisp, with square corners and no colour bleeding between them.
-- [ ] The text is legible: the `m`s in `tbutman.com` and `~/tbutman`, the `~/` fully formed, and
-      the `c`s and `e`s in "tap to connect" still open. On the 0.4 mm version, note which small
-      letters on the back have filled in.
-- [ ] The front's first-layer details are complete: no lifted or missing letters, QR modules or
-      tap waves, and no gaps around them.
-- [ ] The back reads correctly (not mirrored or upside down when you turn the card over sideways).
-- [ ] The tap marker is clear, and tapping there opens the page.
-- [ ] The QR face is flat over the tag (lay a ruler across it), and the QR code still scans.
-- [ ] The QR code opens `https://tbutman.com/hello` from the camera app on an **iPhone** and on
-      an **Android** phone, at arm's length and close up, and in dim light.
-- [ ] Tapping the card opens the same URL on the iPhone (top edge of the phone, near the camera)
-      and on the Android phone (the reader is usually mid or upper back;
-      it varies by model).
-- [ ] The card is flat, with no warped corners, and fits a wallet card slot.
-- [ ] The thickness measures about 1.6 mm.
+- The white square behind the QR code is white, not grey or speckled.
+- The QR code's squares are crisp, and it scans with your phone's camera.
+- Tapping the card on the "tap" marker opens your link. iPhones read NFC near the top edge, by the
+  camera; Android phones usually in the middle or upper part of the back.
+- The text is readable, including the small letters.
+- The card is flat, with no bump over the tag and no curled corners.
 
-Note the results in `README.md` under "Print log".
+## If something goes wrong
 
-## Writing the NFC tag
+- **The white looks grey or has black specks:** increase the flushing volume from black to white
+  (the **Flushing volumes** button next to the filament list).
+- **Small letters on the front are missing or didn't stick:** wash the plate with dish soap and
+  water (fingerprints stop small details sticking) and lower the initial layer speed, for example
+  to 30 mm/s.
+- **There's a bump over the tag:** the tag is too thick for the pocket. Use thinner stickers.
+- **The phone doesn't react to a tap:** check NFC is on (Android), move the phone slowly over the
+  marker, and check the tag works by tapping it before printing.
 
-Use **NFC Tools** (free, by wakdev, on iOS and Android). Write each sticker **before** it goes in
-the card. A dud tag then costs one sticker, not a whole card. Writing through 1 mm of plastic also
-works if a tag needs fixing later.
-
-1. Open NFC Tools → **Write** → **Add a record** → **URL / URI**.
-2. Enter `https://tbutman.com/hello` and confirm.
-3. Tap **Write**, then hold the phone against the sticker until it confirms.
-4. Check it: go to **Read**, hold the phone to the tag and confirm it shows the URL. Also test with
-   the phone's own reader: with the phone unlocked, tapping the tag should offer to open the link.
-
-An NTAG215 holds 504 bytes, and this URL record uses about 20.
-
-### Locking (optional and irreversible)
-
-NFC Tools → **Other** → **Lock tag** makes the tag permanently read-only, so nobody can overwrite
-it. **There is no undo.** A locked tag can never be rewritten, even if the URL changes. Only lock
-after the finished card has opened the page on both an iPhone and an Android phone. Leaving it
-unlocked is also fine.
-
-## Which tags to buy
-
-**25 mm round NTAG215 stickers**, usually sold in packs of 10–50. Check the listing says 25 mm and NTAG215. Avoid "anti-metal" tags and hard PVC
-coins: they are 0.6–1 mm thick and need a different pocket (`nfc_tag_t`, and probably a thicker
-card).
+Details on how the model is built are in [docs/DESIGN.md](docs/DESIGN.md).
