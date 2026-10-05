@@ -14,14 +14,15 @@ PLA (plus gray for the back's window bar), with the tag sealed inside during a p
 - **QR code:** version 2-M, 25 × 25 modules of 1.2 mm, black modules on a white field that
   includes the full 4-module quiet zone. The white is a 0.6 mm inlay, flush with the top.
 - **NFC:** a 25 mm NTAG215 sticker in a 25.3 mm pocket against the right edge, under the QR code,
-  with 4 solid layers over it. A "tap" marker (amber NFC waves, not the EMVCo payment symbol, and
+  with 8 solid layers (0.8 mm) over it. A "tap" marker (amber NFC waves, not the EMVCo payment symbol, and
   a white label), turned to read upwards, sits in the strip right of the QR code, over the tag.
 - **Back:** a terminal window: a gray title bar (three dots and a rule), then a session
   (`$ whoami`, name, role, email, cursor) anchored under it. Inlaid 0.6 mm into the side that
   prints against the plate, mirrored so it reads correctly when the card is turned over.
   The email is one parameter, `back_email`.
-- **Type:** Inter ExtraBold and JetBrains Mono ExtraBold, the site's own typefaces. Cap heights
-  are 3.2 mm or more, and every stroke is at least 0.5 mm on both faces.
+- **Type:** Inter (ExtraBold; Bold for "tap to connect") and JetBrains Mono ExtraBold, the site's
+  own typefaces, unaltered. Tuned for a 0.2 mm nozzle on 0.1 mm layers: cap heights of 2.6 mm or
+  more, every stroke at least 0.3 mm and every gap at least 0.22 mm, on both faces.
 
 How to print it, including the NFC pause layer and writing the tag: [PRINTING.md](PRINTING.md).
 
@@ -52,8 +53,10 @@ and re-renders the preview. To edit the model interactively, open `card.scad` in
 OpenSCAD and switch `part` in the Customizer.
 
 `card.scad` refuses to render if `qr_url` no longer matches `qr_matrix.scad`, if a module is
-under 1 mm, if the inlay is under 0.4 mm, if text is under 3 mm, or if the NFC pocket has fewer
-than two layers over it or less than 2 mm of wall to any edge.
+under 1 mm, if the inlay is under 0.4 mm, if text is under `min_cap`, if a thickness is not a whole
+number of layers, or if the NFC pocket has fewer than two layers over it or less than 2 mm of wall
+to any edge. The `[Printer]` parameters (`nozzle_d`, `layer_h`, `min_stroke`, `min_gap`,
+`min_cap`) set those limits; `verify.py` reads the same values.
 
 ## Checks
 
@@ -62,8 +65,11 @@ than two layers over it or less than 2 mm of wall to any edge.
 - every colour body is manifold (each edge shared by exactly two triangles);
 - the front, rasterised from the STLs in print colours, decodes with OpenCV to exactly
   `https://tbutman.com/hello`: at 20 px/mm, at 4 px/mm, and with a heavy blur;
-- on both faces, opening each text mask with a 0.5 mm disk loses nothing larger than a
-  glyph-corner sliver (0.06 mm²). In other words, no stroke is thinner than 0.5 mm.
+- on both faces, opening each text mask with a `min_stroke` disk (0.3 mm) loses nothing larger
+  than a glyph-corner sliver (0.06 mm²): no stroke is thinner than that;
+- closing it with a `min_gap` disk (0.22 mm, one line of the 0.2 mm nozzle) fills nothing: no
+  gap inside or between letters is narrower than that. Acute inner corners always fill a little,
+  so each reviewed one is listed in `KNOWN_ACUTE_CORNERS` (currently the middle of the back's `w`).
 
 Result on the current files: all pass. These checks are on the digital model. A printed card has
 not been scanned or tapped yet; see the print log.
@@ -76,10 +82,12 @@ not been scanned or tapped yet; see the print log.
 - `JetBrains Mono` set the domain at first, but its narrow `m` has stems under 0.5 mm at this
   size. Inter's `m` is wider. The mono face stays for the `~/tbutman` mark, which matches the
   site header: amber `~/`, light `tbutman`. It is set as one string and split by colour, so the
-  spacing is the font's own. At 4 mm its `m` passes, but the mono `a` has a thin joint between
-  bowl and stem, so the mark's outline grows by 0.05 mm (`mark_bolden`). The back's mono text
-  grows by 0.05 mm too, and its `$` prompts by 0.15 mm, because the font draws the `$` bar as a
-  hairline.
+  spacing is the font's own.
+- With a 0.4 mm nozzle, several glyphs needed thickening to reach 0.5 mm strokes (the mono `a`
+  joint, the `$` bar). The `*_bolden` parameters did that; with the 0.2 mm nozzle they are all 0,
+  so the letters print exactly as drawn.
+- "tap to connect" is Inter Bold, not ExtraBold: at 2.6 mm, ExtraBold's `c` and `e` openings
+  are about 0.15 mm, narrower than one nozzle line, so they would print closed ("oonneot").
 - The tap marker sits right of the QR code, where the NFC tag now is. The tag first sat behind
   the name, under a non-QR area as the original brief asked; it moved so the marker could go
   in that strip and still point at the tag. Phones read NFC from only 1–3 cm away, so a marker

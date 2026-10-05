@@ -1,7 +1,12 @@
 # Printing the card
 
-Written for a Bambu Lab A1 mini with an AMS lite, a 0.4 mm nozzle and PLA. Other printers work
-too: keep the 0.2 mm layer height and adapt the rest.
+Written for a Bambu Lab A1 mini with an AMS lite, a **0.2 mm nozzle** and PLA. Other printers work
+too: keep the 0.1 mm layer height and adapt the rest.
+
+The model is tuned for the 0.2 mm nozzle: 0.1 mm layers, strokes of at least 0.3 mm, gaps of at
+least 0.22 mm, and a 2.6 mm "tap to connect" label. For a 0.4 mm nozzle, set the `[Printer]`
+parameters in `card.scad` back (`layer_h = 0.2`, `min_stroke = 0.5`, `min_cap = 3`) and rebuild;
+the checks then say what to enlarge.
 
 ## Files
 
@@ -19,8 +24,8 @@ mirrored: that is correct, and it reads normally when you turn the finished card
 
 ## Set up the plate in Bambu Studio
 
-1. Choose the **Bambu Lab A1 mini 0.4 nozzle** printer, the **0.20mm Standard** process and your
-   PLA profiles.
+1. Fit the 0.2 mm hotend. Choose the **Bambu Lab A1 mini 0.2 nozzle** printer, a **0.10 mm**
+   process (Bambu's 0.10mm Standard profile for that printer) and your PLA profiles.
 2. Drag all four STLs in at once, then answer **Yes** when asked whether to load them as a single
    object with multiple parts. They are already in position relative to each other.
 3. In the object list, set each part's filament: body → black, light → white, accent → orange,
@@ -31,14 +36,15 @@ mirrored: that is correct, and it reads normally when you turn the finished card
 
 ## Slicer settings
 
-The geometry is built on 0.2 mm layers, so the height settings matter. The others are suggestions.
+The geometry is built on 0.1 mm layers, so the height settings matter. The others are suggestions.
 
 | Setting | Value | Why |
 | --- | --- | --- |
-| Layer height | **0.20 mm** | The pocket and the inlays are whole 0.2 mm layers |
-| Initial layer height | **0.20 mm** | Same reason; this is Bambu's default for a 0.4 nozzle |
+| Layer height | **0.10 mm** | The pocket and the inlays are whole 0.1 mm layers |
+| Initial layer height | **0.10 mm** | Same reason |
+| Line widths | Profile defaults (about 0.22 mm) | The model's minimum gap is one such line |
 | Wall loops | 2 | |
-| Top / bottom shell layers | 5 / 3 | With 8 layers in total, the card is solid all through |
+| Top / bottom shell layers | 8 / 8 | With 16 layers in total, the card is solid all through |
 | Sparse infill density | 100 % | Belt and braces: there is no room for real infill anyway |
 | Top surface pattern | Monotonic line | An even sheen across the QR field |
 | Ironing | Off for the first print | Try it later if the top looks rough |
@@ -50,24 +56,27 @@ The geometry is built on 0.2 mm layers, so the height settings matter. The other
 If the white field looks grey or speckled, raise the black → white flushing volume (the
 **Flushing volumes** button next to the filament list).
 
+Expect a much longer print than with a 0.4 mm nozzle: half-width lines on half-height layers, and
+twice as many colour layers (12 instead of 6), so twice the AMS swaps and purge per plate.
+
 ## What happens at each layer
 
-The card is 1.6 mm thick: 8 layers of 0.2 mm.
+The card is 1.6 mm thick: 16 layers of 0.1 mm.
 
 | Layer | Height (top of layer) | Contents |
 | --- | --- | --- |
-| 1–3 | 0.20–0.60 mm | The back: black, white, orange and gray inlays; the AMS swaps colours on each layer |
-| 4 | 0.80 mm | Black, with the open NFC pocket (25.3 mm round, against the right edge, under the QR code) |
+| 1–6 | 0.10–0.60 mm | The back: black, white, orange and gray inlays; the AMS swaps colours on each layer |
+| 7–8 | 0.70–0.80 mm | Black, with the open NFC pocket (25.3 mm round, against the right edge, under the QR code) |
 | — | — | **Pause: drop in the NFC tag** |
-| 5 | 1.00 mm | Black, printed over the tag |
-| 6–8 | 1.20–1.60 mm | The front: black, white and orange inlays |
+| 9–10 | 0.90–1.00 mm | Black, printed over the tag |
+| 11–16 | 1.10–1.60 mm | The front: black, white and orange inlays |
 
-### The NFC pause: before layer 5 (1.00 mm)
+### The NFC pause: before layer 9 (0.90 mm)
 
-1. In **Preview**, drag the layer slider to **layer 5 (1.00 mm)**. Check that layer 4 shows the
-   open round pocket and that layer 5 covers it.
+1. In **Preview**, drag the layer slider to **layer 9 (0.90 mm)**. Check that layer 8 shows the
+   open round pocket and that layer 9 covers it.
 2. Right-click the **+** on the slider handle and choose **Add pause**. The printer finishes
-   layer 4, parks and waits.
+   layer 8, parks and waits.
 3. When it pauses: peel the backing off a (pre-written, see below) sticker and press it flat,
    adhesive side down, into the pocket of every card on the plate. Run a fingernail over it: nothing
    may stand proud of the pocket rim, or the nozzle will catch it. Keep your fingers off the hot
@@ -76,18 +85,19 @@ The card is 1.6 mm thick: 8 layers of 0.2 mm.
 
 The pocket is 0.2 mm deep, which assumes a tag no thicker than 0.2 mm. **Measure your tags with
 calipers when they arrive.** If they are thicker, set `nfc_tag_t` in `card.scad` and run
-`./build.sh`: the pocket deepens to whole layers, and the build output prints the new pause layer
-(for a 0.2–0.4 mm tag it moves to layer 6).
+`./build.sh`: the pocket deepens to whole 0.1 mm layers, and the build output prints the new pause
+layer (each extra 0.1 mm moves it one layer later, so a 0.3 mm tag pauses before layer 10).
 
 ## First-print checklist
 
 Print one card, then check:
 
 - [ ] Before the pause, the pocket is clean, round and free of strings.
-- [ ] After the print, the area over the tag is flat: no bump under the name.
+- [ ] After the print, the area over the tag is flat: no bump in the QR field's right half.
 - [ ] The white field is white, not grey, with no black specks in it.
 - [ ] The QR modules are crisp, with square corners and no colour bleeding between them.
-- [ ] The text is legible: the `m`s in `tbutman.com` and `~/tbutman`, and the `~/` fully formed.
+- [ ] The text is legible: the `m`s in `tbutman.com` and `~/tbutman`, the `~/` fully formed, and
+      the `c`s and `e`s in "tap to connect" still open.
 - [ ] The back reads correctly (not mirrored), and its first-layer letters are complete, with no
       lifted or missing pieces and no gaps around them.
 - [ ] The tap marker is clear, and tapping there opens the page.

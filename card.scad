@@ -10,19 +10,26 @@
 
 include <qr_matrix.scad>
 use <fonts/Inter-ExtraBold.ttf>
+use <fonts/Inter-Bold.ttf>
 use <fonts/JetBrainsMono-ExtraBold.ttf>
 
 /* [Output] */
 part = "preview"; // [preview, body, light, accent, chrome]
+
+/* [Printer] */
+nozzle_d = 0.2;    // the final print uses a 0.2 mm nozzle
+min_stroke = 0.3;  // narrowest printable stroke: about 1.5x the nozzle (0.5 for a 0.4 nozzle)
+min_gap = 0.22;    // narrowest printable gap between strokes: one line of the 0.2 nozzle
+min_cap = 2.5;     // smallest cap height (3 mm was the 0.4 nozzle floor)
 
 /* [Card] */
 card_w = 85.60;    // ID-1 width
 card_h = 53.98;    // ID-1 height
 corner_r = 3.2;
 card_t = 1.6;      // total thickness
-layer_h = 0.2;     // slicer layer height (first layer included); thicknesses below are multiples of it
-inlay_t = 0.6;     // depth of the light and accent inlays (3 layers): opaque enough over black
-back_inlay_t = 0.6; // depth of the inlays on the back (the first 3 layers)
+layer_h = 0.1;     // slicer layer height (first layer included); thicknesses below are multiples of it
+inlay_t = 0.6;     // depth of the light and accent inlays: opaque enough over black
+back_inlay_t = 0.6; // depth of the inlays on the back
 
 /* [QR code] */
 qr_url = "https://tbutman.com/hello";
@@ -39,7 +46,7 @@ mark_prefix = "~/";                   // amber, like the site header's "~/tbutma
 mark_name = "tbutman";                // light
 mark_font = "JetBrains Mono:style=ExtraBold";
 mark_size = 4.0;                      // in this OpenSCAD build, size = cap height in mm
-mark_bolden = 0.05;                   // grows each stroke edge: the mono "a" joint is thinner than 0.5 mm
+mark_bolden = 0;                      // grows each stroke edge (0.05 was needed for a 0.4 nozzle)
 name_lines = ["Thomas", "Butman"];
 name_font = "Inter:style=ExtraBold";
 name_size = 5.2;
@@ -50,19 +57,19 @@ accent_h = 0.8;
 accent_gap = 3.4;                     // last name baseline to the top of the rule
 // "tap" marker in the strip right of the QR code, over the NFC tag: generic NFC waves (not the
 // EMVCo payment symbol) in amber and a light label, turned to read upwards.
-tap_label = "tap";
-tap_font = "Inter:style=ExtraBold";
-tap_size = 3.0;
-// Measured on Inter ExtraBold "tap", per mm of size: length, and the middle of its ink (from the
-// p's descender to the t's top) above the baseline. Used to centre the label on the icon's axis.
-tap_label_len = 2.18 * tap_size;
+tap_label = "tap to connect";
+tap_font = "Inter:style=Bold";      // ExtraBold closes the "c" and "e" openings at this size
+tap_size = 2.6;
+// Measured on Inter Bold "tap to connect", per mm of size: length, and the middle of its ink
+// (from the p's descender to the t's top) above the baseline. Re-measure if the label changes.
+tap_label_len = 9.72 * tap_size;
 tap_label_mid = 0.328 * tap_size;
 tap_dot_d = 1.1;                      // the source dot
 tap_radii = [1.4, 2.55, 3.7];         // the waves, radiating towards the label; 1.15 mm apart
 tap_stroke = 0.6;                     // leaves 0.55 mm of black between waves
 tap_spread = 80;                      // degrees covered by each wave; sets the icon's width in the strip
 tap_gap = 1.6;                        // icon to label
-tap_bolden = 0.05;                    // the label's "a" joint is just under 0.5 mm
+tap_bolden = 0;                       // grows each stroke edge (0.05 was needed for a 0.4 nozzle)
 domain_text = "tbutman.com";
 domain_font = "Inter:style=ExtraBold";
 domain_size = 3.2;
@@ -80,8 +87,8 @@ back_lines = [
 ];
 back_font = "JetBrains Mono:style=ExtraBold";
 back_size = 3.6;
-back_bolden = 0.05;                   // the mono "m" and "a" joints are just under 0.5 mm at this size
-back_prompt_bolden = 0.15;            // the mono "$" has a hairline bar
+back_bolden = 0;                      // grows each stroke edge (0.05 was needed for a 0.4 nozzle)
+back_prompt_bolden = 0;               // the mono "$" has a hairline bar (0.4 nozzle: 0.15)
 back_leading = 1.75;                  // baseline-to-baseline, as a multiple of back_size
 back_x = 6.0;                         // left margin, seen from the back (matches the front)
 // Terminal window bar at the top: three dots and a rule, in their own "chrome" part (gray).
@@ -128,15 +135,17 @@ assert(qr_url == qr_matrix_url, str("qr_matrix.scad encodes ", qr_matrix_url, ";
 assert(qr_module >= 1, "QR modules must be at least 1 mm");
 assert(qr_quiet >= 4, "QR needs a 4-module quiet zone");
 assert(inlay_t >= 0.4, "contrast layer must be at least 0.4 mm");
-assert(min(mark_size, name_size, domain_size, tap_size, back_size) >= 3, "cap height must be at least 3 mm");
-assert(min(tap_stroke, tap_dot_d) >= 0.5, "strokes must be at least 0.5 mm");
+assert(min(mark_size, name_size, domain_size, tap_size, back_size) >= min_cap, str("cap height must be at least ", min_cap, " mm"));
+assert(min(tap_stroke, tap_dot_d) >= min_stroke, str("strokes must be at least ", min_stroke, " mm"));
 // Black between the dot and the first wave, and between waves, must also print.
-assert(tap_radii[0] - tap_stroke / 2 - tap_dot_d / 2 >= 0.5
-       && min([for (i = [1 : len(tap_radii) - 1]) tap_radii[i] - tap_radii[i - 1]]) - tap_stroke >= 0.5,
-       "the tap waves need at least 0.5 mm of black between them");
+assert(tap_radii[0] - tap_stroke / 2 - tap_dot_d / 2 >= min_stroke
+       && min([for (i = [1 : len(tap_radii) - 1]) tap_radii[i] - tap_radii[i - 1]]) - tap_stroke >= min_stroke,
+       str("the tap waves need at least ", min_stroke, " mm of black between them"));
 assert(!back_enabled || back_inlay_t >= 0.4, "contrast layer must be at least 0.4 mm");
 assert(!back_enabled || nfc_floor_t >= back_inlay_t, "the NFC pocket must sit above the back inlays");
-assert(min(back_dot_d, back_rule_h) >= 0.5, "strokes must be at least 0.5 mm");
+assert(min(back_dot_d, back_rule_h) >= min_stroke, str("strokes must be at least ", min_stroke, " mm"));
+for (t = [card_t, inlay_t, back_inlay_t, nfc_floor_t])
+    assert(abs(t / layer_h - round(t / layer_h)) < 1e-6, str(t, " mm is not a whole number of ", layer_h, " mm layers"));
 assert(cover_layers >= 2, "the NFC tag needs at least two layers over it");
 assert(pocket_top <= card_t - inlay_t, "the NFC pocket must sit below the inlays");
 assert(nfc_center[0] - pocket_d / 2 >= nfc_wall - 1e-6 && nfc_center[0] + pocket_d / 2 <= card_w - nfc_wall + 1e-6

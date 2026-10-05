@@ -7,12 +7,16 @@ bottom-facing triangles at z = 0, flipped so it reads as it will when the card i
 
 - The QR code on the front must decode with OpenCV to exactly the expected URL, at full
   resolution, at a low resolution and blurred (closer to what a phone camera sees).
-- Opening each text mask with a 0.5 mm disk must lose nothing: no stroke is thinner than that.
+- Opening each text mask with a `min_stroke` disk (from card.scad) must lose nothing: no stroke is
+  thinner than that. Closing it with a `min_gap` disk must fill nothing: no gap inside or between
+  letters is narrower than one nozzle line. Acute inner corners (the middle of a "w") always
+  fill a sliver; fragments under 0.06 mm^2 are ignored, as for strokes.
   Sharp glyph corners always lose a sliver, so fragments under 0.06 mm^2 are ignored.
 
     .venv/bin/python scripts/verify.py [expected-url]
 """
 
+import re
 import sys
 from pathlib import Path
 
@@ -24,10 +28,19 @@ from PIL import Image, ImageDraw, ImageOps
 ROOT = Path(__file__).resolve().parent.parent
 EXPECTED = sys.argv[1] if len(sys.argv) > 1 else "https://tbutman.com/hello"
 PX_PER_MM = 20
-MIN_STROKE_MM = 0.5
+# The narrowest printable stroke, from card.scad (it depends on the nozzle).
+SCAD = (ROOT / "card.scad").read_text()
+MIN_STROKE_MM = float(re.search(r"^min_stroke = ([0-9.]+);", SCAD, re.M).group(1))
+MIN_GAP_MM = float(re.search(r"^min_gap = ([0-9.]+);", SCAD, re.M).group(1))
 CORNER_SLIVER_MM2 = 0.06
 OFF_CARD = (255, 0, 255)  # matches no print colour
 QR_FIELD_X_MM = (38.5, 78.6)  # the QR field's light area; light text sits on either side of it
+# Acute inner corners always fill a little when "closed", whatever their size: the gap check
+# cannot tell them from a real narrow gap. Each reviewed corner is listed here as (face, x, y) in
+# mm; a change to the text moves them and brings the check back. Reviewed 5 October 2026:
+KNOWN_ACUTE_CORNERS = [
+    ("back", 13.5, 37.8),  # the middle V of the mono "w" in "whoami"; it rounds slightly, still reads as a w
+]
 PARTS = {  # print colours: black PLA, white PLA, orange PLA
     "body": (22, 24, 27),
     "light": (241, 239, 232),
@@ -59,15 +72,19 @@ def decode(image_rgb):
     return text
 
 
-def thin_strokes(image, colour, skip_x_mm=None, px_per_mm=PX_PER_MM):
-    """Places where `colour` is thinner than MIN_STROKE_MM, as (x, y, area) in mm."""
+def thin_strokes(image, colour, skip_x_mm=None, gaps=False, px_per_mm=PX_PER_MM):
+    """Places where `colour` is thinner than MIN_STROKE_MM, as (x, y, area) in mm. With `gaps`, the
+    places where the black between parts of `colour` (inside an "e", between waves) is."""
     rgb = np.asarray(image).astype(int)
     mask = (np.abs(rgb - colour).max(axis=2) < 40).astype(np.uint8)
     if skip_x_mm is not None:
         mask[:, round(skip_x_mm[0] * px_per_mm) : round(skip_x_mm[1] * px_per_mm)] = 0
-    r = round(MIN_STROKE_MM * px_per_mm / 2)
+    r = round((MIN_GAP_MM if gaps else MIN_STROKE_MM) * px_per_mm / 2)
     disk = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * r + 1, 2 * r + 1))
-    lost = mask & (1 - cv2.morphologyEx(mask, cv2.MORPH_OPEN, disk))
+    if gaps:
+        lost = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, disk) & (1 - mask)
+    else:
+        lost = mask & (1 - cv2.morphologyEx(mask, cv2.MORPH_OPEN, disk))
     _, _, stats, centres = cv2.connectedComponentsWithStats(lost)
     height = mask.shape[0]
     return [
@@ -109,6 +126,10 @@ for label, img in {
     text = decode(img)
     failed |= report(text == EXPECTED, label, f"decoded {text!r}")
 
+def unreviewed(spots, face):
+    return [s for s in spots if not any(f == face and abs(s[0] - x) < 0.3 and abs(s[1] - y) < 0.3 for f, x, y in KNOWN_ACUTE_CORNERS)]
+
+
 for label, img, colour, skip_x in [
     ("front light text", front, PARTS["light"], QR_FIELD_X_MM),
     ("front accent text", front, PARTS["accent"], None),
@@ -118,6 +139,8 @@ for label, img, colour, skip_x in [
 ]:
     thin = thin_strokes(img, colour, skip_x)
     failed |= report(not thin, f"{label} strokes >= {MIN_STROKE_MM} mm", f"thin at {thin}" if thin else "")
+    narrow = unreviewed(thin_strokes(img, colour, skip_x, gaps=True), label.split()[0])
+    failed |= report(not narrow, f"{label} gaps >= {MIN_GAP_MM} mm", f"narrow at {narrow}" if narrow else "")
 
 print("wrote out/card-top-surface.png, out/card-back-surface.png")
 sys.exit(1 if failed else 0)
