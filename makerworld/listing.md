@@ -22,6 +22,19 @@ The text below the line is the model page, ready to paste into MakerWorld. Image
       repo is MIT.
 - [ ] Publish Tilde on GitHub first, and this repo too (or drop its link), so the links below work.
 
+**Trying it in the Parametric Model Maker** (before publishing):
+
+1. Copy the model to the clipboard: `pbcopy < makerworld/nfc-business-card.scad` (from this repo's
+   folder). It's written by `build.sh`; never edit it by hand.
+2. Open MakerWorld → MakerLab → **Parametric Model Maker**
+   (https://makerworld.com/en/makerlab/parametricModelMaker?pageType=generator), signed in. Start a
+   new script and paste it in, or upload the file if the editor offers that. Nothing is public until
+   you publish it as a model.
+3. Run it: the Jane Doe sample card should appear in four colours. Then try your own name, a long
+   name, a 40-character link, the 0.4 mm nozzle and thick stickers.
+4. Generate the 3MF and open it in Bambu Studio. Check that the fonts are Inter and JetBrains Mono
+   (not a fallback), that the four colours can be assigned to filaments, and that nothing times out.
+
 **Photo shot list:** the card in a hand; front and back on a desk; a phone tapping the card with
 the website opening; the 0.2 mm and 0.4 mm cards side by side, close up on the small text; the
 open pocket at the pause, with a tag going in; a stack of cards on the plate.
