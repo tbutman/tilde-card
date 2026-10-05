@@ -40,7 +40,7 @@ Two versions are built from the same model, `out/nozzle-0.2/` and `out/nozzle-0.
 | Path | What |
 | --- | --- |
 | `card.scad` | The parametric model, one self-contained file. The Customizer sections at the top are the settings people change; `[Hidden]` holds the layout. |
-| `makerworld/nfc-business-card.scad` | The copy uploaded to MakerWorld's customizer, written by `scripts/make_makerworld.py`: no font file lines, and the example person Jane Doe as the defaults. Never edited by hand. |
+| `makerworld/tilde-card.scad` | The copy uploaded to MakerWorld's customizer, written by `scripts/make_makerworld.py`: no font file lines, and the example person Jane Doe as the defaults. Never edited by hand. |
 | `out/makerworld-sample/`, `out/makerworld-sample-qr-only-plain/` | Cards built from the MakerWorld copy, to check it renders and passes the checks: the default, and one with no NFC tag and the plain back. |
 | `out/nozzle-{0.2,0.4}/card-{body,light,accent,chrome}.stl` | One STL per colour (black, white, orange, gray), per nozzle, for stickers up to 0.2 mm. |
 | `out/nozzle-{0.2,0.4}-thick-sticker/` | The same for stickers up to 0.4 mm: a 1.8 mm card with a deeper pocket. |

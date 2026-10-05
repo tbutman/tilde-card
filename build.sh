@@ -47,7 +47,7 @@ done
 # would, with the fonts found by name (OPENSCAD_FONT_PATH stands in for its installed fonts): the
 # default, and a QR-only card with no NFC tag and the plain back.
 .venv/bin/python scripts/make_makerworld.py
-sample_url=$(sed -n 's/^qr_url = "\(.*\)";.*/\1/p' makerworld/nfc-business-card.scad)
+sample_url=$(sed -n 's/^qr_url = "\(.*\)";.*/\1/p' makerworld/tilde-card.scad)
 for sample in default qr-only-plain; do
   dir="out/makerworld-sample"
   extra=()
@@ -58,7 +58,7 @@ for sample in default qr-only-plain; do
   for part in body light accent chrome; do
     docker run --rm -v "$PWD":/w -w /w -e OPENSCAD_FONT_PATH=/w/fonts openscad/openscad:dev \
       openscad --backend=manifold -D "part=\"$part\"" "${extra[@]+"${extra[@]}"}" --export-format binstl \
-      -o "$dir/card-$part.stl" makerworld/nfc-business-card.scad 2>&1 | grep -E '^(ECHO: "(CARD|No NFC|NFC pocket)|WARNING|ERROR)' || true
+      -o "$dir/card-$part.stl" makerworld/tilde-card.scad 2>&1 | grep -E '^(ECHO: "(CARD|No NFC|NFC pocket)|WARNING|ERROR)' || true
   done
   .venv/bin/python scripts/verify.py --dir "$dir" --face-down front --min-stroke 0.3 --min-gap 0.22 "$sample_url" || status=1
   .venv/bin/python scripts/render_preview.py --dir "$dir" --face-down front

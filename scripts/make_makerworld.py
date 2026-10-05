@@ -1,4 +1,4 @@
-"""Write makerworld/nfc-business-card.scad, the file uploaded to MakerWorld's customizer.
+"""Write makerworld/tilde-card.scad, the file uploaded to MakerWorld's customizer.
 
 It is card.scad with two changes: no `use <fonts/...>` lines (MakerWorld has the same fonts
 installed, and the local files aren't there), and the example person Jane Doe as the defaults, so
@@ -32,5 +32,5 @@ for name, value in EXAMPLE.items():
     assert n == 1, name
 out = "// MakerWorld version, generated from card.scad by scripts/make_makerworld.py.\n" + out
 (ROOT / "makerworld").mkdir(exist_ok=True)
-(ROOT / "makerworld" / "nfc-business-card.scad").write_text(out)
-print("wrote makerworld/nfc-business-card.scad")
+(ROOT / "makerworld" / "tilde-card.scad").write_text(out)
+print("wrote makerworld/tilde-card.scad")

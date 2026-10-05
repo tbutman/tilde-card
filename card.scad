@@ -1,5 +1,5 @@
-// An NFC business card: your name and website on the front, with a QR code and an NFC tag that
-// both open your link, and a terminal window with your details on the back.
+// Tilde card: a printable business card with your name and website on the front, a QR code that
+// opens your link, an optional NFC tag that does the same, and a choice of back.
 //
 // Open it in OpenSCAD's Customizer (or MakerWorld's) and fill in the first sections; everything
 // under [Hidden] is the layout. One colour body per part: body (black), light (white), accent
