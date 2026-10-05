@@ -1,7 +1,11 @@
-# NFC business card
+# Tilde card
 
-A business card you print yourself. It has a QR code on the front and an NFC tag sealed inside, so
-people can either scan it or tap it with their phone to open your website.
+A business card you print yourself, made to go with [Tilde](https://github.com/tbutman/tilde), the
+Android app that turns your phone into an NFC business card. The card has a QR code on the front and
+an NFC tag sealed inside, so people can scan it or tap it with their phone to open your website,
+even when your phone isn't out.
+
+It works on its own too: phones read it without any app, and any NFC app can write the tag.
 
 ![The card](out/nozzle-0.2/preview.png)
 
@@ -27,11 +31,12 @@ OpenSCAD's Customizer: see [Make it yours](PRINTING.md#make-it-yours).
 [PRINTING.md](PRINTING.md) walks through it step by step: which nozzle to use, which NFC stickers
 to buy, the slicer settings, the pause for the tag and how to put your link on the tag.
 
-## Share from your phone too
+## Tilde, the app it goes with
 
-[Tilde](https://github.com/tbutman/tilde) is the companion Android app. It turns your phone into
-the same thing as the card: people tap your phone, or scan the code on its screen, to get your
-website or contact details.
+[Tilde](https://github.com/tbutman/tilde) is a free, open-source Android app that does what the card
+does, from your phone: people tap your phone, or scan the code on its screen, to get your website,
+contact card, WhatsApp or LinkedIn. It also writes your link onto the card's tag
+(**Settings → Write a card**).
 
 ## For developers
 

@@ -30,7 +30,7 @@ open pocket at the pause, with a tag going in; a stack of cards on the plate.
 
 | File | Caption |
 | --- | --- |
-| `01-cover.png` | Print your own NFC business card, and share from your phone with the free Tilde app |
+| `01-cover.png` | Tilde turns your phone into an NFC business card; print the card to go with it |
 | `02-card-3d.png` | Four colours, printed in one go |
 | `03-front.png` | The front: your name, your link and a QR code |
 | `04-back.png` | The back: a terminal window with your details |
@@ -42,12 +42,13 @@ open pocket at the pause, with a tag going in; a stack of cards on the plate.
 
 ## Title
 
-NFC Business Card: tap or scan, with a free companion app
+NFC Business Card for Tilde: tap or scan to share your details
 
 ## Summary
 
-A credit-card-sized business card with a QR code on the front and an NFC tag sealed inside. Tap it
-with a phone or scan it to open your website. Type in your own details and print it in one go.
+A credit-card-sized business card with a QR code on the front and an NFC tag sealed inside, made to
+go with Tilde, the free app that turns your Android phone into an NFC business card. Tap it or scan
+it to open your website. Type in your own details and print it in one go.
 
 ## Description
 
@@ -126,10 +127,11 @@ side on the plate comes out smoothest, so that's the front.
 Full instructions, troubleshooting and the source files:
 [github.com/tbutman/tilde-card](https://github.com/tbutman/tilde-card)
 
-### Share from your phone too: Tilde
+### Made for Tilde
 
-[Tilde](https://github.com/tbutman/tilde) is a free, open-source Android app that does the same
-thing as the card. People tap their phone against yours, or scan the code on your screen, to get
+[Tilde](https://github.com/tbutman/tilde) is a free, open-source Android app that does what the
+card does, from your phone. The card is optional for Tilde users, and Tilde is optional for the
+card: it works with any phone. People tap their phone against yours, or scan the code on your screen, to get
 your website, contact card, WhatsApp or LinkedIn. It works offline, has no ads and no account, and
 keeps a list of who you've shared with. It can also write your link onto the card's NFC tag.
 
