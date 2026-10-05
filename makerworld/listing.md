@@ -60,7 +60,8 @@ the rest of the card prints over it. The tag ends up sealed inside, invisible an
 - PLA in black, white and orange (and grey for a small detail on the back, optional).
 - A 0.2 mm or 0.4 mm nozzle.
 - 25 mm round NTAG215 NFC stickers, **no thicker than 0.2 mm** (see below).
-- A phone with NFC and the free NFC Tools app, to put your link on the sticker.
+- A phone with NFC and a free app to put your link on the sticker: Tilde (Android) or NFC Tools
+  (iPhone and Android).
 
 ### 0.2 mm or 0.4 mm nozzle?
 
@@ -87,8 +88,8 @@ Buy **25 mm round NTAG215 stickers**, about $0.25–0.65 each ($5–10 for a sma
 ### How to print
 
 1. Open the print profile for your nozzle. The settings and the pause are already set.
-2. Before printing, put your link on a sticker with NFC Tools: Write → Add a record → URL, then
-   hold your phone to the sticker.
+2. Before printing, put your link on a sticker. With Tilde: Settings → Write a card, then hold the
+   sticker to your phone. With NFC Tools: Write → Add a record → URL, then hold it to your phone.
 3. When the printer pauses, peel the sticker and press it flat into the round pocket, then resume.
 4. Done. Tap it with your phone to try it.
 
@@ -103,7 +104,7 @@ Full instructions, troubleshooting and the source files:
 [Tilde](https://github.com/tbutman/tilde) is a free, open-source Android app that does the same
 thing as the card. People tap their phone against yours, or scan the code on your screen, to get
 your website, contact card, WhatsApp or LinkedIn. It works offline, has no ads and no account, and
-keeps a list of who you've shared with.
+keeps a list of who you've shared with. It can also write your link onto the card's NFC tag.
 
 ### Print settings
 

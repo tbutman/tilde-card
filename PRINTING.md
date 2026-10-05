@@ -11,7 +11,8 @@ multi-colour printers work too; the steps are much the same.
   white or orange instead).
 - **A 0.2 mm or 0.4 mm nozzle.** See [Choose a nozzle](#choose-a-nozzle).
 - **A 25 mm round NFC sticker** for each card. See [Buying NFC tags](#buying-nfc-tags).
-- **A phone with NFC** and the free app NFC Tools, to put your link on the sticker.
+- **A phone with NFC** and a free app to put your link on the sticker: Tilde (Android) or NFC
+  Tools (iPhone and Android).
 - **A textured PEI plate** (recommended). It gives the front a matte finish, which also stops the
   QR code reflecting light.
 
@@ -115,10 +116,18 @@ When the printer pauses:
 Do this **before** the sticker goes in the card, so a faulty sticker only costs you the sticker.
 (You can also rewrite a tag through the finished card later.)
 
-1. Install **NFC Tools** (free, by wakdev, for iPhone and Android).
-2. Open it and go to **Write** → **Add a record** → **URL / URI**, and type your website address.
-3. Tap **Write** and hold your phone against the sticker until it confirms.
-4. To check: go to **Read** and hold the phone to the sticker. It should show your link.
+**On Android, with [Tilde](https://github.com/tbutman/tilde)** (free, the companion app):
+
+1. Fill in your card in Tilde, then go to **Settings** → **Write a card**.
+2. Choose what the card should open: your website, contact card, LinkedIn and so on.
+3. Hold the sticker to the back of your phone until it buzzes. Hold the next one to write that too.
+
+**On iPhone or Android, with NFC Tools** (free, by wakdev):
+
+1. Open NFC Tools and go to **Write** → **Add a record** → **URL / URI**, and type your website
+   address.
+2. Tap **Write** and hold your phone against the sticker until it confirms.
+3. To check: go to **Read** and hold the phone to the sticker. It should show your link.
 
 **Locking is optional and permanent.** NFC Tools can lock a tag (Other → Lock tag) so nobody can
 change it, but then you can't change it either, ever. If you lock it, only do it once the finished
