@@ -151,4 +151,4 @@ container was last recreated (for example, by an nginx image update).
 
 | Date | Cards | Result |
 | --- | --- | --- |
-| 2026-10-05 | 1, 0.4 mm nozzle, no tag, front face-down (design as of a1a15f1) | Front: smooth and matte, crisp QR code, name and domain; the "tap" label and waves too small to read, and concentric first-layer rings in the black (fix: bottom surface pattern). Back, printed on top: legible but ridged and a little soft; `@`, `m` and `$` slightly blobby, as the 0.4 mm gap check predicted. Led to making front-down the default orientation and to the 0.2 mm version. QR and tap not yet tested on phones. |
+| 2026-10-05 | 1, 0.4 mm nozzle, no tag, front face-down (design as of a1a15f1) | 75 minutes. Front: smooth and matte, crisp QR code, name and domain; the "tap" label and waves too small to read, and concentric first-layer rings in the black (fix: bottom surface pattern). Back, printed on top: legible but ridged and a little soft; `@`, `m` and `$` slightly blobby, as the 0.4 mm gap check predicted. Led to making front-down the default orientation and to the 0.2 mm version. QR and tap not yet tested on phones. |
