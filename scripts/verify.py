@@ -13,10 +13,12 @@ bottom-facing triangles at z = 0, flipped so it reads as it will when the card i
   fill a sliver; fragments under 0.06 mm^2 are ignored, as for strokes.
   Sharp glyph corners always lose a sliver, so fragments under 0.06 mm^2 are ignored.
 
-    .venv/bin/python scripts/verify.py [expected-url]
+    .venv/bin/python scripts/verify.py --dir out/nozzle-0.2 --min-stroke 0.3 --min-gap 0.22 [expected-url]
+
+build.sh passes the limits card.scad uses for that nozzle.
 """
 
-import re
+import argparse
 import sys
 from pathlib import Path
 
@@ -26,12 +28,19 @@ import trimesh
 from PIL import Image, ImageDraw, ImageOps
 
 ROOT = Path(__file__).resolve().parent.parent
-EXPECTED = sys.argv[1] if len(sys.argv) > 1 else "https://tbutman.com/hello"
+parser = argparse.ArgumentParser()
+parser.add_argument("url", nargs="?", default="https://tbutman.com/hello")
+parser.add_argument("--dir", default="out/nozzle-0.2", help="folder holding card-*.stl, relative to the repo")
+parser.add_argument("--min-stroke", type=float, default=0.3)
+parser.add_argument("--min-gap", type=float, default=0.22)
+parser.add_argument("--gaps-advisory", action="store_true", help="report narrow gaps as WARN instead of failing")
+args = parser.parse_args()
+EXPECTED = args.url
+OUT = ROOT / args.dir
 PX_PER_MM = 20
-# The narrowest printable stroke, from card.scad (it depends on the nozzle).
-SCAD = (ROOT / "card.scad").read_text()
-MIN_STROKE_MM = float(re.search(r"^min_stroke = ([0-9.]+);", SCAD, re.M).group(1))
-MIN_GAP_MM = float(re.search(r"^min_gap = ([0-9.]+);", SCAD, re.M).group(1))
+# The narrowest printable stroke and gap for this nozzle, as card.scad sets them.
+MIN_STROKE_MM = args.min_stroke
+MIN_GAP_MM = args.min_gap
 CORNER_SLIVER_MM2 = 0.06
 OFF_CARD = (255, 0, 255)  # matches no print colour
 QR_FIELD_X_MM = (38.5, 78.6)  # the QR field's light area; light text sits on either side of it
@@ -94,12 +103,12 @@ def thin_strokes(image, colour, skip_x_mm=None, gaps=False, px_per_mm=PX_PER_MM)
     ]
 
 
-def report(ok, label, detail=""):
-    print(f"{'PASS' if ok else 'FAIL'}  {label}" + (f": {detail}" if detail else ""))
-    return not ok
+def report(ok, label, detail="", advisory=False):
+    print(f"{'PASS' if ok else 'WARN' if advisory else 'FAIL'}  {label}" + (f": {detail}" if detail else ""))
+    return not ok and not advisory
 
 
-meshes = {name: trimesh.load(ROOT / "out" / f"card-{name}.stl") for name in PARTS}
+meshes = {name: trimesh.load(OUT / f"card-{name}.stl") for name in PARTS}
 failed = False
 for name, mesh in meshes.items():
     _, counts = np.unique(np.sort(mesh.edges, axis=1), axis=0, return_counts=True)
@@ -112,7 +121,7 @@ def save(image, name):
     """Saves with the off-card background transparent, so the rounded corners show cleanly."""
     rgba = np.dstack([np.asarray(image), np.full(image.size[::-1], 255, np.uint8)])
     rgba[(rgba[:, :, :3] == OFF_CARD).all(axis=2), 3] = 0
-    Image.fromarray(rgba).save(ROOT / "out" / name)
+    Image.fromarray(rgba).save(OUT / name)
 
 
 save(front, "card-top-surface.png")
@@ -140,7 +149,8 @@ for label, img, colour, skip_x in [
     thin = thin_strokes(img, colour, skip_x)
     failed |= report(not thin, f"{label} strokes >= {MIN_STROKE_MM} mm", f"thin at {thin}" if thin else "")
     narrow = unreviewed(thin_strokes(img, colour, skip_x, gaps=True), label.split()[0])
-    failed |= report(not narrow, f"{label} gaps >= {MIN_GAP_MM} mm", f"narrow at {narrow}" if narrow else "")
+    detail = f"{len(narrow)} narrow spots, e.g. {narrow[:3]}" if narrow else ""
+    failed |= report(not narrow, f"{label} gaps >= {MIN_GAP_MM} mm", detail, advisory=args.gaps_advisory)
 
-print("wrote out/card-top-surface.png, out/card-back-surface.png")
+print(f"wrote {args.dir}/card-top-surface.png, {args.dir}/card-back-surface.png")
 sys.exit(1 if failed else 0)

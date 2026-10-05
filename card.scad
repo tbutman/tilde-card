@@ -17,17 +17,20 @@ use <fonts/JetBrainsMono-ExtraBold.ttf>
 part = "preview"; // [preview, body, light, accent, chrome]
 
 /* [Printer] */
-nozzle_d = 0.2;    // the final print uses a 0.2 mm nozzle
-min_stroke = 0.3;  // narrowest printable stroke: about 1.5x the nozzle (0.5 for a 0.4 nozzle)
-min_gap = 0.22;    // narrowest printable gap between strokes: one line of the 0.2 nozzle
-min_cap = 2.5;     // smallest cap height (3 mm was the 0.4 nozzle floor)
+nozzle = 0.2;      // [0.2, 0.4] build.sh exports both versions; the settings below follow it
+// Per nozzle: layer height, the narrowest stroke (about 1.5x the nozzle), the narrowest gap
+// between strokes (one line), and the smallest cap height.
+fine = nozzle < 0.3;
+layer_h = fine ? 0.1 : 0.2;   // slicer layer height (first layer included); thicknesses are multiples of it
+min_stroke = fine ? 0.3 : 0.5;
+min_gap = fine ? 0.22 : 0.34; // 0.4 nozzle: the slicer's narrowest wall, 85% of the nozzle
+min_cap = fine ? 2.5 : 3;
 
 /* [Card] */
 card_w = 85.60;    // ID-1 width
 card_h = 53.98;    // ID-1 height
 corner_r = 3.2;
 card_t = 1.6;      // total thickness
-layer_h = 0.1;     // slicer layer height (first layer included); thicknesses below are multiples of it
 inlay_t = 0.6;     // depth of the light and accent inlays: opaque enough over black
 back_inlay_t = 0.6; // depth of the inlays on the back
 
@@ -46,7 +49,7 @@ mark_prefix = "~/";                   // amber, like the site header's "~/tbutma
 mark_name = "tbutman";                // light
 mark_font = "JetBrains Mono:style=ExtraBold";
 mark_size = 4.0;                      // in this OpenSCAD build, size = cap height in mm
-mark_bolden = 0;                      // grows each stroke edge (0.05 was needed for a 0.4 nozzle)
+mark_bolden = fine ? 0 : 0.05;        // grows each stroke edge: the mono "a" joint is under 0.5 mm
 name_lines = ["Thomas", "Butman"];
 name_font = "Inter:style=ExtraBold";
 name_size = 5.2;
@@ -57,19 +60,21 @@ accent_h = 0.8;
 accent_gap = 3.4;                     // last name baseline to the top of the rule
 // "tap" marker in the strip right of the QR code, over the NFC tag: generic NFC waves (not the
 // EMVCo payment symbol) in amber and a light label, turned to read upwards.
-tap_label = "tap to connect";
-tap_font = "Inter:style=Bold";      // ExtraBold closes the "c" and "e" openings at this size
-tap_size = 2.6;
-// Measured on Inter Bold "tap to connect", per mm of size: length, and the middle of its ink
-// (from the p's descender to the t's top) above the baseline. Re-measure if the label changes.
-tap_label_len = 9.72 * tap_size;
+// The 0.2 nozzle fits the full phrase; with a 0.4 nozzle its strokes and gaps are too fine.
+tap_label = fine ? "tap to connect" : "tap";
+tap_font = fine ? "Inter:style=Bold" : "Inter:style=ExtraBold"; // ExtraBold closes the c and e at 2.6 mm
+tap_size = fine ? 2.6 : 3.0;
+// Measured per mm of size: the label's length ("tap to connect" in Bold, "tap" in ExtraBold), and
+// the middle of its ink (the p's descender to the t's top) above the baseline. Re-measure if a
+// label changes.
+tap_label_len = (fine ? 9.72 : 2.18) * tap_size;
 tap_label_mid = 0.328 * tap_size;
 tap_dot_d = 1.1;                      // the source dot
 tap_radii = [1.4, 2.55, 3.7];         // the waves, radiating towards the label; 1.15 mm apart
 tap_stroke = 0.6;                     // leaves 0.55 mm of black between waves
 tap_spread = 80;                      // degrees covered by each wave; sets the icon's width in the strip
 tap_gap = 1.6;                        // icon to label
-tap_bolden = 0;                       // grows each stroke edge (0.05 was needed for a 0.4 nozzle)
+tap_bolden = fine ? 0 : 0.05;         // grows each stroke edge: the ExtraBold "a" joint is under 0.5 mm
 domain_text = "tbutman.com";
 domain_font = "Inter:style=ExtraBold";
 domain_size = 3.2;
@@ -87,8 +92,8 @@ back_lines = [
 ];
 back_font = "JetBrains Mono:style=ExtraBold";
 back_size = 3.6;
-back_bolden = 0;                      // grows each stroke edge (0.05 was needed for a 0.4 nozzle)
-back_prompt_bolden = 0;               // the mono "$" has a hairline bar (0.4 nozzle: 0.15)
+back_bolden = fine ? 0 : 0.05;        // grows each stroke edge: the mono "m" and "a" joints are under 0.5 mm
+back_prompt_bolden = fine ? 0 : 0.15; // the mono "$" has a hairline bar
 back_leading = 1.75;                  // baseline-to-baseline, as a multiple of back_size
 back_x = 6.0;                         // left margin, seen from the back (matches the front)
 // Terminal window bar at the top: three dots and a rule, in their own "chrome" part (gray).
@@ -152,6 +157,11 @@ assert(nfc_center[0] - pocket_d / 2 >= nfc_wall - 1e-6 && nfc_center[0] + pocket
        && abs(nfc_center[1] - card_h / 2) + pocket_d / 2 <= card_h / 2 - nfc_wall + 1e-6,
        "the NFC pocket needs a wall to every card edge");
 
+// build.sh reads this line to give verify.py the same limits.
+// The 0.4 version's small type has gaps narrower than its nozzle can print (the 0.2 version exists
+// for that), so its gap check reports rather than fails.
+echo(str("PRINTER nozzle=", nozzle, " layer_h=", layer_h, " min_stroke=", min_stroke, " min_gap=", min_gap,
+         " strict_gaps=", fine));
 echo(str("QR ", qr_matrix_designator, ": ", qr_matrix_size, "x", qr_matrix_size, " modules, ", qr_module,
          " mm each; light field ", field, " mm"));
 echo(str("NFC pocket: d=", pocket_d, " mm, z ", nfc_floor_t, " to ", pocket_top, " mm, ", cover_layers,

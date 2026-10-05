@@ -3,9 +3,10 @@
 A small z-buffer rasteriser (orthographic camera, one directional light), because OpenSCAD's
 PNG export needs an OpenGL context that the headless Docker image does not have.
 
-    .venv/bin/python scripts/render_preview.py
+    .venv/bin/python scripts/render_preview.py --dir out/nozzle-0.2   # writes <dir>/preview.png
 """
 
+import argparse
 from pathlib import Path
 
 import numpy as np
@@ -27,7 +28,10 @@ def rotation(tilt, turn):
     return tilt_m @ turn_m
 
 
-meshes = {name: trimesh.load(ROOT / "out" / f"card-{name}.stl") for name in PARTS}
+parser = argparse.ArgumentParser()
+parser.add_argument("--dir", default="out/nozzle-0.2", help="folder holding card-*.stl, relative to the repo")
+args = parser.parse_args()
+meshes = {name: trimesh.load(ROOT / args.dir / f"card-{name}.stl") for name in PARTS}
 centre = meshes["body"].bounds.mean(axis=0)
 rot = rotation(-TILT_DEG, TURN_DEG)
 light = LIGHT / np.linalg.norm(LIGHT)
@@ -68,6 +72,6 @@ for name, colour in PARTS.items():
         region[nearer] = z[nearer]
         image[y0 : y1 + 1, x0 : x1 + 1][nearer] = np.array(colour) * s
 
-out = ROOT / "preview.png"
+out = ROOT / args.dir / "preview.png"
 Image.fromarray(image.clip(0, 255).astype(np.uint8)).resize((WIDTH, HEIGHT), Image.LANCZOS).save(out)
 print(f"wrote {out.relative_to(ROOT)}")
