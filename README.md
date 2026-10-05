@@ -17,9 +17,12 @@ PLA (plus gray for the back's window bar), with the tag sealed inside during a p
   with 8 solid layers (0.8 mm) over it. A "tap" marker (amber NFC waves, not the EMVCo payment symbol, and
   a white label), turned to read upwards, sits in the strip right of the QR code, over the tag.
 - **Back:** a terminal window: a gray title bar (three dots and a rule), then a session
-  (`$ whoami`, name, role, email, cursor) anchored under it. Inlaid 0.6 mm into the side that
-  prints against the plate, mirrored so it reads correctly when the card is turned over.
-  The email is one parameter, `back_email`.
+  (`$ whoami`, name, role, email, cursor) anchored under it, inlaid 0.6 mm. It reads correctly
+  when the card is turned over sideways. The email is one parameter, `back_email`.
+- **Print orientation:** the front prints face-down (`face_down = "front"`), because the plate
+  side came out flat and matte on the first sample and the top side came out ridged. The STLs
+  are exported already lying that way: the model turned over about its long axis, a rotation
+  rather than a mirror. `verify.py` turns each face back the right way round before checking it.
 - **Type:** Inter (ExtraBold; Bold for "tap to connect") and JetBrains Mono ExtraBold, the site's
   own typefaces, unaltered. Tuned for a 0.2 mm nozzle on 0.1 mm layers: cap heights of 2.6 mm or
   more, every stroke at least 0.3 mm and every gap at least 0.22 mm, on both faces.
@@ -79,8 +82,8 @@ limits to `verify.py`.
 Result on the current files: the 0.2 mm version passes everything. The 0.4 mm version passes
 everything except the gap check, which it reports as warnings rather than failures: about 6 spots
 on the front and 40 on the back, mostly inside the back's monospace letters. That is the 0.4 mm
-nozzle's limit, and the reason for the 0.2 mm version. These checks are on the digital model. A printed card has
-not been scanned or tapped yet; see the print log.
+nozzle's limit, and the reason for the 0.2 mm version. These checks are on the digital model;
+see the print log for real prints.
 
 ## Design notes
 
@@ -122,4 +125,4 @@ container was last recreated (for example, by an nginx image update).
 
 | Date | Cards | Result |
 | --- | --- | --- |
-| | | Not printed yet |
+| 2026-10-05 | 1, 0.4 mm nozzle, no tag, front face-down (design as of a1a15f1) | Front: smooth and matte, crisp QR code, name and domain; the "tap" label and waves too small to read, and concentric first-layer rings in the black (fix: bottom surface pattern). Back, printed on top: legible but ridged and a little soft; `@`, `m` and `$` slightly blobby, as the 0.4 mm gap check predicted. Led to making front-down the default orientation and to the 0.2 mm version. QR and tap not yet tested on phones. |

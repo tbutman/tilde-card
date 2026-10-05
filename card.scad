@@ -15,6 +15,9 @@ use <fonts/JetBrainsMono-ExtraBold.ttf>
 
 /* [Output] */
 part = "preview"; // [preview, body, light, accent, chrome]
+// Which face prints against the plate. The plate side comes out flatter and matte (the 0.4 mm
+// sample, 5 October 2026), so the front goes down. The STLs are exported in print orientation.
+face_down = "front"; // [front, back]
 
 /* [Printer] */
 nozzle = 0.2;      // [0.2, 0.4] build.sh exports both versions; the settings below follow it
@@ -78,6 +81,7 @@ tap_bolden = fine ? 0 : 0.05;         // grows each stroke edge: the ExtraBold "
 domain_text = "tbutman.com";
 domain_font = "Inter:style=ExtraBold";
 domain_size = 3.2;
+domain_bolden = fine ? 0 : 0.03;       // the "a" joint sits right at 0.5 mm
 
 /* [Back] */
 back_enabled = true;
@@ -131,9 +135,13 @@ field_y = (card_h - field) / 2;
 pocket_d = nfc_d + nfc_clearance;
 pocket_depth = ceil(nfc_tag_t / layer_h - 1e-6) * layer_h;
 pocket_top = nfc_floor_t + pocket_depth;
-cover_layers = round((card_t - pocket_top) / layer_h);
-// Slicer layers are 1-based; the layer whose bottom is pocket_top is the first one over the tag.
-pause_layer = round(pocket_top / layer_h) + 1;
+// The model is built front-up (z = 0 is the back). Printed front-down, heights from the plate are
+// card_t - z, so the pocket's floor and ceiling swap.
+print_pocket_bottom = face_down == "front" ? card_t - pocket_top : nfc_floor_t;
+print_pocket_top = face_down == "front" ? card_t - nfc_floor_t : pocket_top;
+cover_layers = round((card_t - print_pocket_top) / layer_h);
+// Slicer layers are 1-based; the layer whose bottom is print_pocket_top is the first one over the tag.
+pause_layer = round(print_pocket_top / layer_h) + 1;
 
 // ---- Checks ----
 assert(qr_url == qr_matrix_url, str("qr_matrix.scad encodes ", qr_matrix_url, "; run scripts/gen_qr.py \"", qr_url, "\""));
@@ -151,7 +159,9 @@ assert(!back_enabled || nfc_floor_t >= back_inlay_t, "the NFC pocket must sit ab
 assert(min(back_dot_d, back_rule_h) >= min_stroke, str("strokes must be at least ", min_stroke, " mm"));
 for (t = [card_t, inlay_t, back_inlay_t, nfc_floor_t])
     assert(abs(t / layer_h - round(t / layer_h)) < 1e-6, str(t, " mm is not a whole number of ", layer_h, " mm layers"));
+assert(face_down == "front" || face_down == "back", "face_down is front or back");
 assert(cover_layers >= 2, "the NFC tag needs at least two layers over it");
+assert(round(print_pocket_bottom / layer_h) >= 2, "the NFC tag needs at least two layers under it");
 assert(pocket_top <= card_t - inlay_t, "the NFC pocket must sit below the inlays");
 assert(nfc_center[0] - pocket_d / 2 >= nfc_wall - 1e-6 && nfc_center[0] + pocket_d / 2 <= card_w - nfc_wall + 1e-6
        && abs(nfc_center[1] - card_h / 2) + pocket_d / 2 <= card_h / 2 - nfc_wall + 1e-6,
@@ -161,14 +171,16 @@ assert(nfc_center[0] - pocket_d / 2 >= nfc_wall - 1e-6 && nfc_center[0] + pocket
 // The 0.4 version's small type has gaps narrower than its nozzle can print (the 0.2 version exists
 // for that), so its gap check reports rather than fails.
 echo(str("PRINTER nozzle=", nozzle, " layer_h=", layer_h, " min_stroke=", min_stroke, " min_gap=", min_gap,
-         " strict_gaps=", fine));
+         " strict_gaps=", fine, " face_down=", face_down));
 echo(str("QR ", qr_matrix_designator, ": ", qr_matrix_size, "x", qr_matrix_size, " modules, ", qr_module,
          " mm each; light field ", field, " mm"));
-echo(str("NFC pocket: d=", pocket_d, " mm, z ", nfc_floor_t, " to ", pocket_top, " mm, ", cover_layers,
-         " layers above it; pause before layer ", pause_layer, " (top at ", pause_layer * layer_h, " mm)"));
+echo(str("NFC pocket: d=", pocket_d, " mm, ", print_pocket_bottom, " to ", print_pocket_top, " mm above the plate, ",
+         cover_layers, " layers over it; pause before layer ", pause_layer, " (top at ", pause_layer * layer_h, " mm)"));
+down_t = face_down == "front" ? inlay_t : back_inlay_t;
+up_t = face_down == "front" ? back_inlay_t : inlay_t;
 if (back_enabled)
-    echo(str("Colour layers: back inlays in layers 1-", round(back_inlay_t / layer_h), "; front inlays from layer ",
-             round((card_t - inlay_t) / layer_h) + 1));
+    echo(str("Colour layers: ", face_down, " inlays in layers 1-", round(down_t / layer_h), "; ",
+             face_down == "front" ? "back" : "front", " inlays from layer ", round((card_t - up_t) / layer_h) + 1));
 else
     echo(str("Colour layers: front inlays from layer ", round((card_t - inlay_t) / layer_h) + 1));
 
@@ -243,7 +255,7 @@ module accent_2d() {
     last_baseline = name_baseline - (len(name_lines) - 1) * name_size * name_leading;
     translate([text_x, last_baseline - accent_gap - accent_h]) square([accent_w, accent_h]);
     tap_place() tap_icon_2d();
-    translate([text_x, field_y]) text(domain_text, size = domain_size, font = domain_font);
+    translate([text_x, field_y]) offset(delta = domain_bolden) text(domain_text, size = domain_size, font = domain_font);
 }
 
 // ---- The back, drawn as seen from behind ----
@@ -342,13 +354,21 @@ module chrome() {
     back_inlay() back_chrome_view_2d();
 }
 
-if (part == "body") body();
-else if (part == "light") light();
-else if (part == "accent") accent();
-else if (part == "chrome") chrome();
-else {
-    color(body_color) body();
-    color(light_color) light();
-    color(accent_color) accent();
-    color(chrome_color) chrome();
+// Turned over about the card's long axis, so both faces still read correctly: a rotation, not a mirror.
+module print_orientation() {
+    if (face_down == "front") translate([0, card_h, card_t]) rotate([180, 0, 0]) children();
+    else children();
+}
+
+print_orientation() {
+    if (part == "body") body();
+    else if (part == "light") light();
+    else if (part == "accent") accent();
+    else if (part == "chrome") chrome();
+    else {
+        color(body_color) body();
+        color(light_color) light();
+        color(accent_color) accent();
+        color(chrome_color) chrome();
+    }
 }

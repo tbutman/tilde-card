@@ -31,6 +31,7 @@ ROOT = Path(__file__).resolve().parent.parent
 parser = argparse.ArgumentParser()
 parser.add_argument("url", nargs="?", default="https://tbutman.com/hello")
 parser.add_argument("--dir", default="out/nozzle-0.2", help="folder holding card-*.stl, relative to the repo")
+parser.add_argument("--face-down", choices=["front", "back"], default="front", help="which face the STLs print against the plate")
 parser.add_argument("--min-stroke", type=float, default=0.3)
 parser.add_argument("--min-gap", type=float, default=0.22)
 parser.add_argument("--gaps-advisory", action="store_true", help="report narrow gaps as WARN instead of failing")
@@ -58,8 +59,8 @@ PARTS = {  # print colours: black PLA, white PLA, orange PLA
 }
 
 
-def surface_image(meshes, face, px_per_mm=PX_PER_MM):
-    """The card's front ("top") or back ("bottom", as seen from behind) in print colours."""
+def surface_raster(meshes, face, px_per_mm=PX_PER_MM):
+    """The STLs' "top" or "bottom" face in print colours, drawn as seen from above."""
     lo = min(mesh.bounds[0][2] for mesh in meshes.values())
     hi = max(mesh.bounds[1][2] for mesh in meshes.values())
     z, sign = (hi, 1) if face == "top" else (lo, -1)
@@ -72,7 +73,19 @@ def surface_image(meshes, face, px_per_mm=PX_PER_MM):
         for triangle in mesh.triangles[facing]:
             # Image rows run top to bottom; model y runs bottom to top.
             draw.polygon([(x * px_per_mm, (height_mm - y) * px_per_mm) for x, y, _ in triangle], fill=colour)
-    return image if face == "top" else ImageOps.mirror(image)
+    return image
+
+
+def faces(meshes, face_down):
+    """(front, back) as a person holds the card: the back as seen after turning it over sideways.
+
+    Printed back-down, the STLs are the model as designed. Printed front-down, they are turned over
+    about the card's long axis, so the front is the bottom face upside down.
+    """
+    top, bottom = surface_raster(meshes, "top"), surface_raster(meshes, "bottom")
+    if face_down == "back":
+        return top, ImageOps.mirror(bottom)
+    return ImageOps.flip(bottom), ImageOps.flip(ImageOps.mirror(top))
 
 
 def decode(image_rgb):
@@ -115,8 +128,7 @@ for name, mesh in meshes.items():
     bad = int((counts != 2).sum())
     failed |= report(not bad, f"card-{name}.stl manifold", f"{bad} bad edges" if bad else "")
 
-front = surface_image(meshes, "top")
-back = surface_image(meshes, "bottom")
+front, back = faces(meshes, args.face_down)
 def save(image, name):
     """Saves with the off-card background transparent, so the rounded corners show cleanly."""
     rgba = np.dstack([np.asarray(image), np.full(image.size[::-1], 255, np.uint8)])

@@ -30,8 +30,13 @@ def rotation(tilt, turn):
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--dir", default="out/nozzle-0.2", help="folder holding card-*.stl, relative to the repo")
+parser.add_argument("--face-down", choices=["front", "back"], default="front", help="which face the STLs print against the plate")
 args = parser.parse_args()
 meshes = {name: trimesh.load(ROOT / args.dir / f"card-{name}.stl") for name in PARTS}
+if args.face_down == "front":
+    # The STLs lie front-down for printing; turn them back over (about the long axis) to show the front.
+    for mesh in meshes.values():
+        mesh.apply_transform(trimesh.transformations.rotation_matrix(np.pi, [1, 0, 0]))  # the view centres itself
 centre = meshes["body"].bounds.mean(axis=0)
 rot = rotation(-TILT_DEG, TURN_DEG)
 light = LIGHT / np.linalg.norm(LIGHT)

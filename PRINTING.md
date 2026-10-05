@@ -15,7 +15,7 @@ height and adapt the rest.
 | Tap label | "tap to connect" (Inter Bold, 2.6 mm) | "tap" (Inter ExtraBold, 3.0 mm) |
 | Letterforms | Exactly as the fonts draw them | Thickened by 0.05 mm (0.15 mm for `$`) to reach 0.5 mm strokes |
 | Known limits | None: every stroke ≥ 0.3 mm, every gap ≥ 0.22 mm | Some gaps inside small letters (the back's mono `m`, `@`, `e`; the `$`) are narrower than the 0.4 mm nozzle prints, so they may partly fill in |
-| NFC pause | **Before layer 9 (0.90 mm)** | **Before layer 5 (1.00 mm)** |
+| NFC pause | **Before layer 11 (1.10 mm)** | **Before layer 6 (1.20 mm)** |
 
 ## Files
 
@@ -30,8 +30,11 @@ Each version folder holds the same four files:
 
 No gray loaded? Assign `card-chrome` to white or orange instead; nothing in the model changes.
 
-The front prints facing up. The back prints against the plate, so in Bambu Studio its text looks
-mirrored: that is correct, and it reads normally when you turn the finished card over.
+**The front prints face-down.** The plate side comes out flat and matte, and the 0.4 mm sample
+(5 October 2026) showed it is clearly the better face, so the STLs are exported already lying
+front-down: import them as they are, without flipping. In Bambu Studio you see the back on top,
+upside down. That is correct: the card is turned over about its long side, so both faces read
+normally in your hand.
 
 ## Set up the plate in Bambu Studio
 
@@ -58,12 +61,13 @@ Where the versions differ, the 0.2 mm value comes first.
 | Wall loops | 2 | |
 | Top / bottom shell layers | 8 / 8, or 5 / 3 | Either way the card is solid all through |
 | Sparse infill density | 100 % | Belt and braces: there is no room for real infill anyway |
-| Top surface pattern | Monotonic line | An even sheen across the QR field |
 | Ironing | Off for the first print | Try it later if the top looks rough |
 | Brim | None | |
-| Elephant foot compensation | **0 mm** | It shrinks first-layer outlines, which can open hairline gaps around the back lettering |
+| Elephant foot compensation | **0 mm** | It shrinks first-layer outlines, which can open hairline gaps around the front's lettering and QR modules |
+| Bottom surface pattern | **Monotonic line** | The first layer is the front: an even texture instead of the concentric rings visible on the sample |
+| Top surface pattern | Monotonic line | The back. Ironing can smooth its ridges further; test it on one card first, because ironing can smear colours at the inlay edges |
 | Prime tower | On (the default with the AMS) | |
-| Build plate | Textured PEI is fine | It gives the back a fine, matte texture; wipe it clean of fingerprints so the small first-layer letters stick |
+| Build plate | Textured PEI | It gives the front its matte texture, which also cuts glare on the QR code. Wipe it clean of fingerprints so the small first-layer letters stick |
 
 If the white field looks grey or speckled, raise the black → white flushing volume (the
 **Flushing volumes** button next to the filament list).
@@ -77,26 +81,26 @@ The card is 1.6 mm thick. With the 0.2 mm nozzle that is 16 layers of 0.1 mm:
 
 | Layer | Height (top of layer) | Contents |
 | --- | --- | --- |
-| 1–6 | 0.10–0.60 mm | The back: black, white, orange and gray inlays; the AMS swaps colours on each layer |
-| 7–8 | 0.70–0.80 mm | Black, with the open NFC pocket (25.3 mm round, against the right edge, under the QR code) |
+| 1–6 | 0.10–0.60 mm | The front, face-down: black, white and orange inlays; the AMS swaps colours on each layer |
+| 7–8 | 0.70–0.80 mm | Black |
+| 9–10 | 0.90–1.00 mm | Black, with the open NFC pocket (25.3 mm round, under the QR code, against the card's right edge as seen from the front) |
 | — | — | **Pause: drop in the NFC tag** |
-| 9–10 | 0.90–1.00 mm | Black, printed over the tag |
-| 11–16 | 1.10–1.60 mm | The front: black, white and orange inlays |
+| 11–16 | 1.10–1.60 mm | The back, printed over the tag: black, white, orange and gray inlays |
 
 With the 0.4 mm nozzle it is 8 layers of 0.2 mm:
 
 | Layer | Height (top of layer) | Contents |
 | --- | --- | --- |
-| 1–3 | 0.20–0.60 mm | The back: black, white, orange and gray inlays |
-| 4 | 0.80 mm | Black, with the open NFC pocket |
+| 1–3 | 0.20–0.60 mm | The front, face-down: black, white and orange inlays |
+| 4 | 0.80 mm | Black |
+| 5 | 1.00 mm | Black, with the open NFC pocket |
 | — | — | **Pause: drop in the NFC tag** |
-| 5 | 1.00 mm | Black, printed over the tag |
-| 6–8 | 1.20–1.60 mm | The front: black, white and orange inlays |
+| 6–8 | 1.20–1.60 mm | The back, printed over the tag: black, white, orange and gray inlays |
 
-### The NFC pause: before layer 9 (0.2 mm nozzle) or layer 5 (0.4 mm nozzle)
+### The NFC pause: before layer 11 (0.2 mm nozzle) or layer 6 (0.4 mm nozzle)
 
-1. In **Preview**, drag the layer slider to the first layer over the pocket: **layer 9 (0.90 mm)**
-   or **layer 5 (1.00 mm)**. Check that the layer below it shows the open round pocket and that
+1. In **Preview**, drag the layer slider to the first layer over the pocket: **layer 11 (1.10 mm)**
+   or **layer 6 (1.20 mm)**. Check that the layer below it shows the open round pocket and that
    this layer covers it.
 2. Right-click the **+** on the slider handle and choose **Add pause**. The printer finishes the
    layer below, parks and waits.
@@ -116,14 +120,16 @@ for each version.
 Print one card, then check:
 
 - [ ] Before the pause, the pocket is clean, round and free of strings.
-- [ ] After the print, the area over the tag is flat: no bump in the QR field's right half.
+- [ ] After the print, both faces are flat over the tag: no bump in the QR field's right half, or
+      on the back opposite it.
 - [ ] The white field is white, not grey, with no black specks in it.
 - [ ] The QR modules are crisp, with square corners and no colour bleeding between them.
 - [ ] The text is legible: the `m`s in `tbutman.com` and `~/tbutman`, the `~/` fully formed, and
       the `c`s and `e`s in "tap to connect" still open. On the 0.4 mm version, note which small
       letters on the back have filled in.
-- [ ] The back reads correctly (not mirrored), and its first-layer letters are complete, with no
-      lifted or missing pieces and no gaps around them.
+- [ ] The front's first-layer details are complete: no lifted or missing letters, QR modules or
+      tap waves, and no gaps around them.
+- [ ] The back reads correctly (not mirrored or upside down when you turn the card over sideways).
 - [ ] The tap marker is clear, and tapping there opens the page.
 - [ ] The QR face is flat over the tag (lay a ruler across it), and the QR code still scans.
 - [ ] The QR code opens `https://tbutman.com/hello` from the camera app on an **iPhone** and on

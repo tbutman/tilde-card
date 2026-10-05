@@ -30,10 +30,11 @@ for nozzle in "${nozzles[@]}"; do
   rm "$log"
   min_stroke=$(sed -n 's/.*min_stroke=\([0-9.]*\).*/\1/p' <<<"$limits")
   min_gap=$(sed -n 's/.*min_gap=\([0-9.]*\).*/\1/p' <<<"$limits")
+  face_down=$(sed -n 's/.*face_down=\([a-z]*\).*/\1/p' <<<"$limits")
   advisory=()
   grep -q 'strict_gaps=false' <<<"$limits" && advisory=(--gaps-advisory)
-  .venv/bin/python scripts/verify.py --dir "$dir" --min-stroke "$min_stroke" --min-gap "$min_gap" \
+  .venv/bin/python scripts/verify.py --dir "$dir" --face-down "$face_down" --min-stroke "$min_stroke" --min-gap "$min_gap" \
     ${advisory[@]+"${advisory[@]}"} "$url" || status=1
-  .venv/bin/python scripts/render_preview.py --dir "$dir"
+  .venv/bin/python scripts/render_preview.py --dir "$dir" --face-down "$face_down"
 done
 exit $status
