@@ -31,6 +31,7 @@ def rotation(tilt, turn):
 parser = argparse.ArgumentParser()
 parser.add_argument("--dir", default="out/nozzle-0.2", help="folder holding card-*.stl, relative to the repo")
 parser.add_argument("--face-down", choices=["front", "back"], default="front", help="which face the STLs print against the plate")
+parser.add_argument("--transparent", metavar="PNG", help="also write a copy with a transparent background, for web pages")
 args = parser.parse_args()
 # A part with nothing in it (no window bar on a plain or blank back) has no file.
 meshes = {name: trimesh.load(ROOT / args.dir / f"card-{name}.stl") for name in PARTS if (ROOT / args.dir / f"card-{name}.stl").exists()}
@@ -83,3 +84,16 @@ for name, colour in PARTS.items():
 out = ROOT / args.dir / "preview.png"
 Image.fromarray(image.clip(0, 255).astype(np.uint8)).resize((WIDTH, HEIGHT), Image.LANCZOS).save(out)
 print(f"wrote {out.relative_to(ROOT)}")
+
+if args.transparent:
+    # Scale colour premultiplied by coverage, then divide it back out, so the edges carry no
+    # trace of the background colour.
+    covered = depth > -np.inf
+    alpha = Image.fromarray((covered * 255).astype(np.uint8)).resize((WIDTH, HEIGHT), Image.LANCZOS)
+    premultiplied = np.where(covered[..., None], image, 0).clip(0, 255).astype(np.uint8)
+    rgb = np.asarray(Image.fromarray(premultiplied).resize((WIDTH, HEIGHT), Image.LANCZOS)).astype(float)
+    a = np.asarray(alpha).astype(float)
+    rgb = np.where(a[..., None] > 0, rgb * 255 / np.maximum(a[..., None], 1), 0)
+    rgba = np.dstack([rgb.clip(0, 255), a]).astype(np.uint8)
+    Image.fromarray(rgba).save(args.transparent)
+    print(f"wrote {args.transparent}")
