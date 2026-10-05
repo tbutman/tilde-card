@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-# Regenerate everything from card.scad, once per nozzle: QR matrix, one STL per colour, checks,
-# preview. Each version goes to out/nozzle-<size>/. Pass nozzle sizes to build only those:
+# Regenerate everything from card.scad, once per nozzle and sticker thickness: QR matrix, one STL
+# per colour, checks, preview. Each version goes to out/nozzle-<size>/ (stickers up to 0.2 mm) or
+# out/nozzle-<size>-thick-sticker/ (up to 0.4 mm). Pass nozzle sizes to build only those:
 #   ./build.sh          # 0.2 and 0.4
 #   ./build.sh 0.2
 # Needs Docker (OpenSCAD runs in the openscad/openscad:dev image) and the Python venv:
@@ -16,13 +17,15 @@ url=$(sed -n 's/^qr_url = "\(.*\)";.*/\1/p' card.scad)
 
 status=0
 for nozzle in "${nozzles[@]}"; do
+for sticker in thin thick; do
   dir="out/nozzle-$nozzle"
+  [[ $sticker == thick ]] && dir+="-thick-sticker"
   mkdir -p "$dir"
-  echo "== $nozzle mm nozzle -> $dir"
+  echo "== $nozzle mm nozzle, $sticker sticker -> $dir"
   log=$(mktemp)
   for part in body light accent chrome; do
     docker run --rm -v "$PWD":/w -w /w openscad/openscad:dev \
-      openscad --backend=manifold -D "nozzle=$nozzle" -D "part=\"$part\"" --export-format binstl \
+      openscad --backend=manifold -D "nozzle=$nozzle" -D "nfc_sticker=\"$sticker\"" -D "part=\"$part\"" --export-format binstl \
       -o "$dir/card-$part.stl" card.scad 2>&1 | grep -E '^(ECHO|WARNING|ERROR)' >>"$log" || true
   done
   sort -u "$log" | grep -v PRINTER || true
@@ -36,5 +39,6 @@ for nozzle in "${nozzles[@]}"; do
   .venv/bin/python scripts/verify.py --dir "$dir" --face-down "$face_down" --min-stroke "$min_stroke" --min-gap "$min_gap" \
     ${advisory[@]+"${advisory[@]}"} "$url" || status=1
   .venv/bin/python scripts/render_preview.py --dir "$dir" --face-down "$face_down"
+done
 done
 exit $status

@@ -24,44 +24,56 @@ the difference is in the small text and the print time.
 | | 0.2 mm nozzle | 0.4 mm nozzle |
 | --- | --- | --- |
 | **Files** | `out/nozzle-0.2/` | `out/nozzle-0.4/` |
+| **Files for thick stickers** | `out/nozzle-0.2-thick-sticker/` | `out/nozzle-0.4-thick-sticker/` |
 | **Small text** | Sharp. Every letter prints exactly as designed | The front is clean. Small letters on the back (`m`, `@`, `$`) can come out a little soft or partly filled in |
 | **Tap label** | "tap to connect" | "tap" (the full phrase is too fine for this nozzle) |
 | **Layers** | 16 layers of 0.1 mm | 8 layers of 0.2 mm |
 | **Colour changes** | About 30 per plate | About half as many |
-| **Print time** | About 4½ hours for one card | Shorter (time to be confirmed) |
+| **Print time** | About 4½ hours for one card | About 75 minutes for one card |
 | **Filament** | About 9 g in the card, plus about 12 g purged during colour changes | Similar in the card, less purge |
-| **Best for** | The best-looking card, if you have a 0.2 mm nozzle | Most printers come with a 0.4 mm nozzle; the quicker option |
+| **Best for** | The best-looking card, if you have a 0.2 mm nozzle and the time | Most printers come with a 0.4 mm nozzle, and it's over three times faster |
 
 **The time is mostly colour changes, not the cards.** Colour changes happen once per layer for the
 whole plate, so printing two or three cards at once takes only a little longer than printing one,
 and wastes almost no extra filament. If you're printing a stack of cards, fill the plate.
 
-The 0.2 mm time and filament figures are Bambu Studio's estimates for one card on an A1 mini
-(5 October 2026). Your printer and settings may differ.
+The 0.2 mm figures are Bambu Studio's estimate for one card on an A1 mini (5 October 2026); the
+0.4 mm time is a real print of one card on the same printer (an early sample, without the pause
+for a tag). Your printer and settings may differ,
+and the thick-sticker versions take a little longer (two extra layers on the 0.2 mm nozzle, one on
+the 0.4 mm).
 
 ## Buying NFC tags
 
 You need **25 mm round NFC stickers with an NTAG215 chip**, one per card. They're usually sold in
-packs of 10 to 100.
+packs of 10 to 100, for about **$0.25 to $0.65 per sticker** ($5–10 for a small pack).
 
-- **Thickness matters.** The tag sits in a pocket 0.2 mm deep, so look for stickers no thicker
-  than 0.2 mm. "Wet inlay" stickers (about 0.12 mm) are the safest. Many paper stickers are
-  thicker; if a listing doesn't say, measure one before printing.
-- **Avoid "coins", "anti-metal" tags and hard plastic discs.** They're 0.6 mm or thicker and won't
-  fit.
-- **NTAG215** holds 504 bytes, enough for a link or a contact card. NTAG216 (888 bytes) also
-  works. NTAG213 (144 bytes) is enough for a link only.
+**Check the thickness, because it decides which files you print:**
+
+| Sticker thickness | Print | The card |
+| --- | --- | --- |
+| **0.10–0.20 mm** (wet inlays, thin paper stickers) | The standard files, `out/nozzle-0.2/` or `out/nozzle-0.4/` | 1.6 mm thick |
+| **0.20–0.40 mm** (most thicker paper stickers) | The thick-sticker files, `out/nozzle-0.2-thick-sticker/` or `out/nozzle-0.4-thick-sticker/` | 1.8 mm thick |
+| Over 0.40 mm ("coins", "anti-metal" tags, hard plastic discs) | Not supported | |
+
+If the listing doesn't say, measure one sticker with its backing peeled off, using calipers. If
+you can't measure, print the thick-sticker version: thin stickers work in it too.
+
+**About the chip:** NTAG215 holds 504 bytes, enough for a link or a contact card. NTAG216 (888
+bytes) also works. NTAG213 (144 bytes) is enough for a link only.
 
 Some options, with prices as listed on 5 October 2026:
 
-| Where | What | Thickness | Price |
-| --- | --- | --- | --- |
-| [Seritag](https://seritag.com/nfc-tags/25mm-ntag215-wet) (UK, prices in £/€/$) | 25 mm NTAG215 wet inlay | 0.12 mm: fits | £0.42 each for 10–99, £0.36 for 100+ |
-| [Tagstand](https://www.tagstand.com/products/ntag215-round-sticker-25mm-diameter/) (US) | 25 mm NTAG215 paper sticker | Not listed: measure | $0.62 each, $0.44 for 100+ |
-| [GoToTags](https://store.gototags.com/nfc-sticker-ntag215-25-mm-circle/) (US) | 25 mm NTAG215 paper sticker | 0.35 mm: **too thick** for the standard pocket | $0.54 each in 10s |
-| Amazon, AliExpress | 25 mm NTAG215 sticker multipacks | Rarely listed: measure | Often $0.25–0.40 each in packs of 50–100 |
+| Where | What | Thickness | Files | Price |
+| --- | --- | --- | --- | --- |
+| [Seritag](https://seritag.com/nfc-tags/25mm-ntag215-wet) (UK, prices in £/€/$) | 25 mm NTAG215 wet inlay | 0.12 mm | Standard | £0.42 each for 10–99, £0.36 for 100+ |
+| [GoToTags](https://store.gototags.com/nfc-sticker-ntag215-25-mm-circle/) (US) | 25 mm NTAG215 paper sticker | 0.35 mm | Thick sticker | $0.54 each in 10s |
+| [Tagstand](https://www.tagstand.com/products/ntag215-round-sticker-25mm-diameter/) (US) | 25 mm NTAG215 paper sticker | Not listed: measure | | $0.62 each, $0.44 for 100+ |
+| [Amazon](https://www.amazon.com/clp/B091FCQW7N) (K LAKEY, 100 pack) | 25 mm NTAG215 stickers | Not listed: measure | | Varies |
+| [eBay](https://www.ebay.com/itm/307182392836) (100 pack) | 25 mm NTAG215 stickers | Not listed: measure | | About $0.37 each |
 
-**Expect to pay about $0.25 to $0.65 per tag**, or roughly $5–10 for a small pack.
+Listings and prices change; check the thickness and the "25 mm" and "NTAG215" in the listing
+before you buy.
 
 ## Set up the print in Bambu Studio
 
@@ -99,8 +111,14 @@ flip them.
 The printer needs to stop halfway so you can put the tag in.
 
 1. Click **Slice plate**, then use the layer slider on the right of the preview.
-2. Go to **layer 11** (0.2 mm nozzle) or **layer 6** (0.4 mm nozzle). The layer just below it
-   should show an open round pocket; this layer should cover it.
+2. Go to the layer for your version. The layer just below it should show an open round pocket;
+   this layer should cover it.
+
+   | | 0.2 mm nozzle | 0.4 mm nozzle |
+   | --- | --- | --- |
+   | Standard | **Layer 11** | **Layer 6** |
+   | Thick sticker | **Layer 13** | **Layer 7** |
+
 3. Right-click the **+** on the slider and choose **Add pause**.
 
 When the printer pauses:
@@ -149,7 +167,8 @@ card works.
 - **Small letters on the front are missing or didn't stick:** wash the plate with dish soap and
   water (fingerprints stop small details sticking) and lower the initial layer speed, for example
   to 30 mm/s.
-- **There's a bump over the tag:** the tag is too thick for the pocket. Use thinner stickers.
+- **There's a bump over the tag:** the sticker is too thick for the pocket. Print the
+  thick-sticker version, or use thinner stickers.
 - **The phone doesn't react to a tap:** check NFC is on (Android), move the phone slowly over the
   marker, and check the tag works by tapping it before printing.
 

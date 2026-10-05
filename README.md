@@ -9,7 +9,8 @@ people can either scan it or tap it with their phone to open your website.
 | --- | --- |
 | ![Front](out/nozzle-0.2/card-top-surface.png) | ![Back](out/nozzle-0.2/card-back-surface.png) |
 
-- **Credit-card size** (85.6 × 54 mm), 1.6 mm thick, so it fits a wallet.
+- **Credit-card size** (85.6 × 54 mm), 1.6 mm thick (1.8 mm for thicker stickers), so it fits a
+  wallet.
 - **Four colours of PLA**, printed in one go on a printer with an AMS (or another multi-colour
   system). No painting or gluing.
 - **The NFC tag goes in during the print.** The printer pauses halfway, you drop in a sticker, and

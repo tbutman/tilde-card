@@ -30,10 +30,15 @@ min_gap = fine ? 0.22 : 0.34; // 0.4 nozzle: the slicer's narrowest wall, 85% of
 min_cap = fine ? 2.5 : 3;
 
 /* [Card] */
+// The NFC sticker's thickness. "thin" fits stickers 0.10-0.20 mm thick (wet inlays and thin
+// paper stickers); "thick" fits up to 0.40 mm and makes the card 0.2 mm thicker, so the same
+// 0.2 mm of black still separates the tag from the white QR field.
+nfc_sticker = "thin"; // [thin, thick]
+thick_sticker = nfc_sticker == "thick";
 card_w = 85.60;    // ID-1 width
 card_h = 53.98;    // ID-1 height
 corner_r = 3.2;
-card_t = 1.6;      // total thickness
+card_t = thick_sticker ? 1.8 : 1.6; // total thickness
 inlay_t = 0.6;     // depth of the light and accent inlays: opaque enough over black
 back_inlay_t = 0.6; // depth of the inlays on the back
 
@@ -112,7 +117,7 @@ back_cursor = [2.0, 3.6];             // cursor block width and height
 /* [NFC tag] */
 nfc_d = 25.0;            // tag diameter (25 mm round NTAG215 sticker)
 nfc_clearance = 0.3;     // added to the diameter
-nfc_tag_t = 0.2;         // measured tag thickness; the pocket rounds this up to whole layers
+nfc_tag_t = thick_sticker ? 0.4 : 0.2; // thickest sticker that fits; the pocket rounds this up to whole layers
 nfc_floor_t = 0.6;       // plastic under the tag: at least the back inlay's 3 layers
 nfc_wall = 2.0;          // plastic between the pocket and the card edge
 // Against the right edge, under the QR code and the tap marker.
@@ -160,6 +165,9 @@ assert(min(back_dot_d, back_rule_h) >= min_stroke, str("strokes must be at least
 for (t = [card_t, inlay_t, back_inlay_t, nfc_floor_t])
     assert(abs(t / layer_h - round(t / layer_h)) < 1e-6, str(t, " mm is not a whole number of ", layer_h, " mm layers"));
 assert(face_down == "front" || face_down == "back", "face_down is front or back");
+assert(nfc_sticker == "thin" || nfc_sticker == "thick", "nfc_sticker is thin or thick");
+// The tag must not show through the white QR field: keep black between it and the front inlays.
+assert(card_t - inlay_t - pocket_top >= 0.2 - 1e-6, "the NFC tag needs 0.2 mm of black between it and the front inlays");
 assert(cover_layers >= 2, "the NFC tag needs at least two layers over it");
 assert(round(print_pocket_bottom / layer_h) >= 2, "the NFC tag needs at least two layers under it");
 assert(pocket_top <= card_t - inlay_t, "the NFC pocket must sit below the inlays");
@@ -170,6 +178,7 @@ assert(nfc_center[0] - pocket_d / 2 >= nfc_wall - 1e-6 && nfc_center[0] + pocket
 // build.sh reads this line to give verify.py the same limits.
 // The 0.4 version's small type has gaps narrower than its nozzle can print (the 0.2 version exists
 // for that), so its gap check reports rather than fails.
+echo(str("CARD ", nfc_sticker, " sticker: ", card_t, " mm thick, ", round(card_t / layer_h), " layers"));
 echo(str("PRINTER nozzle=", nozzle, " layer_h=", layer_h, " min_stroke=", min_stroke, " min_gap=", min_gap,
          " strict_gaps=", fine, " face_down=", face_down));
 echo(str("QR ", qr_matrix_designator, ": ", qr_matrix_size, "x", qr_matrix_size, " modules, ", qr_module,

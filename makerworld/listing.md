@@ -7,10 +7,9 @@ The text below the line is the model page, ready to paste into MakerWorld. Image
 
 - [ ] Make the model customisable in MakerWorld's Parametric Model Maker (name, title, email,
       link, handle, colours), with the QR code generated in OpenSCAD.
-- [ ] Decide what to do about tag thickness: keep the 0.2 mm pocket and recommend wet inlays, or
-      add a setting for thicker paper stickers (0.3–0.4 mm).
-- [ ] Print and photograph real cards for both nozzles (shot list below), and fill in the 0.4 mm
-      print time.
+- [x] Tag thickness: standard pocket for 0.10–0.20 mm stickers, plus a thick-sticker option up to
+      0.40 mm (a 1.8 mm card). Make it a setting in the customizer and a profile each.
+- [ ] Print and photograph real cards for both nozzles (shot list below).
 - [ ] Make a 3MF print profile for each nozzle with the pause and settings already in.
 - [ ] Choose the licence (MakerWorld offers Creative Commons options, such as CC BY 4.0).
 - [ ] Publish Tilde on GitHub first, and this repo too (or drop its link), so the links below work.
@@ -59,7 +58,7 @@ the rest of the card prints over it. The tag ends up sealed inside, invisible an
 - A multi-colour printer (AMS, AMS lite or similar). The card changes colour about 30 times.
 - PLA in black, white and orange (and grey for a small detail on the back, optional).
 - A 0.2 mm or 0.4 mm nozzle.
-- 25 mm round NTAG215 NFC stickers, **no thicker than 0.2 mm** (see below).
+- 25 mm round NTAG215 NFC stickers, up to 0.4 mm thick (see below).
 - A phone with NFC and a free app to put your link on the sticker: Tilde (Android) or NFC Tools
   (iPhone and Android).
 
@@ -69,25 +68,33 @@ There's a print profile for each.
 
 - **0.2 mm nozzle:** the sharpest card. Every letter prints exactly as designed, and the tap
   marker reads "tap to connect". About 4½ hours for one card.
-- **0.4 mm nozzle:** quicker, and it's the nozzle most printers come with. The front looks clean;
-  the smallest letters on the back can come out slightly soft. The tap marker reads "tap".
+- **0.4 mm nozzle:** about 75 minutes for one card, and it's the nozzle most printers come with.
+  The front looks clean; the smallest letters on the back can come out slightly soft. The tap
+  marker reads "tap".
 
 Most of the time goes on colour changes, which happen once per layer for the whole plate. So
 **two or three cards take barely longer than one**: fill the plate.
 
 ### NFC stickers
 
-Buy **25 mm round NTAG215 stickers**, about $0.25–0.65 each ($5–10 for a small pack).
+Buy **25 mm round NTAG215 stickers**, about $0.25–0.65 each ($5–10 for a small pack). Check how
+thick they are, because it decides which version you print:
 
-- **Thin is important:** the pocket is 0.2 mm deep. "Wet inlay" stickers (about 0.12 mm) fit
-  best. Many paper stickers are thicker, so measure one if the listing doesn't say.
+- **0.10–0.20 mm** (wet inlays and thin paper stickers): the standard card, 1.6 mm thick. For
+  example [Seritag's 25 mm NTAG215 wet inlay](https://seritag.com/nfc-tags/25mm-ntag215-wet),
+  0.12 mm.
+- **0.20–0.40 mm** (most thicker paper stickers): the **thick sticker** option, a 1.8 mm card. For
+  example [GoToTags' 25 mm NTAG215 sticker](https://store.gototags.com/nfc-sticker-ntag215-25-mm-circle/),
+  0.35 mm.
+- **Not sure?** Many multipacks don't list a thickness, like these on
+  [Amazon](https://www.amazon.com/clp/B091FCQW7N) and [eBay](https://www.ebay.com/itm/307182392836).
+  Measure one, or print the thick-sticker option: thin stickers work in it too.
 - **Don't use** NFC coins, anti-metal tags or hard plastic discs. They're too thick.
-- A good option: [Seritag 25 mm NTAG215 wet inlay](https://seritag.com/nfc-tags/25mm-ntag215-wet),
-  0.12 mm thick.
 
 ### How to print
 
-1. Open the print profile for your nozzle. The settings and the pause are already set.
+1. Open the print profile for your nozzle and sticker. The settings and the pause are already
+   set.
 2. Before printing, put your link on a sticker. With Tilde: Settings → Write a card, then hold the
    sticker to your phone. With NFC Tools: Write → Add a record → URL, then hold it to your phone.
 3. When the printer pauses, peel the sticker and press it flat into the round pocket, then resume.
