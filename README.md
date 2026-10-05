@@ -7,7 +7,8 @@ website. Add an NFC tag, sealed inside during the print, and people can tap it w
 **Free and open source.** The model is free to download, print and change: MIT for the source,
 CC BY 4.0 on MakerWorld. No account, sign-up, subscription or payment, and no service in between:
 the card links straight to your own website. It works without the app too: phones read it on their
-own, and any NFC app can write the tag.
+own, and any NFC app can write the tag. More about Tilde and the card:
+[tbutman.com/tilde](https://tbutman.com/tilde).
 
 ![The card](out/nozzle-0.2/preview.png)
 

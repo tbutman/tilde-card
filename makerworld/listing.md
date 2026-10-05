@@ -169,6 +169,7 @@ your screen. One tap on your screen switches what you share, to suit who you're 
 - **Guest Wi-Fi:** joins your network without typing the password.
 
 No account, no ads, no subscription and no internet permission: your details stay on your phone.
+Download it at [tbutman.com/tilde](https://tbutman.com/tilde).
 It keeps a list of who you've met, and it writes your link or contact card onto this card's tag.
 The card is optional for Tilde users, and Tilde is optional for the card.
 
