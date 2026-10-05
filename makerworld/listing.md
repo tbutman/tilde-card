@@ -125,7 +125,7 @@ The card prints face-down, so you'll see the back on top in the slicer. That's o
 side on the plate comes out smoothest, so that's the front.
 
 Full instructions, troubleshooting and the source files:
-[github.com/tbutman/business-card](https://github.com/tbutman/business-card)
+[github.com/tbutman/tilde-card](https://github.com/tbutman/tilde-card)
 
 ### Share from your phone too: Tilde
 
