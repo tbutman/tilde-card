@@ -8,8 +8,8 @@ too: keep the 0.2 mm layer height and adapt the rest.
 | File | Colour | AMS slot (suggested) |
 | --- | --- | --- |
 | `out/card-body.stl` | black: the card, the QR modules | 1 |
-| `out/card-light.stl` | white: front QR field, name and `tbutman`; back terminal text | 2 |
-| `out/card-accent.stl` | orange: front `~/`, tap marker and `tbutman.com`; back `$` prompts and cursor | 3 |
+| `out/card-light.stl` | white: front QR field, name, `tbutman` and the "tap" label; back terminal text | 2 |
+| `out/card-accent.stl` | orange: front `~/`, rule, tap waves and `tbutman.com`; back `$` prompts and cursor | 3 |
 | `out/card-chrome.stl` | gray: the back's terminal window bar (three dots and a rule) | 4 |
 
 No gray loaded? Assign `card-chrome` to white or orange instead; nothing in the model changes.

@@ -49,7 +49,7 @@ accent_w = 10.0;                      // amber rule under the name
 accent_h = 0.8;
 accent_gap = 3.4;                     // last name baseline to the top of the rule
 // "tap" marker in the strip right of the QR code, over the NFC tag: generic NFC waves (not the
-// EMVCo payment symbol) and a label, turned to read upwards.
+// EMVCo payment symbol) in amber and a light label, turned to read upwards.
 tap_label = "tap";
 tap_font = "Inter:style=ExtraBold";
 tap_size = 3.0;
@@ -205,17 +205,17 @@ module tap_icon_2d() {
         stroke_2d([for (a = [-tap_spread / 2 : 5 : tap_spread / 2]) r * [cos(a), sin(a)]], tap_stroke);
 }
 
-// Laid out left to right around the dot at the origin, then turned to read upwards.
-module tap_group_2d() {
-    tap_icon_2d();
+module tap_label_2d() {
     translate([max(tap_radii) + tap_stroke / 2 + tap_gap, -tap_label_mid])
         offset(delta = tap_bolden) text(tap_label, size = tap_size, font = tap_font);
 }
 
-module tap_2d() {
+// The marker is laid out left to right around the dot at the origin, then turned to read upwards
+// and centred in the strip right of the QR code. The icon is amber and the label light.
+module tap_place() {
     start = -tap_dot_d / 2;
     end = max(tap_radii) + tap_stroke / 2 + tap_gap + tap_label_len;
-    translate([card_w - qr_right_margin / 2, card_h / 2]) rotate(90) translate([-(start + end) / 2, 0]) tap_group_2d();
+    translate([card_w - qr_right_margin / 2, card_h / 2]) rotate(90) translate([-(start + end) / 2, 0]) children();
 }
 
 module accent_2d() {
@@ -223,7 +223,7 @@ module accent_2d() {
     mark_prefix_2d();
     last_baseline = name_baseline - (len(name_lines) - 1) * name_size * name_leading;
     translate([text_x, last_baseline - accent_gap - accent_h]) square([accent_w, accent_h]);
-    tap_2d();
+    tap_place() tap_icon_2d();
     translate([text_x, field_y]) text(domain_text, size = domain_size, font = domain_font);
 }
 
@@ -274,6 +274,7 @@ module from_behind() {
 module light_2d() {
     qr_light_2d();
     name_2d();
+    tap_place() tap_label_2d();
     difference() {
         mark_2d();
         mark_prefix_2d();

@@ -27,7 +27,7 @@ PX_PER_MM = 20
 MIN_STROKE_MM = 0.5
 CORNER_SLIVER_MM2 = 0.06
 OFF_CARD = (255, 0, 255)  # matches no print colour
-QR_FIELD_X_MM = 38.0  # the front's light text is left of the QR field
+QR_FIELD_X_MM = (38.5, 78.6)  # the QR field's light area; light text sits on either side of it
 PARTS = {  # print colours: black PLA, white PLA, orange PLA
     "body": (22, 24, 27),
     "light": (241, 239, 232),
@@ -59,12 +59,12 @@ def decode(image_rgb):
     return text
 
 
-def thin_strokes(image, colour, max_x_mm=None, px_per_mm=PX_PER_MM):
+def thin_strokes(image, colour, skip_x_mm=None, px_per_mm=PX_PER_MM):
     """Places where `colour` is thinner than MIN_STROKE_MM, as (x, y, area) in mm."""
     rgb = np.asarray(image).astype(int)
     mask = (np.abs(rgb - colour).max(axis=2) < 40).astype(np.uint8)
-    if max_x_mm is not None:
-        mask[:, round(max_x_mm * px_per_mm) :] = 0
+    if skip_x_mm is not None:
+        mask[:, round(skip_x_mm[0] * px_per_mm) : round(skip_x_mm[1] * px_per_mm)] = 0
     r = round(MIN_STROKE_MM * px_per_mm / 2)
     disk = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * r + 1, 2 * r + 1))
     lost = mask & (1 - cv2.morphologyEx(mask, cv2.MORPH_OPEN, disk))
@@ -109,14 +109,14 @@ for label, img in {
     text = decode(img)
     failed |= report(text == EXPECTED, label, f"decoded {text!r}")
 
-for label, img, colour, max_x in [
+for label, img, colour, skip_x in [
     ("front light text", front, PARTS["light"], QR_FIELD_X_MM),
     ("front accent text", front, PARTS["accent"], None),
     ("back light text", back, PARTS["light"], None),
     ("back accent text", back, PARTS["accent"], None),
     ("back window bar", back, PARTS["chrome"], None),
 ]:
-    thin = thin_strokes(img, colour, max_x)
+    thin = thin_strokes(img, colour, skip_x)
     failed |= report(not thin, f"{label} strokes >= {MIN_STROKE_MM} mm", f"thin at {thin}" if thin else "")
 
 print("wrote out/card-top-surface.png, out/card-back-surface.png")

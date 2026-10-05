@@ -14,8 +14,8 @@ PLA (plus gray for the back's window bar), with the tag sealed inside during a p
 - **QR code:** version 2-M, 25 × 25 modules of 1.2 mm, black modules on a white field that
   includes the full 4-module quiet zone. The white is a 0.6 mm inlay, flush with the top.
 - **NFC:** a 25 mm NTAG215 sticker in a 25.3 mm pocket against the right edge, under the QR code,
-  with 4 solid layers over it. An amber "tap" marker (generic NFC waves, not the EMVCo payment
-  symbol), turned to read upwards, sits in the strip right of the QR code, over the tag.
+  with 4 solid layers over it. A "tap" marker (amber NFC waves, not the EMVCo payment symbol, and
+  a white label), turned to read upwards, sits in the strip right of the QR code, over the tag.
 - **Back:** a terminal window: a gray title bar (three dots and a rule), then a session
   (`$ whoami`, name, role, email, cursor) anchored under it. Inlaid 0.6 mm into the side that
   prints against the plate, mirrored so it reads correctly when the card is turned over.
