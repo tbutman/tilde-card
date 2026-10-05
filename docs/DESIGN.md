@@ -11,13 +11,16 @@ The technical side of the card: how the model is built, checked and generated. T
   fixed 39.6 mm white field that includes the full 4-module quiet zone: 1.37 mm (version 1),
   1.2 mm (version 2, as for `https://tbutman.com/hello`) or 1.07 mm (version 3). Black modules on
   white; the white is a 0.6 mm inlay, flush with the face.
-- **NFC:** a 25 mm NTAG215 sticker in a 25.3 mm pocket against the right edge, under the QR code,
+- **NFC (optional):** `nfc_sticker = "none"` leaves out the pocket and the tap marker, for a QR
+  card with no pause; the QR code keeps its place. Otherwise, a 25 mm NTAG215 sticker in a 25.3 mm pocket against the right edge, under the QR code,
   with 0.8 mm of plastic between it and the front face (the 0.6 mm inlay and 0.2 mm of black, so
   the tag can't show through the white field). The pocket is 0.2 mm deep for stickers 0.10–0.20 mm
   thick, or 0.4 mm deep with `nfc_sticker = "thick"`, which makes the card 1.8 mm thick. A "tap" marker (NFC waves, not the EMVCo payment symbol, and
   the word "tap", both amber), turned to read upwards, sits in the strip right of the QR code,
   over the tag.
-- **Back:** a terminal window: a gray title bar (three dots and a rule), then a session
+- **Back:** `back_style` is `terminal`, `plain` (the name from the front, the title in amber and
+  the email, in Inter, centred vertically and shrunk to fit like the front) or `none` (plain
+  black). The terminal style is a window: a gray title bar (three dots and a rule), then a session
   (`$ whoami`, name, role, email, cursor) anchored under it, inlaid 0.6 mm. It reads correctly
   when the card is turned over sideways. Each line is a setting (`back_name`, `back_title`,
   `back_email`); an empty one is left out.
@@ -38,7 +41,7 @@ Two versions are built from the same model, `out/nozzle-0.2/` and `out/nozzle-0.
 | --- | --- |
 | `card.scad` | The parametric model, one self-contained file. The Customizer sections at the top are the settings people change; `[Hidden]` holds the layout. |
 | `makerworld/nfc-business-card.scad` | The copy uploaded to MakerWorld's customizer, written by `scripts/make_makerworld.py`: no font file lines, and the example person Jane Doe as the defaults. Never edited by hand. |
-| `out/makerworld-sample/` | A card built from the MakerWorld copy, to check it renders and passes the checks. |
+| `out/makerworld-sample/`, `out/makerworld-sample-qr-only-plain/` | Cards built from the MakerWorld copy, to check it renders and passes the checks: the default, and one with no NFC tag and the plain back. |
 | `out/nozzle-{0.2,0.4}/card-{body,light,accent,chrome}.stl` | One STL per colour (black, white, orange, gray), per nozzle, for stickers up to 0.2 mm. |
 | `out/nozzle-{0.2,0.4}-thick-sticker/` | The same for stickers up to 0.4 mm: a 1.8 mm card with a deeper pocket. |
 | `out/nozzle-*/card-{top,back}-surface.png` | Each face as printed, rasterised from the STLs (the back as seen from behind); the QR check decodes the front. |

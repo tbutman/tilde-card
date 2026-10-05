@@ -3,16 +3,21 @@
 This guide is written for a Bambu Lab A1 mini with an AMS lite, using Bambu Studio. Other
 multi-colour printers work too; the steps are much the same.
 
+The model is free and open source: no account, sign-up or payment, and the card links straight to
+your own website. The NFC tag is optional. Without one you get a QR card, and you can skip
+everything about stickers and the pause.
+
 ## What you need
 
 - **A printer that prints several colours in one go**, such as a Bambu Lab printer with an AMS or
-  AMS lite. The card changes colour about 30 times, which is too many to do by hand.
-- **PLA in black, white and orange**, plus **grey** for a small detail on the back (optional: use
-  white or orange instead).
+  AMS lite. The card changes colour about 30 times (roughly half that with no back design), which
+  is too many to do by hand.
+- **PLA in black, white and orange**, plus **grey** for the window bar on the terminal-style back
+  (optional: use white or orange instead).
 - **A 0.2 mm or 0.4 mm nozzle.** See [Choose a nozzle](#choose-a-nozzle).
-- **A 25 mm round NFC sticker** for each card. See [Buying NFC tags](#buying-nfc-tags).
-- **A phone with NFC** and a free app to put your link on the sticker: Tilde (Android) or NFC
-  Tools (iPhone and Android).
+- **Optional, for a card people can tap:** a 25 mm round NFC sticker for each card (see
+  [Buying NFC tags](#buying-nfc-tags)), and a phone with NFC plus a free app to put your link on
+  the sticker: Tilde (Android) or NFC Tools (iPhone and Android).
 - **A textured PEI plate** (recommended). It gives the front a matte finish, which also stops the
   QR code reflecting light.
 
@@ -21,11 +26,19 @@ multi-colour printers work too; the steps are much the same.
 The files in `out/` are Thomas's own card. To print yours, put in your details first:
 
 - **On MakerWorld (easiest):** open the model page, click **Customize**, and fill in your name,
-  link, website, the back of the card and the colours. Choose your nozzle and sticker thickness
-  under **Printing**. The preview updates as you type; then open the result in Bambu Studio.
+  link, website, the back of the card and the colours. Under **Printing**, choose your nozzle and
+  whether to add an NFC tag. The preview updates as you type; then open the result in Bambu Studio.
 - **In OpenSCAD (free, [openscad.org](https://openscad.org)):** open `card.scad`, show the
   Customizer (**Window → Customizer**), change the settings in the first sections and export a
   3MF. Use a recent development snapshot of OpenSCAD: it keeps the four colours in the 3MF.
+
+The choices that change the print:
+
+| Setting | Options |
+| --- | --- |
+| **NFC tag** | **None:** a QR card, with no pocket, no "tap" marker and no pause. **Thin** or **thick stickers:** a card people can tap too; see [Buying NFC tags](#buying-nfc-tags). |
+| **Back of the card** | **Terminal window:** `$ whoami`, your name, title and email. **Plain:** your name, title and email. **None:** plain black, the quickest to print, with roughly half the colour changes. |
+| **Nozzle** | **0.2 mm** or **0.4 mm**; see [Choose a nozzle](#choose-a-nozzle). |
 
 **What fits:** a link of up to 53 characters (shorter is better: the QR code gets bigger squares).
 Long names, handles and websites shrink to fit; if something is too long even at the smallest
@@ -60,6 +73,8 @@ and the thick-sticker versions take a little longer (two extra layers on the 0.2
 the 0.4 mm).
 
 ## Buying NFC tags
+
+*Only for a card with NFC. Printing a QR card? Skip to [Set up the print](#set-up-the-print-in-bambu-studio).*
 
 You need **25 mm round NFC stickers with an NTAG215 chip**, one per card. They're usually sold in
 packs of 10 to 100, for about **$0.25 to $0.65 per sticker** ($5–10 for a small pack).
@@ -127,6 +142,8 @@ flip them.
 
 ## Add the pause for the NFC tag
 
+*Only for a card with NFC. A QR card has no pocket, so it prints straight through.*
+
 The printer needs to stop halfway so you can put the tag in.
 
 1. Click **Slice plate**, then use the layer slider on the right of the preview.
@@ -149,6 +166,8 @@ When the printer pauses:
 3. Keep your fingers away from the hot nozzle, then press **Resume** on the printer.
 
 ## Put your link on the tag
+
+*Only for a card with NFC.*
 
 Do this **before** the sticker goes in the card, so a faulty sticker only costs you the sticker.
 (You can also rewrite a tag through the finished card later.)
@@ -174,10 +193,10 @@ card works.
 
 - The white square behind the QR code is white, not grey or speckled.
 - The QR code's squares are crisp, and it scans with your phone's camera.
-- Tapping the card on the "tap" marker opens your link. iPhones read NFC near the top edge, by the
+- With NFC: tapping the card on the "tap" marker opens your link. iPhones read NFC near the top edge, by the
   camera; Android phones usually in the middle or upper part of the back.
 - The text is readable, including the small letters.
-- The card is flat, with no bump over the tag and no curled corners.
+- The card is flat, with no curled corners (and, with NFC, no bump over the tag).
 
 ## If something goes wrong
 

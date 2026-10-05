@@ -55,34 +55,48 @@ open pocket at the pause, with a tag going in; a stack of cards on the plate.
 
 ## Title
 
-NFC Business Card for Tilde: tap or scan to share your details
+NFC Business Card for Tilde: free, customisable, tap or scan
 
 ## Summary
 
-A credit-card-sized business card with a QR code on the front and an NFC tag sealed inside, made to
-go with Tilde, the free app that turns your Android phone into an NFC business card. Tap it or scan
-it to open your website. Type in your own details and print it in one go.
+A free, customisable business card with a QR code on the front, and an optional NFC tag sealed
+inside so people can tap it too. Made to go with Tilde, the free, open-source app that turns your
+Android phone into an NFC business card. No account, subscription or app needed on either side.
 
 ## Description
 
-Hand someone this card and they can **tap it with their phone** or **scan the QR code** to open
-your website. No app needed on their side: iPhones and Android phones with NFC read it straight
-away.
+Hand someone this card and they **scan the QR code** to open your website. Add an NFC tag and they
+can **tap it with their phone** too. Their phone doesn't need an app: iPhones and Android phones
+with NFC read it straight away.
+
+**Free, with nothing to sign up for.** The model is free (CC BY 4.0) and open source. There's no
+account, subscription or service in between: the card opens your own website, and the tag holds
+whatever you write to it.
 
 **Make it yours.** Click **Customize** to type in your name, job title, email, website and colours.
-The QR code is made for your link automatically.
+The QR code is made for your link automatically, and long names shrink to fit.
 
-**The tag goes in while it prints.** The printer pauses halfway, you press in an NFC sticker, and
-the rest of the card prints over it. The tag ends up sealed inside, invisible and protected.
+**Choose your card:**
+- **NFC tag:** none (a QR card: no stickers, no pause), or thin or thick NFC stickers, sealed inside
+  halfway through the print, invisible and protected.
+- **The back:** a terminal window (`$ whoami`, for the developers), a plain back with your name,
+  title and email, or none, which prints fastest.
+
+**Your whole contact card in one tap.** With an NFC tag, the card can hold more than a link: write
+your **contact card** (a vCard) to it, and one tap offers to save your name, phone numbers, email,
+website and social links to an Android phone's contacts. (iPhones only open links from a tap, so
+they open your website instead.) Or write a link, your WhatsApp or your LinkedIn. Change it any
+time by writing it again.
 
 ### What you need
 
-- A multi-colour printer (AMS, AMS lite or similar). The card changes colour about 30 times.
-- PLA in black, white and orange (and grey for a small detail on the back, optional).
+- A multi-colour printer (AMS, AMS lite or similar). The card changes colour about 30 times
+  (roughly half that with no back design).
+- PLA in black, white and orange, plus grey for the window bar on the terminal back (optional).
 - A 0.2 mm or 0.4 mm nozzle.
-- 25 mm round NTAG215 NFC stickers, up to 0.4 mm thick (see below).
-- A phone with NFC and a free app to put your link on the sticker: Tilde (Android) or NFC Tools
-  (iPhone and Android).
+- **For NFC (optional):** 25 mm round NTAG215 NFC stickers, up to 0.4 mm thick (see below), and a
+  phone with NFC plus a free app to write the sticker: Tilde (Android) or NFC Tools (iPhone and
+  Android).
 
 ### 0.2 mm or 0.4 mm nozzle?
 
@@ -96,7 +110,7 @@ There's a print profile for each.
 Most of the time goes on colour changes, which happen once per layer for the whole plate. So
 **two or three cards take barely longer than one**: fill the plate.
 
-### NFC stickers
+### NFC stickers (optional)
 
 Buy **25 mm round NTAG215 stickers**, about $0.25–0.65 each ($5–10 for a small pack). Check how
 thick they are, because it decides which version you print:
@@ -114,11 +128,12 @@ thick they are, because it decides which version you print:
 
 ### How to print
 
-1. Click **Customize** and fill in your details. Under **Printing**, choose your nozzle and your
-   sticker thickness. Then open it in Bambu Studio.
+1. Click **Customize** and fill in your details. Under **Printing**, choose your nozzle and NFC
+   option. Then open it in Bambu Studio.
 2. Use 0.10 mm layers for the 0.2 mm nozzle or 0.20 mm layers for the 0.4 mm nozzle, with 100 %
    infill (all the settings are listed below).
-3. Add a pause so you can put the sticker in: slice, drag the layer slider to the layer below,
+3. **QR card (no NFC): that's it, print it.** With NFC, carry on.
+4. Add a pause so you can put the sticker in: slice, drag the layer slider to the layer below,
    right-click the **+** and choose **Add pause**.
 
    | | 0.2 mm nozzle | 0.4 mm nozzle |
@@ -126,10 +141,11 @@ thick they are, because it decides which version you print:
    | Thin stickers | Layer 11 | Layer 6 |
    | Thick stickers | Layer 13 | Layer 7 |
 
-4. Before printing, put your link on a sticker. With Tilde: Settings → Write a card, then hold the
-   sticker to your phone. With NFC Tools: Write → Add a record → URL, then hold it to your phone.
-5. When the printer pauses, peel the sticker and press it flat into the round pocket, then resume.
-6. Done. Tap it with your phone to try it.
+5. Before printing, write the sticker. With Tilde: Settings → Write a card, choose what it opens
+   (your website, your contact card, WhatsApp…), then hold the sticker to your phone. With NFC
+   Tools: Write → Add a record → URL, then hold it to your phone.
+6. When the printer pauses, peel the sticker and press it flat into the round pocket, then resume.
+7. Done. Tap it with your phone to try it.
 
 **What fits:** a link of up to 53 characters. Long names shrink to fit; if one is still too long,
 the preview tells you what to change (such as splitting it over the two name lines).
@@ -140,13 +156,21 @@ side on the plate comes out smoothest, so that's the front.
 Full instructions, troubleshooting and the source files:
 [github.com/tbutman/tilde-card](https://github.com/tbutman/tilde-card)
 
-### Made for Tilde
+### Made for Tilde: your card, on your phone
 
-[Tilde](https://github.com/tbutman/tilde) is a free, open-source Android app that does what the
-card does, from your phone. The card is optional for Tilde users, and Tilde is optional for the
-card: it works with any phone. People tap their phone against yours, or scan the code on your screen, to get
-your website, contact card, WhatsApp or LinkedIn. It works offline, has no ads and no account, and
-keeps a list of who you've shared with. It can also write your link onto the card's NFC tag.
+[Tilde](https://github.com/tbutman/tilde) is a **free, open-source** Android app (MIT) that does
+what the card does, from your phone. People tap their phone against yours, or scan the code on
+your screen. One tap on your screen switches what you share, to suit who you're talking to:
+
+- **Contact card:** your name, title, phone numbers, email, website and social links in one go,
+  ready to save to their contacts. (iPhones scan the code on your screen for this one.)
+- **A link:** your website, LinkedIn, GitHub, Instagram, X or any link you like.
+- **WhatsApp:** opens a chat with you, with a greeting ready to send.
+- **Guest Wi-Fi:** joins your network without typing the password.
+
+No account, no ads, no subscription and no internet permission: your details stay on your phone.
+It keeps a list of who you've met, and it writes your link or contact card onto this card's tag.
+The card is optional for Tilde users, and Tilde is optional for the card.
 
 ### Print settings
 
@@ -159,5 +183,5 @@ keeps a list of who you've shared with. It can also write your link onto the car
 
 ## Tags
 
-business card, NFC, QR code, NTAG215, multicolor, AMS, customizable, wallet card, contact card,
-networking
+business card, NFC, QR code, NTAG215, vCard, contact card, multicolor, AMS, customizable, wallet
+card, networking, open source
