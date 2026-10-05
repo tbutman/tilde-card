@@ -60,7 +60,8 @@ Where the versions differ, the 0.2 mm value comes first.
 | Line widths | Profile defaults | |
 | Wall loops | 2 | |
 | Top / bottom shell layers | 8 / 8, or 5 / 3 | Either way the card is solid all through |
-| Sparse infill density | 100 % | Belt and braces: there is no room for real infill anyway |
+| Sparse infill density | **100 %** | The shells cover only 12 of the 16 layers at 0.1 mm, so at the default 15 % the middle of the card is hollow. Bambu Studio switches the pattern to Rectilinear, because Grid can't do 100 % |
+| Wall generator | **Arachne** | Varies the line width, so strokes between one and two lines wide (much of the small text) are filled instead of gapped. "Detect thin wall" greys out when it is on |
 | Ironing | Off for the first print | Try it later if the top looks rough |
 | Brim | None | |
 | Elephant foot compensation | **0 mm** | It shrinks first-layer outlines, which can open hairline gaps around the front's lettering and QR modules |
@@ -74,6 +75,11 @@ If the white field looks grey or speckled, raise the black → white flushing vo
 
 The 0.2 mm version takes much longer: half-width lines on half-height layers, and twice as many
 colour layers (12 instead of 6), so twice the AMS swaps and purge per plate.
+
+With those settings, the 0.2 mm version of one card slices to about 9.1 g of filament in the card,
+about 12 g of purge and prime tower, 30 colour changes and 4.5 hours (Bambu Studio, 5 October
+2026). The swaps and the tower are per plate, not per card, so a plate of two or three cards costs
+little more time or waste than one.
 
 ## What happens at each layer
 
