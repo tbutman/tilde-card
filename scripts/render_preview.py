@@ -32,7 +32,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--dir", default="out/nozzle-0.2", help="folder holding card-*.stl, relative to the repo")
 parser.add_argument("--face-down", choices=["front", "back"], default="front", help="which face the STLs print against the plate")
 args = parser.parse_args()
-meshes = {name: trimesh.load(ROOT / args.dir / f"card-{name}.stl") for name in PARTS}
+# A part with nothing in it (no window bar on a plain or blank back) has no file.
+meshes = {name: trimesh.load(ROOT / args.dir / f"card-{name}.stl") for name in PARTS if (ROOT / args.dir / f"card-{name}.stl").exists()}
 if args.face_down == "front":
     # The STLs lie front-down for printing; turn them back over (about the long axis) to show the front.
     for mesh in meshes.values():
@@ -49,6 +50,8 @@ depth = np.full((h, w), -np.inf)
 image = np.tile(BACKGROUND, (h, w, 1)).astype(float)
 
 for name, colour in PARTS.items():
+    if name not in meshes:
+        continue
     mesh = meshes[name]
     tris = (mesh.triangles - centre) @ rot.T
     normals = mesh.face_normals @ rot.T

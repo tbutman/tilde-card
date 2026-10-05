@@ -22,7 +22,10 @@ qr_url = "https://example.com";
 website_text = "example.com";
 
 /* [Back of the card] */
-back_enabled = true;
+// Terminal: a terminal window running "whoami". Plain: your name, title and email. None: a plain
+// black back, which prints faster with far fewer colour changes.
+back_style = "terminal"; // [terminal:Terminal window, plain:Plain, none:None (plain black)]
+// Your name as the terminal style prints it. The plain style uses your name from the front.
 back_name = "jane doe";
 back_title = "product designer";
 back_email = "jane@example.com";
@@ -40,8 +43,10 @@ chrome_color = "#8e9089"; // color
 /* [Printing] */
 // The 0.2 mm nozzle prints the sharpest text; the 0.4 mm nozzle is over three times faster.
 nozzle = 0.2; // [0.2:0.2 mm nozzle, 0.4:0.4 mm nozzle]
-// Measure your NFC stickers: up to 0.20 mm is "thin" (a 1.6 mm card); up to 0.40 mm is "thick" (1.8 mm).
-nfc_sticker = "thin"; // [thin:Thin stickers (0.10-0.20 mm), thick:Thick stickers (0.20-0.40 mm)]
+// The NFC tag is optional: without one, the card is QR code only, with no pause in the print.
+// With one, measure your stickers: up to 0.20 mm is "thin" (a 1.6 mm card); up to 0.40 mm is
+// "thick" (1.8 mm).
+nfc_sticker = "thin"; // [none:No NFC tag (QR code only), thin:Thin NFC stickers (0.10-0.20 mm), thick:Thick NFC stickers (0.20-0.40 mm)]
 
 /* [Hidden] */
 part = "preview"; // preview, body, light, accent or chrome
@@ -60,6 +65,7 @@ min_cap = fine ? 2.5 : 3;
 
 // Card. "thick" stickers make it 0.2 mm thicker, so the same 0.2 mm of black still separates the
 // tag from the white QR field.
+nfc_enabled = nfc_sticker != "none";
 thick_sticker = nfc_sticker == "thick";
 card_w = 85.60;    // ID-1 width
 card_h = 53.98;    // ID-1 height
@@ -116,7 +122,20 @@ domain_font = "Inter:style=ExtraBold";
 domain_size = 3.2;
 domain_bolden = fine ? 0 : 0.03;       // the "a" joint sits right at 0.5 mm
 
-// Back: terminal lines as [amber prompt, light text]. The last line ends in an amber cursor block.
+// Back. Terminal style: lines as [amber prompt, light text]; the last line ends in an amber cursor
+// block. Plain style: name (light), title (amber) and email (light) in Inter, centred vertically.
+back_enabled = back_style != "none";
+terminal = back_style == "terminal";
+plain = back_style == "plain";
+plain_name = str(name_line_1, name_line_1 != "" && name_line_2 != "" ? " " : "", name_line_2);
+plain_lines = [for (line = [[plain_name, "light", true], [back_title, "accent", false], [back_email, "light", false]])
+    if (line[0] != "") line];             // [text, colour, is the name]
+plain_name_size = 4.4;
+plain_size = 3.2;
+plain_font = "Inter:style=ExtraBold";
+plain_bolden = fine ? 0 : 0.03;       // as for the website on the front
+plain_name_gap = 7.0;                 // name baseline to the next baseline
+plain_gap = 5.4;                      // between the smaller lines
 back_lines = [
     ["$ ", "whoami"],
     each [for (line = [back_name, back_title, back_email]) if (line != "") ["", line]],
@@ -336,10 +355,13 @@ text_room = field_x - text_gap - text_x;
 mark_size_fit = fit(mark_size, [mark_name == "" ? 0 : mono_width(str(mark_prefix, mark_name))], text_room);
 name_size_fit = fit(name_size, [for (line = name_lines) inter_width(line)], text_room);
 domain_size_fit = fit(domain_size, [inter_width(domain_text)], text_room);
-// The last line also holds the cursor: one more advance, then the block.
-back_size_fit = fit(back_size, [for (i = [0 : len(back_lines) - 1])
+// The last line also holds the cursor: one more advance, then the block. Only the terminal style
+// uses these lines.
+back_size_fit = !terminal ? back_size : fit(back_size, [for (i = [0 : len(back_lines) - 1])
     mono_width(str(back_lines[i][0], back_lines[i][1])) + (i == len(back_lines) - 1 ? 0.822 + back_cursor[0] / back_size : 0)],
     card_w - 2 * back_x);
+plain_name_fit = fit(plain_name_size, [for (line = plain_lines) if (line[2]) inter_width(line[0])], card_w - 2 * back_x);
+plain_size_fit = fit(plain_size, [for (line = plain_lines) if (!line[2]) inter_width(line[0])], card_w - 2 * back_x);
 
 pocket_d = nfc_d + nfc_clearance;
 pocket_depth = ceil(nfc_tag_t / layer_h - 1e-6) * layer_h;
@@ -361,12 +383,15 @@ assert(name_size_fit >= min_cap - 1e-6,
 assert(mark_size_fit >= min_cap - 1e-6,
        str("The handle is too long: up to ", floor(text_room / (0.822 * min_cap)) - len(mark_prefix), " characters fit.", too_long_hint));
 assert(domain_size_fit >= min_cap - 1e-6, str("The website text is too long. Shorten it, or leave out the https:// and www.", too_long_hint));
-assert(!back_enabled || back_size_fit >= min_cap - 1e-6,
+assert(!terminal || back_size_fit >= min_cap - 1e-6,
        str("A line on the back is too long: up to ", floor((card_w - 2 * back_x) / (0.822 * min_cap)) - 2, " characters fit.", too_long_hint));
 assert(qr_module >= 1, "QR modules must be at least 1 mm");
 assert(qr_quiet >= 4, "QR needs a 4-module quiet zone");
 assert(inlay_t >= 0.4, "contrast layer must be at least 0.4 mm");
-assert(min(mark_size_fit, name_size_fit, domain_size_fit, tap_size, back_size_fit) >= min_cap - 1e-6, str("cap height must be at least ", min_cap, " mm"));
+assert(!plain || min(plain_name_fit, plain_size_fit) >= min_cap - 1e-6,
+       str("A line on the back is too long. Shorten it, or use the terminal style, which fits more.", too_long_hint));
+assert(back_style == "terminal" || back_style == "plain" || back_style == "none", "back_style is terminal, plain or none");
+assert(min(mark_size_fit, name_size_fit, domain_size_fit, tap_size, back_size_fit, plain ? plain_name_fit : min_cap, plain ? plain_size_fit : min_cap) >= min_cap - 1e-6, str("cap height must be at least ", min_cap, " mm"));
 assert(min(tap_stroke, tap_dot_d) >= min_stroke, str("strokes must be at least ", min_stroke, " mm"));
 // Black between the dot and the first wave, and between waves, must also print.
 assert(tap_radii[0] - tap_stroke / 2 - tap_dot_d / 2 >= min_stroke
@@ -378,27 +403,30 @@ assert(min(back_dot_d, back_rule_h) >= min_stroke, str("strokes must be at least
 for (t = [card_t, inlay_t, back_inlay_t, nfc_floor_t])
     assert(abs(t / layer_h - round(t / layer_h)) < 1e-6, str(t, " mm is not a whole number of ", layer_h, " mm layers"));
 assert(face_down == "front" || face_down == "back", "face_down is front or back");
-assert(nfc_sticker == "thin" || nfc_sticker == "thick", "nfc_sticker is thin or thick");
+assert(nfc_sticker == "none" || nfc_sticker == "thin" || nfc_sticker == "thick", "nfc_sticker is none, thin or thick");
 // The tag must not show through the white QR field: keep black between it and the front inlays.
-assert(card_t - inlay_t - pocket_top >= 0.2 - 1e-6, "the NFC tag needs 0.2 mm of black between it and the front inlays");
-assert(cover_layers >= 2, "the NFC tag needs at least two layers over it");
-assert(round(print_pocket_bottom / layer_h) >= 2, "the NFC tag needs at least two layers under it");
-assert(pocket_top <= card_t - inlay_t, "the NFC pocket must sit below the inlays");
-assert(nfc_center[0] - pocket_d / 2 >= nfc_wall - 1e-6 && nfc_center[0] + pocket_d / 2 <= card_w - nfc_wall + 1e-6
+assert(!nfc_enabled || card_t - inlay_t - pocket_top >= 0.2 - 1e-6, "the NFC tag needs 0.2 mm of black between it and the front inlays");
+assert(!nfc_enabled || cover_layers >= 2, "the NFC tag needs at least two layers over it");
+assert(!nfc_enabled || round(print_pocket_bottom / layer_h) >= 2, "the NFC tag needs at least two layers under it");
+assert(!nfc_enabled || pocket_top <= card_t - inlay_t, "the NFC pocket must sit below the inlays");
+assert(!nfc_enabled || nfc_center[0] - pocket_d / 2 >= nfc_wall - 1e-6 && nfc_center[0] + pocket_d / 2 <= card_w - nfc_wall + 1e-6
        && abs(nfc_center[1] - card_h / 2) + pocket_d / 2 <= card_h / 2 - nfc_wall + 1e-6,
        "the NFC pocket needs a wall to every card edge");
 
 // build.sh reads this line to give verify.py the same limits.
 // The 0.4 version's small type has gaps narrower than its nozzle can print (the 0.2 version exists
 // for that), so its gap check reports rather than fails.
-echo(str("CARD ", nfc_sticker, " sticker: ", card_t, " mm thick, ", round(card_t / layer_h), " layers"));
+echo(str("CARD ", nfc_enabled ? str(nfc_sticker, " sticker") : "no NFC tag", ": ", card_t, " mm thick, ", round(card_t / layer_h), " layers"));
 echo(str("PRINTER nozzle=", nozzle, " layer_h=", layer_h, " min_stroke=", min_stroke, " min_gap=", min_gap,
          " strict_gaps=", fine, " face_down=", face_down));
 echo(str("QR ", qr[2], ", mask ", qr[3], ": ", qr_n, "x", qr_n, " modules, ", qr_module,
          " mm each; light field ", field, " mm"));
 echo(str("Text sizes: mark ", mark_size_fit, ", name ", name_size_fit, ", website ", domain_size_fit, ", back ", back_size_fit, " mm"));
-echo(str("NFC pocket: d=", pocket_d, " mm, ", print_pocket_bottom, " to ", print_pocket_top, " mm above the plate, ",
-         cover_layers, " layers over it; pause before layer ", pause_layer, " (top at ", pause_layer * layer_h, " mm)"));
+if (nfc_enabled)
+    echo(str("NFC pocket: d=", pocket_d, " mm, ", print_pocket_bottom, " to ", print_pocket_top, " mm above the plate, ",
+             cover_layers, " layers over it; pause before layer ", pause_layer, " (top at ", pause_layer * layer_h, " mm)"));
+else
+    echo("No NFC tag: no pocket, no tap marker and no pause");
 down_t = face_down == "front" ? inlay_t : back_inlay_t;
 up_t = face_down == "front" ? back_inlay_t : inlay_t;
 if (back_enabled)
@@ -479,7 +507,8 @@ module accent_2d() {
     mark_prefix_2d();
     last_baseline = name_baseline - (len(name_lines) - 1) * name_size_fit * name_leading;
     translate([text_x, last_baseline - accent_gap - accent_h]) square([accent_w, accent_h]);
-    tap_place() {
+    // Without a tag the marker goes too; the QR code keeps its place, with even margins on three sides.
+    if (nfc_enabled) tap_place() {
         tap_icon_2d();
         tap_label_2d();
     }
@@ -493,12 +522,29 @@ back_rule_y = back_dots_y - back_dot_d / 2 - back_rule_gap - back_rule_h;
 back_top = back_rule_y - back_text_gap - back_size_fit; // first baseline, anchored under the bar
 
 // The last line's descenders must keep at least the bar's margin from the bottom edge.
-assert(!back_enabled || back_top - (len(back_lines) - 1) * back_pitch - 0.3 * back_size_fit >= back_bar_top,
+assert(!terminal || back_top - (len(back_lines) - 1) * back_pitch - 0.3 * back_size_fit >= back_bar_top,
        "the back's lines run off the bottom: shrink back_size or back_leading, or drop a line");
 
 module back_chrome_view_2d() {
-    for (i = [0 : 2]) translate([back_x + back_dot_d / 2 + i * back_dot_pitch, back_dots_y]) circle(d = back_dot_d, $fn = 48);
-    translate([back_x, back_rule_y]) square([card_w - 2 * back_x, back_rule_h]);
+    if (terminal) for (i = [0 : 2]) translate([back_x + back_dot_d / 2 + i * back_dot_pitch, back_dots_y]) circle(d = back_dot_d, $fn = 48);
+    if (terminal) translate([back_x, back_rule_y]) square([card_w - 2 * back_x, back_rule_h]);
+}
+
+// Plain style: each baseline measured down from the top of the first line's capitals, then the
+// block centred on the card. The gap after the name scales with the name's fitted size.
+function plain_step(k) = plain_lines[k - 1][2] ? plain_name_gap * plain_name_fit / plain_name_size : plain_gap;
+plain_first = len(plain_lines) > 0 && plain_lines[0][2] ? plain_name_fit : plain_size_fit;
+plain_baselines = [for (i = [0 : len(plain_lines) - 1])
+    i == 0 ? plain_first : plain_first + qr_sum([for (k = [1 : i]) plain_step(k)])];
+plain_height = len(plain_lines) == 0 ? 0 : plain_baselines[len(plain_lines) - 1] + 0.25 * plain_size_fit;
+plain_top = (card_h + plain_height) / 2;
+
+module plain_lines_2d(colour) {
+    if (len(plain_lines) > 0) for (i = [0 : len(plain_lines) - 1])
+        if (plain_lines[i][1] == colour)
+            translate([back_x, plain_top - plain_baselines[i]])
+                offset(delta = plain_bolden)
+                    text(plain_lines[i][0], size = plain_lines[i][2] ? plain_name_fit : plain_size_fit, font = plain_font);
 }
 
 module back_line_2d(i, s, bolden = back_bolden) {
@@ -507,6 +553,11 @@ module back_line_2d(i, s, bolden = back_bolden) {
 }
 
 module back_accent_view_2d() {
+    if (plain) plain_lines_2d("accent");
+    if (terminal) terminal_accent_2d();
+}
+
+module terminal_accent_2d() {
     for (i = [0 : len(back_lines) - 1])
         if (back_lines[i][0] != "") back_line_2d(i, back_lines[i][0], back_prompt_bolden);
     // Cursor block after the last prompt; mono advance is 0.6 em and an em is size / 0.73.
@@ -517,6 +568,11 @@ module back_accent_view_2d() {
 }
 
 module back_light_view_2d() {
+    if (plain) plain_lines_2d("light");
+    if (terminal) terminal_light_2d();
+}
+
+module terminal_light_2d() {
     for (i = [0 : len(back_lines) - 1])
         if (back_lines[i][1] != "")
             difference() {
@@ -557,7 +613,7 @@ module body() {
         back_inlay(0.01) back_light_view_2d();
         back_inlay(0.01) back_accent_view_2d();
         back_inlay(0.01) back_chrome_view_2d();
-        translate([nfc_center[0], nfc_center[1], nfc_floor_t]) cylinder(d = pocket_d, h = pocket_depth);
+        if (nfc_enabled) translate([nfc_center[0], nfc_center[1], nfc_floor_t]) cylinder(d = pocket_d, h = pocket_depth);
     }
 }
 

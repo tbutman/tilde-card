@@ -71,6 +71,8 @@ def surface_raster(meshes, face, px_per_mm=PX_PER_MM):
     image = Image.new("RGB", (round(width_mm * px_per_mm), round(height_mm * px_per_mm)), OFF_CARD)
     draw = ImageDraw.Draw(image)
     for name, colour in PARTS.items():
+        if name not in meshes:
+            continue
         mesh = meshes[name]
         facing = (sign * mesh.face_normals[:, 2] > 0.99) & (np.abs(mesh.triangles[:, :, 2] - z).max(axis=1) < 1e-3)
         for triangle in mesh.triangles[facing]:
@@ -130,7 +132,8 @@ def report(ok, label, detail="", advisory=False):
     return not ok and not advisory
 
 
-meshes = {name: trimesh.load(OUT / f"card-{name}.stl") for name in PARTS}
+# A part with nothing in it (no window bar on a plain or blank back) has no file.
+meshes = {name: trimesh.load(OUT / f"card-{name}.stl") for name in PARTS if (OUT / f"card-{name}.stl").exists()}
 failed = False
 for name, mesh in meshes.items():
     _, counts = np.unique(np.sort(mesh.edges, axis=1), axis=0, return_counts=True)

@@ -21,6 +21,7 @@ for sticker in thin thick; do
   dir="out/nozzle-$nozzle"
   [[ $sticker == thick ]] && dir+="-thick-sticker"
   mkdir -p "$dir"
+  rm -f "$dir"/card-*.stl
   echo "== $nozzle mm nozzle, $sticker sticker -> $dir"
   log=$(mktemp)
   for part in body light accent chrome; do
@@ -42,18 +43,24 @@ for sticker in thin thick; do
 done
 done
 
-# The MakerWorld file: write it, then build and check a sample card from it the way MakerWorld
-# would, with the fonts found by name (OPENSCAD_FONT_PATH stands in for its installed fonts).
+# The MakerWorld file: write it, then build and check sample cards from it the way MakerWorld
+# would, with the fonts found by name (OPENSCAD_FONT_PATH stands in for its installed fonts): the
+# default, and a QR-only card with no NFC tag and the plain back.
 .venv/bin/python scripts/make_makerworld.py
-dir="out/makerworld-sample"
-mkdir -p "$dir"
-echo "== MakerWorld file, 0.2 mm nozzle -> $dir"
-for part in body light accent chrome; do
-  docker run --rm -v "$PWD":/w -w /w -e OPENSCAD_FONT_PATH=/w/fonts openscad/openscad:dev \
-    openscad --backend=manifold -D "part=\"$part\"" --export-format binstl \
-    -o "$dir/card-$part.stl" makerworld/nfc-business-card.scad 2>&1 | grep -E '^(WARNING|ERROR)' || true
-done
 sample_url=$(sed -n 's/^qr_url = "\(.*\)";.*/\1/p' makerworld/nfc-business-card.scad)
-.venv/bin/python scripts/verify.py --dir "$dir" --face-down front --min-stroke 0.3 --min-gap 0.22 "$sample_url" || status=1
-.venv/bin/python scripts/render_preview.py --dir "$dir" --face-down front
+for sample in default qr-only-plain; do
+  dir="out/makerworld-sample"
+  extra=()
+  if [[ $sample == qr-only-plain ]]; then dir+="-qr-only-plain"; extra=(-D 'nfc_sticker="none"' -D 'back_style="plain"'); fi
+  mkdir -p "$dir"
+  rm -f "$dir"/card-*.stl  # a part with nothing in it writes no file, so clear old ones
+  echo "== MakerWorld file, $sample, 0.2 mm nozzle -> $dir"
+  for part in body light accent chrome; do
+    docker run --rm -v "$PWD":/w -w /w -e OPENSCAD_FONT_PATH=/w/fonts openscad/openscad:dev \
+      openscad --backend=manifold -D "part=\"$part\"" "${extra[@]+"${extra[@]}"}" --export-format binstl \
+      -o "$dir/card-$part.stl" makerworld/nfc-business-card.scad 2>&1 | grep -E '^(ECHO: "(CARD|No NFC|NFC pocket)|WARNING|ERROR)' || true
+  done
+  .venv/bin/python scripts/verify.py --dir "$dir" --face-down front --min-stroke 0.3 --min-gap 0.22 "$sample_url" || status=1
+  .venv/bin/python scripts/render_preview.py --dir "$dir" --face-down front
+done
 exit $status
