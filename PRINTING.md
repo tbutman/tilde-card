@@ -16,6 +16,22 @@ multi-colour printers work too; the steps are much the same.
 - **A textured PEI plate** (recommended). It gives the front a matte finish, which also stops the
   QR code reflecting light.
 
+## Make it yours
+
+The files in `out/` are Thomas's own card. To print yours, put in your details first:
+
+- **On MakerWorld (easiest):** open the model page, click **Customize**, and fill in your name,
+  link, website, the back of the card and the colours. Choose your nozzle and sticker thickness
+  under **Printing**. The preview updates as you type; then open the result in Bambu Studio.
+- **In OpenSCAD (free, [openscad.org](https://openscad.org)):** open `card.scad`, show the
+  Customizer (**Window → Customizer**), change the settings in the first sections and export a
+  3MF. Use a recent development snapshot of OpenSCAD: it keeps the four colours in the 3MF.
+
+**What fits:** a link of up to 53 characters (shorter is better: the QR code gets bigger squares).
+Long names, handles and websites shrink to fit; if something is too long even at the smallest
+printable size, the preview stops with a message saying what to change, such as splitting a long
+name over the two name lines. The 0.2 mm nozzle prints smaller text, so more fits.
+
 ## Choose a nozzle
 
 The card comes in two versions, one for each nozzle size. They look the same from arm's length;
@@ -80,10 +96,13 @@ before you buy.
 1. Fit the nozzle you chose. In Bambu Studio, pick your printer with that nozzle (for example
    **Bambu Lab A1 mini 0.2 nozzle**) and a process with the matching layer height: **0.10 mm** for
    the 0.2 mm nozzle, **0.20mm Standard** for the 0.4 mm nozzle.
-2. Drag in all four files from that version's folder at once (`card-body.stl`, `card-light.stl`,
-   `card-accent.stl`, `card-chrome.stl`). When asked whether to load them as **a single object with
-   multiple parts**, choose **Yes**.
-3. In the list of parts, set each one's filament: **body** → black, **light** → white,
+2. Open your card:
+   - **Your own card (a 3MF from MakerWorld or OpenSCAD):** open it, then check that each of its
+     four colours is assigned to the right filament: black, white, orange and grey.
+   - **Thomas's card (the STLs in `out/`):** drag in all four files from one version's folder at
+     once (`card-body.stl`, `card-light.stl`, `card-accent.stl`, `card-chrome.stl`). When asked
+     whether to load them as **a single object with multiple parts**, choose **Yes**.
+3. If you loaded the STLs, set each part's filament: **body** → black, **light** → white,
    **accent** → orange, **chrome** → grey.
 4. Change these settings (most are under **Quality** and **Strength**):
 

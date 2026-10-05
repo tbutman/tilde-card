@@ -5,8 +5,10 @@ will flag it for repair. Then it rasterises each face of the card from the STLs,
 colours: the front from the top-facing triangles at the top surface, the back from the
 bottom-facing triangles at z = 0, flipped so it reads as it will when the card is turned over.
 
-- The QR code on the front must decode with OpenCV to exactly the expected URL, at full
-  resolution, at a low resolution and blurred (closer to what a phone camera sees).
+- The QR code on the front must decode with ZXing (the decoder behind many phone scanners) to
+  exactly the expected URL, at full resolution, at a low resolution and blurred (closer to what a
+  phone camera sees). OpenCV's decoder is reported too, as a second opinion: it misses some valid
+  codes (masks 5 and 6 on some data), so it doesn't fail the build.
 - Opening each text mask with a `min_stroke` disk (from card.scad) must lose nothing: no stroke is
   thinner than that. Closing it with a `min_gap` disk must fill nothing: no gap inside or between
   letters is narrower than one nozzle line. Acute inner corners (the middle of a "w") always
@@ -25,6 +27,7 @@ from pathlib import Path
 import cv2
 import numpy as np
 import trimesh
+import zxingcpp
 from PIL import Image, ImageDraw, ImageOps
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -90,6 +93,12 @@ def faces(meshes, face_down):
 
 def decode(image_rgb):
     gray = cv2.cvtColor(np.asarray(image_rgb), cv2.COLOR_RGB2GRAY)
+    found = zxingcpp.read_barcodes(gray, formats=zxingcpp.BarcodeFormat.QRCode)
+    return found[0].text if found else ""
+
+
+def decode_opencv(image_rgb):
+    gray = cv2.cvtColor(np.asarray(image_rgb), cv2.COLOR_RGB2GRAY)
     text, _, _ = cv2.QRCodeDetector().detectAndDecode(gray)
     return text
 
@@ -146,6 +155,8 @@ for label, img in {
 }.items():
     text = decode(img)
     failed |= report(text == EXPECTED, label, f"decoded {text!r}")
+    second = decode_opencv(img)
+    report(second == EXPECTED, f"{label} (OpenCV, second opinion)", f"decoded {second!r}", advisory=True)
 
 def unreviewed(spots, face):
     return [s for s in spots if not any(f == face and abs(s[0] - x) < 0.3 and abs(s[1] - y) < 0.3 for f, x, y in KNOWN_ACUTE_CORNERS)]

@@ -18,8 +18,9 @@ people can either scan it or tap it with their phone to open your website.
 - **Works with most phones.** iPhones and Android phones with NFC open the link when tapped
   against the marked spot, and any phone camera can scan the QR code. No app needed.
 
-This is Thomas Butman's own card. A version where you type in your own name, links and colours
-is coming to MakerWorld; the page is drafted in [makerworld/](makerworld/listing.md).
+The files in `out/` are Thomas Butman's own card. To make yours, type in your name, links and
+colours on MakerWorld (the page is drafted in [makerworld/](makerworld/listing.md)) or in
+OpenSCAD's Customizer: see [Make it yours](PRINTING.md#make-it-yours).
 
 ## Print one
 
@@ -40,5 +41,7 @@ the design decisions, and the print log.
 
 ## Licence
 
-The fonts in `fonts/` are Inter and JetBrains Mono, under the SIL Open Font License (see the
-licence files beside them).
+The model and scripts are [MIT](LICENSE) © Thomas Butman. The printable files on MakerWorld are
+shared under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/): print, remix and sell
+cards freely, with credit. The fonts in `fonts/` are Inter and JetBrains Mono, under the SIL Open
+Font License (see the licence files beside them).

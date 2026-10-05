@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Regenerate everything from card.scad, once per nozzle and sticker thickness: QR matrix, one STL
-# per colour, checks, preview. Each version goes to out/nozzle-<size>/ (stickers up to 0.2 mm) or
+# Regenerate everything from card.scad, once per nozzle and sticker thickness: one STL per colour,
+# the checks and the preview. Each version goes to out/nozzle-<size>/ (stickers up to 0.2 mm) or
 # out/nozzle-<size>-thick-sticker/ (up to 0.4 mm). Pass nozzle sizes to build only those:
 #   ./build.sh          # 0.2 and 0.4
 #   ./build.sh 0.2
@@ -12,8 +12,8 @@ cd "$(dirname "$0")"
 nozzles=("$@")
 [[ ${#nozzles[@]} -gt 0 ]] || nozzles=(0.2 0.4)
 
+# The QR code is generated inside card.scad; verify.py checks it decodes to this link.
 url=$(sed -n 's/^qr_url = "\(.*\)";.*/\1/p' card.scad)
-.venv/bin/python scripts/gen_qr.py "$url"
 
 status=0
 for nozzle in "${nozzles[@]}"; do
@@ -41,4 +41,19 @@ for sticker in thin thick; do
   .venv/bin/python scripts/render_preview.py --dir "$dir" --face-down "$face_down"
 done
 done
+
+# The MakerWorld file: write it, then build and check a sample card from it the way MakerWorld
+# would, with the fonts found by name (OPENSCAD_FONT_PATH stands in for its installed fonts).
+.venv/bin/python scripts/make_makerworld.py
+dir="out/makerworld-sample"
+mkdir -p "$dir"
+echo "== MakerWorld file, 0.2 mm nozzle -> $dir"
+for part in body light accent chrome; do
+  docker run --rm -v "$PWD":/w -w /w -e OPENSCAD_FONT_PATH=/w/fonts openscad/openscad:dev \
+    openscad --backend=manifold -D "part=\"$part\"" --export-format binstl \
+    -o "$dir/card-$part.stl" makerworld/nfc-business-card.scad 2>&1 | grep -E '^(WARNING|ERROR)' || true
+done
+sample_url=$(sed -n 's/^qr_url = "\(.*\)";.*/\1/p' makerworld/nfc-business-card.scad)
+.venv/bin/python scripts/verify.py --dir "$dir" --face-down front --min-stroke 0.3 --min-gap 0.22 "$sample_url" || status=1
+.venv/bin/python scripts/render_preview.py --dir "$dir" --face-down front
 exit $status

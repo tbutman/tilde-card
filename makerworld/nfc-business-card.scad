@@ -1,3 +1,4 @@
+// MakerWorld version, generated from card.scad by scripts/make_makerworld.py.
 // An NFC business card: your name and website on the front, with a QR code and an NFC tag that
 // both open your link, and a terminal window with your details on the back.
 //
@@ -9,28 +10,22 @@
 //
 // part = "preview" gives all four in colour; build.sh exports one STL per part with -D part=...
 
-// Local copies of the fonts. The MakerWorld copy (scripts/make_makerworld.py) leaves these lines
-// out: MakerWorld has the same Google Fonts installed under these names.
-use <fonts/Inter-ExtraBold.ttf>
-use <fonts/Inter-Bold.ttf>
-use <fonts/JetBrainsMono-ExtraBold.ttf>
-
 /* [Your details] */
 // Your name, over one or two lines. Leave the second line empty for one line.
-name_line_1 = "Thomas";
-name_line_2 = "Butman";
+name_line_1 = "Jane";
+name_line_2 = "Doe";
 // Shown after "~/" at the top, like a folder in a terminal. Leave empty to leave it out.
-handle = "tbutman";
+handle = "janedoe";
 // What the QR code opens. Use the same link when you write the NFC tag. Up to 53 characters.
-qr_url = "https://tbutman.com/hello";
+qr_url = "https://example.com";
 // Your website as printed under your name. Leave empty to leave it out.
-website_text = "tbutman.com";
+website_text = "example.com";
 
 /* [Back of the card] */
 back_enabled = true;
-back_name = "thomas butman";
-back_title = "senior product engineer";
-back_email = "tbutman@gmail.com";
+back_name = "jane doe";
+back_title = "product designer";
+back_email = "jane@example.com";
 
 /* [Colours] */
 // The card itself and the QR code's dark squares.
