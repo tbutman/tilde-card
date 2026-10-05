@@ -100,15 +100,15 @@ accent_w = 10.0;                      // amber rule under the name
 accent_h = 0.8;
 accent_gap = 3.4;                     // last name baseline to the top of the rule
 // "tap" marker in the strip right of the QR code, over the NFC tag: generic NFC waves (not the
-// EMVCo payment symbol) in amber and a light label, turned to read upwards.
-// The 0.2 nozzle fits the full phrase; with a 0.4 nozzle its strokes and gaps are too fine.
-tap_label = fine ? "tap to connect" : "tap";
-tap_font = fine ? "Inter:style=Bold" : "Inter:style=ExtraBold"; // ExtraBold closes the c and e at 2.6 mm
+// EMVCo payment symbol) and the word "tap", both amber, turned to read upwards. The 0.2 mm sample
+// (5 October 2026) printed "tap to connect" cleanly, but the short label reads better at a glance.
+// The 0.2 nozzle keeps that sample's lighter Bold at 2.6 mm; the 0.4 nozzle needs ExtraBold at 3 mm.
+tap_label = "tap";
+tap_font = fine ? "Inter:style=Bold" : "Inter:style=ExtraBold";
 tap_size = fine ? 2.6 : 3.0;
-// Measured per mm of size: the label's length ("tap to connect" in Bold, "tap" in ExtraBold), and
-// the middle of its ink (the p's descender to the t's top) above the baseline. Re-measure if a
-// label changes.
-tap_label_len = (fine ? 9.72 : 2.18) * tap_size;
+// Measured per mm of size: the label's length (to the end of its ink), and the middle of its ink
+// (the p's descender to the t's top) above the baseline. Re-measure if the label changes.
+tap_label_len = (fine ? 2.14 : 2.18) * tap_size;
 tap_label_mid = 0.328 * tap_size;
 tap_dot_d = 1.1;                      // the source dot
 tap_radii = [1.4, 2.55, 3.7];         // the waves, radiating towards the label; 1.15 mm apart
@@ -484,7 +484,10 @@ module accent_2d() {
     mark_prefix_2d();
     last_baseline = name_baseline - (len(name_lines) - 1) * name_size_fit * name_leading;
     translate([text_x, last_baseline - accent_gap - accent_h]) square([accent_w, accent_h]);
-    tap_place() tap_icon_2d();
+    tap_place() {
+        tap_icon_2d();
+        tap_label_2d();
+    }
     translate([text_x, field_y]) offset(delta = domain_bolden) text(domain_text, size = domain_size_fit, font = domain_font);
 }
 
@@ -535,7 +538,6 @@ module from_behind() {
 module light_2d() {
     qr_light_2d();
     name_2d();
-    tap_place() tap_label_2d();
     difference() {
         mark_2d();
         mark_prefix_2d();

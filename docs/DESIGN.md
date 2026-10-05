@@ -14,8 +14,9 @@ The technical side of the card: how the model is built, checked and generated. T
 - **NFC:** a 25 mm NTAG215 sticker in a 25.3 mm pocket against the right edge, under the QR code,
   with 0.8 mm of plastic between it and the front face (the 0.6 mm inlay and 0.2 mm of black, so
   the tag can't show through the white field). The pocket is 0.2 mm deep for stickers 0.10–0.20 mm
-  thick, or 0.4 mm deep with `nfc_sticker = "thick"`, which makes the card 1.8 mm thick. A "tap" marker (amber NFC waves, not the EMVCo payment symbol, and
-  a white label), turned to read upwards, sits in the strip right of the QR code, over the tag.
+  thick, or 0.4 mm deep with `nfc_sticker = "thick"`, which makes the card 1.8 mm thick. A "tap" marker (NFC waves, not the EMVCo payment symbol, and
+  the word "tap", both amber), turned to read upwards, sits in the strip right of the QR code,
+  over the tag.
 - **Back:** a terminal window: a gray title bar (three dots and a rule), then a session
   (`$ whoami`, name, role, email, cursor) anchored under it, inlaid 0.6 mm. It reads correctly
   when the card is turned over sideways. Each line is a setting (`back_name`, `back_title`,
@@ -24,7 +25,7 @@ The technical side of the card: how the model is built, checked and generated. T
   side came out flat and matte on the first sample and the top side came out ridged. The STLs
   are exported already lying that way: the model turned over about its long axis, a rotation
   rather than a mirror. `verify.py` turns each face back the right way round before checking it.
-- **Type:** Inter (ExtraBold; Bold for "tap to connect") and JetBrains Mono ExtraBold, the site's
+- **Type:** Inter (ExtraBold; Bold for "tap" on the 0.2 mm version) and JetBrains Mono ExtraBold, the site's
   own typefaces, unaltered. Tuned for a 0.2 mm nozzle on 0.1 mm layers: cap heights of 2.6 mm or
   more, every stroke at least 0.3 mm and every gap at least 0.22 mm, on both faces.
 
@@ -147,8 +148,11 @@ less than 0.2 mm of black between it and the front inlays.
 - With a 0.4 mm nozzle, several glyphs need thickening to reach 0.5 mm strokes (the mono `a`
   joint, the `$` bar). The `*_bolden` parameters do that for the 0.4 version; for the 0.2 version
   they are all 0, so the letters print exactly as drawn.
-- "tap to connect" is Inter Bold, not ExtraBold: at 2.6 mm, ExtraBold's `c` and `e` openings
-  are about 0.15 mm, narrower than one nozzle line, so they would print closed ("oonneot").
+- The tap label was "tap to connect" in white. It printed cleanly on the 0.2 mm sample, but the
+  short "tap" in amber, matching the waves, reads better at a glance. The 0.2 mm version keeps that
+  sample's lighter Inter Bold at 2.6 mm (Thomas preferred it); the 0.4 mm version uses ExtraBold at
+  3 mm, since Bold's strokes are too fine for that nozzle. (Earlier note: at 2.6 mm, ExtraBold's
+  `c` and `e` openings were about 0.15 mm and would have printed closed.)
 - The tap marker sits right of the QR code, where the NFC tag now is. The tag first sat behind
   the name, under a non-QR area as the original brief asked; it moved so the marker could go
   in that strip and still point at the tag. Phones read NFC from only 1–3 cm away, so a marker
@@ -176,3 +180,4 @@ container was last recreated (for example, by an nginx image update).
 | Date | Cards | Result |
 | --- | --- | --- |
 | 2026-10-05 | 1, 0.4 mm nozzle, no tag, front face-down (design as of a1a15f1) | 75 minutes. Front: smooth and matte, crisp QR code, name and domain; the "tap" label and waves too small to read, and concentric first-layer rings in the black (fix: bottom surface pattern). Back, printed on top: legible but ridged and a little soft; `@`, `m` and `$` slightly blobby, as the 0.4 mm gap check predicted. Led to making front-down the default orientation and to the 0.2 mm version. QR and tap not yet tested on phones. |
+| 2026-10-05 | 1, 0.2 mm nozzle, front face-down, white "tap to connect" label | Significantly better than the 0.4 mm sample (Thomas, comparing photos): the back's small mono text is crisp, where the 0.4 mm sample's `@`, `m` and `$` were soft. He preferred this version's lighter label weight and asked for a shorter "tap" label in amber, now the design. Tag and phone tests still to come. |

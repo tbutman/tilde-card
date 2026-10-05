@@ -42,7 +42,7 @@ the difference is in the small text and the print time.
 | **Files** | `out/nozzle-0.2/` | `out/nozzle-0.4/` |
 | **Files for thick stickers** | `out/nozzle-0.2-thick-sticker/` | `out/nozzle-0.4-thick-sticker/` |
 | **Small text** | Sharp. Every letter prints exactly as designed | The front is clean. Small letters on the back (`m`, `@`, `$`) can come out a little soft or partly filled in |
-| **Tap label** | "tap to connect" | "tap" (the full phrase is too fine for this nozzle) |
+| **Tap label** | "tap" in Inter Bold, 2.6 mm | "tap" in Inter ExtraBold, 3 mm (the lighter weight is too fine for this nozzle) |
 | **Layers** | 16 layers of 0.1 mm | 8 layers of 0.2 mm |
 | **Colour changes** | About 30 per plate | About half as many |
 | **Print time** | About 4½ hours for one card | About 75 minutes for one card |

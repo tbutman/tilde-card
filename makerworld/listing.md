@@ -74,11 +74,10 @@ the rest of the card prints over it. The tag ends up sealed inside, invisible an
 
 There's a print profile for each.
 
-- **0.2 mm nozzle:** the sharpest card. Every letter prints exactly as designed, and the tap
-  marker reads "tap to connect". About 4½ hours for one card.
+- **0.2 mm nozzle:** the sharpest card: every letter prints exactly as designed. About 4½ hours
+  for one card.
 - **0.4 mm nozzle:** about 75 minutes for one card, and it's the nozzle most printers come with.
-  The front looks clean; the smallest letters on the back can come out slightly soft. The tap
-  marker reads "tap".
+  The front looks clean; the smallest letters on the back can come out slightly soft.
 
 Most of the time goes on colour changes, which happen once per layer for the whole plate. So
 **two or three cards take barely longer than one**: fill the plate.
