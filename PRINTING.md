@@ -15,9 +15,9 @@ QR card, and you can skip everything about stickers and the pause.
 - **PLA in black, white and orange**, plus **gray** for the window bar on the terminal-style back
   (optional: use white or orange instead).
 - **A 0.2 mm or 0.4 mm nozzle.** See [Choose a nozzle](#choose-a-nozzle).
-- **Optional, for a card people can tap:** a 25 mm round NFC sticker for each card (see [Buying NFC
-  stickers](#buying-nfc-stickers)), and a phone with NFC plus a free app to put your link on the
-  sticker: Tilde (Android) or NFC Tools (iPhone and Android).
+- **Optional, for a card people can tap:** a round NFC sticker for each card, 22–25 mm across
+  (**25.5 mm at most**; see [Buying NFC stickers](#buying-nfc-stickers)), and a phone with NFC plus
+  a free app to put your link on the sticker: Tilde (Android) or NFC Tools (iPhone and Android).
 - **A textured PEI plate** (recommended). It gives the front a matte finish, which also stops the
   QR code reflecting light.
 
@@ -79,8 +79,10 @@ the 0.4 mm).
 
 *Only for a card with NFC. Printing a QR card? Skip to [Set up the print](#set-up-the-print-in-bambu-studio).*
 
-You need **25 mm round NFC stickers with an NTAG215 chip**, one per card. They're usually sold in
-packs of 10 to 100, for about **$0.25 to $0.65 per sticker** ($5–10 for a small pack).
+You need **round NFC stickers with an NTAG215 chip, 22–25 mm across: 25.5 mm at most**, one per
+card. The pocket is about 25.8 mm, so there's only a little room; measure a sticker before you buy
+a batch. They're usually sold in packs of 10 to 100, for about **$0.25 to $0.65 per sticker**
+($5–10 for a small pack).
 
 **Check the thickness, because it decides which files you print:**
 
@@ -106,8 +108,8 @@ Some options, with prices as listed on 5 October 2026:
 | [Amazon](https://www.amazon.com/clp/B091FCQW7N) (K LAKEY, 100 pack) | 25 mm NTAG215 stickers | Not listed: measure | | Varies |
 | [eBay](https://www.ebay.com/itm/307182392836) (100 pack) | 25 mm NTAG215 stickers | Not listed: measure | | About $0.37 each |
 
-Listings and prices change; check the thickness and the "25 mm" and "NTAG215" in the listing
-before you buy.
+Listings and prices change; check the diameter (25.5 mm at most), the thickness and "NTAG215" in
+the listing before you buy.
 
 ## Set up the print in Bambu Studio
 
@@ -171,10 +173,13 @@ The printer needs to stop halfway so you can put the sticker in.
 
 When the printer pauses:
 
-1. Peel the backing off a sticker (with your link already on it; see below) and press it flat into
-   the round pocket, sticky side down. Do this for every card on the plate.
-2. Run a fingernail over it. Nothing may stick up above the pocket's edge, or the nozzle will
-   catch it.
+1. Peel the backing off a sticker (with your link already on it; see below) and place it **sticky
+   side down** on the floor of the pocket, **flat and centered**. Do this for every card on the
+   plate. Which way up doesn't matter for tapping: the card reads from both sides.
+2. **Before you resume:** smooth each sticker out, with no bubbles, wrinkles or raised edges, and
+   run a fingernail around the rim. A lifted edge or bubble can catch the nozzle, which can drag
+   the sticker, leave a bump on the card or knock the print loose, and a sticker that doesn't sit
+   fully inside the pocket will be hit by the nozzle.
 3. Keep your fingers away from the hot nozzle, then press **Resume** on the printer.
 
 ## Put your link on the sticker

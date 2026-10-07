@@ -105,9 +105,9 @@ Change it any time by writing it again, or lock it so nobody can (that's permane
   (roughly half that with no back design).
 - PLA in black, white and orange, plus gray for the window bar on the terminal back (optional).
 - A 0.2 mm or 0.4 mm nozzle.
-- **For NFC (optional):** 25 mm round NTAG215 NFC stickers, up to 0.4 mm thick (see below), and a
-  phone with NFC plus a free app to write the sticker: Tilde (Android) or NFC Tools (iPhone and
-  Android).
+- **For NFC (optional):** round NTAG215 NFC stickers, 22–25 mm across (**25.5 mm at most**) and up
+  to 0.4 mm thick (see below), and a phone with NFC plus a free app to write the sticker: Tilde
+  (Android) or NFC Tools (iPhone and Android).
 
 ### 0.2 mm or 0.4 mm nozzle?
 
@@ -123,8 +123,10 @@ Most of the time goes on color changes, which happen once per layer for the whol
 
 ### NFC stickers (optional)
 
-Buy **25 mm round NTAG215 stickers**, about $0.25–0.65 each ($5–10 for a small pack). Check how
-thick they are, because it decides which version you print:
+Buy **round NTAG215 stickers, 22–25 mm across: 25.5 mm at most.** The pocket is about 25.8 mm, so
+there's only a little room; measure a sticker before you buy a batch. They cost about $0.25–0.65
+each ($5–10 for a small pack). Check how thick they are too, because it decides which option you
+choose:
 
 - **0.10–0.20 mm** (wet inlays and thin paper stickers): the **thin stickers** option, a 1.6 mm card. For
   example [Seritag's 25 mm NTAG215 wet inlay](https://seritag.com/nfc-tags/25mm-ntag215-wet),
@@ -164,7 +166,14 @@ New to it? Print a QR card first (**NFC sticker: none**): no pause, nothing to b
 7. Before printing, write the sticker. With Tilde: Settings → Write a sticker, choose what it opens
    (your website, your contact card, WhatsApp…), then hold the sticker to your phone. With NFC
    Tools: Write → Add a record → URL, then hold it to your phone.
-8. When the printer pauses, peel the sticker and press it flat into the round pocket, then resume.
+8. When the printer pauses, peel off the backing and place the sticker **sticky side down** on the
+   floor of the pocket, **flat and centered**. Which way up doesn't matter for tapping: the card
+   reads from both sides.
+
+   **Before you resume:** smooth it out, with no bubbles, wrinkles or raised edges, and run a
+   fingernail around the rim. A lifted edge or bubble can catch the nozzle, which can drag the
+   sticker, leave a bump on the card or knock the print loose, and a sticker that doesn't sit
+   fully inside the pocket will be hit by the nozzle.
 9. Done. Tap it with your phone to try it.
 
 **What fits:** a link of up to 53 characters. Long names shrink to fit; if one is still too long,

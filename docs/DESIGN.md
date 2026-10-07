@@ -12,7 +12,7 @@ The technical side of the card: how the model is built, checked and generated. T
   1.2 mm (version 2, as for `https://tbutman.com/hello`) or 1.07 mm (version 3). Black modules on
   white; the white is a 0.6 mm inlay, flush with the face.
 - **NFC (optional):** `nfc_sticker = "none"` leaves out the pocket and the tap marker, for a QR
-  card with no pause; the QR code keeps its place. Otherwise, a 25 mm NTAG215 sticker in a 25.3 mm pocket against the right edge, under the QR code,
+  card with no pause; the QR code keeps its place. Otherwise, an NTAG215 sticker (22–25 mm across, 25.5 mm at most) in a 25.8 mm pocket against the right edge, under the QR code,
   with 0.8 mm of plastic between it and the front face (the 0.6 mm inlay and 0.2 mm of black, so
   the tag can't show through the white field). The pocket is 0.2 mm deep for stickers 0.10–0.20 mm
   thick, or 0.4 mm deep with `nfc_sticker = "thick"`, which makes the card 1.8 mm thick. A tap marker (NFC waves, not the EMVCo payment symbol, and
@@ -123,7 +123,7 @@ The card is 1.6 mm thick. With the 0.2 mm nozzle that is 16 layers of 0.1 mm:
 | --- | --- | --- |
 | 1–6 | 0.10–0.60 mm | The front, face-down: black, white and orange inlays; the AMS swaps colors on each layer |
 | 7–8 | 0.70–0.80 mm | Black |
-| 9–10 | 0.90–1.00 mm | Black, with the open NFC pocket (25.3 mm round, under the QR code, against the card's right edge as seen from the front) |
+| 9–10 | 0.90–1.00 mm | Black, with the open NFC pocket (25.8 mm round, under the QR code, against the card's right edge as seen from the front) |
 | — | — | **Pause: drop in the NFC tag** |
 | 11–16 | 1.10–1.60 mm | The back, printed over the tag: black, white, orange and gray inlays |
 
