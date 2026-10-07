@@ -57,7 +57,7 @@ window_bar_color = "#8e9089"; // color
 // Your printer's nozzle. 0.2 mm prints the sharpest text; 0.4 mm is over three times faster.
 nozzle = 0.2; // [0.2:0.2 mm nozzle (sharpest), 0.4:0.4 mm nozzle (fastest)]
 // An NFC sticker sealed inside lets phones tap the card: round NTAG215, 22-25 mm across (25.5 mm at most). Measure yours to pick thin or thick.
-nfc_sticker = "thin"; // [none:No NFC sticker (QR code only), thin:Thin NFC stickers 0.10-0.20 mm (1.6 mm card), thick:Thick NFC stickers 0.20-0.40 mm (1.8 mm card)]
+nfc_sticker = "thin"; // [none:No NFC sticker (QR code only), thin:Thin NFC stickers 0.10-0.20 mm (1.8 mm card), thick:Thick NFC stickers 0.20-0.40 mm (2.0 mm card)]
 
 /* [Hidden] */
 part = "preview"; // preview, body, light, accent or chrome
@@ -74,16 +74,20 @@ min_stroke = fine ? 0.3 : 0.5;
 min_gap = fine ? 0.22 : 0.34; // 0.4 nozzle: the slicer's narrowest wall, 85% of the nozzle
 min_cap = fine ? 2.5 : 3;
 
-// Card. "thick" stickers make it 0.2 mm thicker, so the same 0.2 mm of black still separates the
-// tag from the white QR field.
+// Card. With a sticker, the layers printed straight after the pause must be a solid black lid over
+// it (nfc_lid_t), not the back's inlays: small letters printed onto the sticker's smooth face drag
+// into strings (the first print with a sticker, 7 October 2026). So a sticker card has shallower
+// back inlays and is 0.2 mm thicker: 1.8 mm with thin stickers, 2.0 mm with thick ones ("thick"
+// adds 0.2 mm, so the same 0.2 mm of black still separates the tag from the white QR field). A
+// QR-only card stays 1.6 mm with 0.6 mm back inlays.
 nfc_enabled = nfc_sticker != "none";
 thick_sticker = nfc_sticker == "thick";
 card_w = 85.60;    // ID-1 width
 card_h = 53.98;    // ID-1 height
 corner_r = 3.2;
-card_t = thick_sticker ? 1.8 : 1.6; // total thickness
+card_t = !nfc_enabled ? 1.6 : thick_sticker ? 2.0 : 1.8; // total thickness
 inlay_t = 0.6;     // depth of the light and accent inlays: opaque enough over black
-back_inlay_t = 0.6; // depth of the inlays on the back
+back_inlay_t = nfc_enabled ? 0.4 : 0.6; // depth of the inlays on the back; 0.4 leaves room for the lid
 
 // QR code: a fixed light field (quiet zone included); the modules scale to fill it, from 1.37 mm
 // (version 1) to 1.2 mm (version 2) and 1.07 mm (version 3).
@@ -175,7 +179,8 @@ back_cursor = [2.0, 3.6];             // cursor block width and height at back_s
 nfc_d = 25.0;            // tag diameter: round NTAG215 stickers are 22-25 mm, 25.5 mm at most
 nfc_clearance = 0.8;     // added to the diameter: a 25.8 mm pocket, so slightly large stickers still fit
 nfc_tag_t = thick_sticker ? 0.4 : 0.2; // thickest sticker that fits; the pocket rounds this up to whole layers
-nfc_floor_t = 0.6;       // plastic under the tag: at least the back inlay's 3 layers
+nfc_lid_t = 0.4;         // solid black between the tag and the back inlays: printed first after the pause
+nfc_floor_t = nfc_enabled ? back_inlay_t + nfc_lid_t : 0.6; // plastic under the tag (model view): inlays plus lid
 nfc_wall = 2.0;          // plastic between the pocket and the card edge
 // Against the right edge, under the QR code and the tap marker.
 nfc_center = [card_w - nfc_wall - (nfc_d + nfc_clearance) / 2, card_h / 2];
@@ -426,6 +431,9 @@ assert(tap_radii[0] - tap_stroke / 2 - tap_dot_d / 2 >= min_stroke
        str("the tap waves need at least ", min_stroke, " mm of black between them"));
 assert(!back_inked || back_inlay_t >= 0.4, "contrast layer must be at least 0.4 mm");
 assert(!back_inked || nfc_floor_t >= back_inlay_t, "the NFC pocket must sit above the back inlays");
+// The first layers after the pause cover the tag: they must be solid black, not the back's inlays.
+assert(!nfc_enabled || nfc_floor_t - (back_inked ? back_inlay_t : 0) >= nfc_lid_t - 1e-6 && nfc_lid_t >= 0.4 - 1e-6,
+       "the NFC tag needs a solid lid of at least 0.4 mm between it and the back inlays");
 assert(min(back_dot_d, back_rule_h) >= min_stroke, str("strokes must be at least ", min_stroke, " mm"));
 for (t = [card_t, inlay_t, back_inlay_t, nfc_floor_t])
     assert(abs(t / layer_h - round(t / layer_h)) < 1e-6, str(t, " mm is not a whole number of ", layer_h, " mm layers"));
@@ -443,7 +451,7 @@ assert(!nfc_enabled || nfc_center[0] - pocket_d / 2 >= nfc_wall - 1e-6 && nfc_ce
 // A summary in the console: thickness, the nozzle's limits, the QR code, text sizes and the pause.
 echo(str("CARD ", nfc_enabled ? str(nfc_sticker, " sticker") : "no NFC tag", ": ", card_t, " mm thick, ", round(card_t / layer_h), " layers"));
 echo(str("PRINTER nozzle=", nozzle, " layer_h=", layer_h, " min_stroke=", min_stroke, " min_gap=", min_gap,
-         " strict_gaps=", fine, " face_down=", face_down));
+         " strict_gaps=", fine, " face_down=", face_down, " pocket_top=", nfc_enabled ? print_pocket_top : -1));
 echo(str("QR ", qr[2], ", mask ", qr[3], ": ", qr_n, "x", qr_n, " modules, ", qr_module,
          " mm each; light field ", field, " mm"));
 echo(str("Text sizes: mark ", mark_size_fit, ", name ", name_size_fit, ", website ", domain_size_fit, ", back ", back_size_fit, " mm"));

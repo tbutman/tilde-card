@@ -43,8 +43,10 @@ for sticker in thin thick; do
   face_down=$(sed -n 's/.*face_down=\([a-z]*\).*/\1/p' <<<"$limits")
   advisory=()
   grep -q 'strict_gaps=false' <<<"$limits" && advisory=(--gaps-advisory)
+  pocket=(); pocket_top=$(sed -n 's/.*pocket_top=\([0-9.]*\).*/\1/p' <<<"$limits")
+  [[ -n $pocket_top ]] && pocket=(--pocket-top "$pocket_top")
   .venv/bin/python scripts/verify.py --dir "$dir" --face-down "$face_down" --min-stroke "$min_stroke" --min-gap "$min_gap" \
-    ${advisory[@]+"${advisory[@]}"} "$url" || status=1
+    ${advisory[@]+"${advisory[@]}"} ${pocket[@]+"${pocket[@]}"} "$url" || status=1
   .venv/bin/python scripts/render_preview.py --dir "$dir" --face-down "$face_down"
 done
 done
@@ -73,12 +75,18 @@ for sample in default qr-only-plain; do
   mkdir -p "$dir"
   rm -f "$dir"/card-*.stl  # a part with nothing in it writes no file, so clear old ones
   echo "== MakerWorld file, $sample, 0.2 mm nozzle -> $dir"
+  log=$(mktemp)
   for part in body light accent chrome; do
     docker run --rm -v "$PWD":/w -w /w -e OPENSCAD_FONT_PATH=/w/fonts openscad/openscad:dev \
       openscad --backend=manifold -D "part=\"$part\"" "${extra[@]+"${extra[@]}"}" --export-format binstl \
-      -o "$dir/card-$part.stl" makerworld/tilde-card.scad 2>&1 | grep -E '^(ECHO: "(CARD|No NFC|NFC pocket)|WARNING|ERROR)' || true
+      -o "$dir/card-$part.stl" makerworld/tilde-card.scad 2>&1 | grep -E '^(ECHO|WARNING|ERROR)' >>"$log" || true
   done
-  .venv/bin/python scripts/verify.py --dir "$dir" --face-down front --min-stroke 0.3 --min-gap 0.22 "$sample_url" || status=1
+  sort -u "$log" | grep -E '^(ECHO: "(CARD|No NFC|NFC pocket)|WARNING|ERROR)' || true
+  pocket=(); pocket_top=$(grep -m1 PRINTER "$log" | sed -n 's/.*pocket_top=\([0-9.]*\).*/\1/p')
+  rm "$log"
+  [[ -n $pocket_top ]] && pocket=(--pocket-top "$pocket_top")
+  .venv/bin/python scripts/verify.py --dir "$dir" --face-down front --min-stroke 0.3 --min-gap 0.22 \
+    ${pocket[@]+"${pocket[@]}"} "$sample_url" || status=1
   .venv/bin/python scripts/render_preview.py --dir "$dir" --face-down front
 done
 exit $status

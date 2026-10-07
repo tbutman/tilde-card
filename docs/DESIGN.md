@@ -5,7 +5,8 @@ The technical side of the card: how the model is built, checked and generated. T
 
 ## Specifications
 
-- **Size:** ID-1 (85.60 × 53.98 mm, 3.2 mm corners), 1.6 mm thick; 1.8 mm for thick stickers.
+- **Size:** ID-1 (85.60 × 53.98 mm, 3.2 mm corners), 1.6 mm thick as a QR card; 1.8 mm with thin
+  stickers, 2.0 mm with thick ones.
 - **QR code:** generated in `card.scad` from `qr_code_link`: byte mode, version 1–3 with error
   correction M (or L when M can't hold the link), up to 53 characters. The modules scale to fill a
   fixed 39.6 mm white field that includes the full 4-module quiet zone: 1.37 mm (version 1),
@@ -15,7 +16,11 @@ The technical side of the card: how the model is built, checked and generated. T
   card with no pause; the QR code keeps its place. Otherwise, an NTAG215 sticker (22–25 mm across, 25.5 mm at most) in a 25.8 mm pocket against the right edge, under the QR code,
   with 0.8 mm of plastic between it and the front face (the 0.6 mm inlay and 0.2 mm of black, so
   the tag can't show through the white field). The pocket is 0.2 mm deep for stickers 0.10–0.20 mm
-  thick, or 0.4 mm deep with `nfc_sticker = "thick"`, which makes the card 1.8 mm thick. A tap marker (NFC waves, not the EMVCo payment symbol, and
+  thick, or 0.4 mm deep with `nfc_sticker = "thick"`. Over the tag (the first layers after the
+  pause) is a solid black lid of 0.4 mm (`nfc_lid_t`), then the back's inlays, which are 0.4 mm deep
+  on a sticker card (0.6 mm on a QR card): the first print with a sticker had the back's letters
+  printed straight onto the sticker, and they dragged into strings. So a sticker card is 1.8 mm
+  thick, or 2.0 mm with thick stickers. A tap marker (NFC waves, not the EMVCo payment symbol, and
   `tap_label`, "tap" by default), turned to read upwards, sits in the strip right of the QR code,
   over the tag. The waves and the label each take one of the card's colors (`tap_waves_color`,
   `tap_label_color`: `accent`, `light` or `chrome`; by default amber waves and a light label), on
@@ -33,7 +38,7 @@ The technical side of the card: how the model is built, checked and generated. T
 - **Back:** `back_style` is `terminal`, `plain` or `none` (plain black). Both designs print the
   same three lines, `back_line_1` to `back_line_3`; an empty one is skipped. The terminal style is
   a window: a gray title bar (three dots and a rule), then a session (`$ ` and `terminal_command`,
-  `whoami` by default, the three lines, a cursor) anchored under it, inlaid 0.6 mm. The plain style
+  `whoami` by default, the three lines, a cursor) anchored under it, inlaid 0.6 mm (0.4 mm with a sticker). The plain style
   prints the lines in Inter, centered vertically: the first larger, the second in amber. Both shrink
   to fit like the front. The back reads correctly when the card is turned over sideways.
 - **Print orientation:** the front prints face-down (`face_down = "front"`), because the plate
@@ -56,10 +61,11 @@ Two versions are built from the same model, `out/nozzle-0.2/` and `out/nozzle-0.
 | `makerworld/tilde-card.scad` | The copy uploaded to MakerWorld's customizer, written by `scripts/make_makerworld.py`: no font file lines, and the example person Jane Doe as the defaults. Never edited by hand. |
 | `out/makerworld-sample/`, `out/makerworld-sample-qr-only-plain/` | Cards built from the MakerWorld copy, to check it renders and passes the checks: the default, and one with no NFC sticker and the plain back (its first line typed as "Jane Doe"). |
 | `out/nozzle-{0.2,0.4}/card-{body,light,accent,chrome}.stl` | The sample card (Jane Doe): one STL per color (black, white, orange, gray), per nozzle, for stickers up to 0.2 mm. |
-| `out/nozzle-{0.2,0.4}-thick-sticker/` | The same for stickers up to 0.4 mm: a 1.8 mm card with a deeper pocket. |
+| `out/nozzle-{0.2,0.4}-thick-sticker/` | The same for stickers up to 0.4 mm: a 2.0 mm card with a deeper pocket. |
 | `out/nozzle-*/card-{top,back}-surface.png` | Each face as printed, rasterized from the STLs (the back as seen from behind); the QR check decodes the front. |
 | `out/nozzle-*/preview.png` | A 3/4 render of the front, from the color STLs. |
 | `out/local/` | Your own card, built from `card.local.scad` when it exists, in the same layout as `out/`. Git-ignored. |
+| `test/` | `inlay-test.scad`, a small strip with white squares inlaid 0.2, 0.4 and 0.6 mm deep in black, to see how deep an inlay must be to hide the black under it (`test/build-inlay-test.sh` exports the STLs and a 3MF into `test/out/`). |
 | `fonts/` | Static instances of the site's variable fonts (SIL Open Font License; see the license files). |
 | `scripts/` | Checks (`verify.py`, `test_qr.py`), the preview render, the MakerWorld copy and the MakerWorld cover options (`make_covers.py`, into `makerworld/images/covers/`, and the chosen one to `makerworld/images/01-cover.png`). |
 
@@ -84,8 +90,8 @@ Customizer.
 `card.scad` refuses to render, with a message saying what to change, if the link is over 53
 characters, if a name, handle, website or line on the back won't fit at the nozzle's smallest
 printable size (`min_cap`), if a module is under 1 mm, if the inlay is under 0.4 mm, if text is under `min_cap`, if a thickness is not a whole
-number of layers, or if the NFC pocket has fewer than two layers over it or less than 2 mm of wall
-to any edge. The `nozzle` parameter (0.2 or 0.4) sets those limits (`layer_h`,
+number of layers, or if the NFC pocket has fewer than two layers over it, less than a 0.4 mm solid
+lid between it and the back's inlays, or less than 2 mm of wall to any edge. The `nozzle` parameter (0.2 or 0.4) sets those limits (`layer_h`,
 `min_stroke`, `min_gap`, `min_cap`) and the few design differences; `build.sh` passes the same
 limits to `verify.py`.
 
@@ -94,6 +100,9 @@ limits to `verify.py`.
 `scripts/verify.py` checks the exported STLs, not the source:
 
 - every color body is manifold (each edge shared by exactly two triangles);
+- with a sticker, nothing but black sits over the pocket for 0.4 mm: every inlay that reaches above
+  the pocket's ceiling starts at least 0.4 mm higher (`build.sh` passes the ceiling's height from
+  the model);
 - the front, rasterized from the STLs in print colors, decodes with ZXing to exactly the link:
   at 20 px/mm, at 4 px/mm, and with a heavy blur. OpenCV's decoder runs too, as a warning only:
   it misses some valid symbols (for `https://tbutman.com/hello`, masks 5 and 6 at full
@@ -117,7 +126,7 @@ see the print log for real prints.
 
 ## What happens at each layer
 
-The card is 1.6 mm thick. With the 0.2 mm nozzle that is 16 layers of 0.1 mm:
+With thin stickers the card is 1.8 mm thick. With the 0.2 mm nozzle that is 18 layers of 0.1 mm:
 
 | Layer | Height (top of layer) | Contents |
 | --- | --- | --- |
@@ -125,9 +134,10 @@ The card is 1.6 mm thick. With the 0.2 mm nozzle that is 16 layers of 0.1 mm:
 | 7–8 | 0.70–0.80 mm | Black |
 | 9–10 | 0.90–1.00 mm | Black, with the open NFC pocket (25.8 mm round, under the QR code, against the card's right edge as seen from the front) |
 | — | — | **Pause: drop in the NFC tag** |
-| 11–16 | 1.10–1.60 mm | The back, printed over the tag: black, white, orange and gray inlays |
+| 11–14 | 1.10–1.40 mm | The lid: solid black over the tag |
+| 15–18 | 1.50–1.80 mm | The back: black, white, orange and gray inlays |
 
-With the 0.4 mm nozzle it is 8 layers of 0.2 mm:
+With the 0.4 mm nozzle it is 9 layers of 0.2 mm:
 
 | Layer | Height (top of layer) | Contents |
 | --- | --- | --- |
@@ -135,13 +145,18 @@ With the 0.4 mm nozzle it is 8 layers of 0.2 mm:
 | 4 | 0.80 mm | Black |
 | 5 | 1.00 mm | Black, with the open NFC pocket |
 | — | — | **Pause: drop in the NFC tag** |
-| 6–8 | 1.20–1.60 mm | The back, printed over the tag: black, white, orange and gray inlays |
+| 6–7 | 1.20–1.40 mm | The lid: solid black over the tag |
+| 8–9 | 1.60–1.80 mm | The back: black, white, orange and gray inlays |
+
+A QR card (no sticker) is 1.6 mm: 16 layers of 0.1 mm or 8 of 0.2 mm, with no pocket, no pause and
+0.6 mm back inlays (layers 11–16, or 6–8).
 
 ### Thick stickers
 
-These tables are for the standard card. With `nfc_sticker = "thick"`, the card gains 0.2 mm of
-black in the middle: the pocket is 0.4 mm deep (0.8–1.2 mm above the plate), and the pause moves
-to layer 13 (0.2 mm nozzle) or layer 7 (0.4 mm nozzle). `build.sh` prints the pocket and pause for
+These tables are for thin stickers. With `nfc_sticker = "thick"`, the card gains 0.2 mm of black
+in the middle (2.0 mm in all): the pocket is 0.4 mm deep (0.8–1.2 mm above the plate), and the
+pause moves to layer 13 (0.2 mm nozzle) or layer 7 (0.4 mm nozzle), with the same lid and back
+after it. `build.sh` prints the pocket and pause for
 every version. The model refuses to build if the tag would have fewer than two layers over it, or
 less than 0.2 mm of black between it and the front inlays.
 

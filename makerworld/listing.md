@@ -16,7 +16,7 @@ other.
 - [ ] Print one card from a Parametric Model Maker 3MF and scan it with an iPhone and an Android
       phone.
 - [x] Tag thickness: standard pocket for 0.10–0.20 mm stickers, plus a thick-sticker option up to
-      0.40 mm (a 1.8 mm card). Make it a setting in the customizer and a profile each.
+      0.40 mm (a 2.0 mm card). Make it a setting in the customizer and a profile each.
 - [ ] Print and photograph real cards for both nozzles (shot list below).
 - [ ] Optional: make a print profile for each nozzle with the settings in. The page lists the
       settings instead, and explains how to add the pause, which can't be stored in a customized
@@ -128,10 +128,10 @@ there's only a little room; measure a sticker before you buy a batch. They cost 
 each ($5–10 for a small pack). Check how thick they are too, because it decides which option you
 choose:
 
-- **0.10–0.20 mm** (wet inlays and thin paper stickers): the **thin stickers** option, a 1.6 mm card. For
+- **0.10–0.20 mm** (wet inlays and thin paper stickers): the **thin stickers** option, a 1.8 mm card. For
   example [Seritag's 25 mm NTAG215 wet inlay](https://seritag.com/nfc-tags/25mm-ntag215-wet),
   0.12 mm.
-- **0.20–0.40 mm** (most thicker paper stickers): the **thick stickers** option, a 1.8 mm card. For
+- **0.20–0.40 mm** (most thicker paper stickers): the **thick stickers** option, a 2.0 mm card. For
   example [GoToTags' 25 mm NTAG215 sticker](https://store.gototags.com/nfc-sticker-ntag215-25-mm-circle/),
   0.35 mm.
 - **Not sure?** Many multipacks don't list a thickness, like these on
@@ -157,8 +157,8 @@ New to it? Print a QR card first (**NFC sticker: none**): no pause, nothing to b
 
    | | 0.2 mm nozzle | 0.4 mm nozzle |
    | --- | --- | --- |
-   | Thin stickers (0.10–0.20 mm, 1.6 mm card) | Layer 11 | Layer 6 |
-   | Thick stickers (0.20–0.40 mm, 1.8 mm card) | Layer 13 | Layer 7 |
+   | Thin stickers (0.10–0.20 mm, 1.8 mm card) | Layer 11 | Layer 6 |
+   | Thick stickers (0.20–0.40 mm, 2.0 mm card) | Layer 13 | Layer 7 |
 
    Thin stickers: layer 11 (0.2 mm nozzle) or layer 6 (0.4 mm). Thick stickers: layer 13 (0.2 mm)
    or layer 7 (0.4 mm).

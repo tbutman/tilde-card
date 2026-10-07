@@ -59,7 +59,7 @@ the difference is in the small text and the print time.
 | **Files for thick stickers** | `out/nozzle-0.2-thick-sticker/` | `out/nozzle-0.4-thick-sticker/` |
 | **Small text** | Sharp. Every letter prints exactly as designed | The front is clean. Small letters on the back (`m`, `@`, `$`) can come out a little soft or partly filled in |
 | **Tap label** ("tap" by default) | Inter Bold, 2.6 mm | Inter ExtraBold, 3 mm (the lighter weight is too fine for this nozzle) |
-| **Layers** | 16 layers of 0.1 mm | 8 layers of 0.2 mm |
+| **Layers** | 16 layers of 0.1 mm (18 with thin stickers, 20 with thick) | 8 layers of 0.2 mm (9 with thin stickers, 10 with thick) |
 | **Color changes** | About 30 per plate | About half as many |
 | **Print time** | About 4½ hours for one card | About 75 minutes for one card |
 | **Filament** | About 9 g in the card, plus about 12 g purged during color changes | Similar in the card, less purge |
@@ -88,8 +88,8 @@ a batch. They're usually sold in packs of 10 to 100, for about **$0.25 to $0.65 
 
 | Sticker thickness | Option (files in `out/`) | The card |
 | --- | --- | --- |
-| **0.10–0.20 mm** (wet inlays, thin paper stickers) | **Thin stickers** (`out/nozzle-0.2/` or `out/nozzle-0.4/`) | 1.6 mm thick |
-| **0.20–0.40 mm** (most thicker paper stickers) | **Thick stickers** (`out/nozzle-0.2-thick-sticker/` or `out/nozzle-0.4-thick-sticker/`) | 1.8 mm thick |
+| **0.10–0.20 mm** (wet inlays, thin paper stickers) | **Thin stickers** (`out/nozzle-0.2/` or `out/nozzle-0.4/`) | 1.8 mm thick |
+| **0.20–0.40 mm** (most thicker paper stickers) | **Thick stickers** (`out/nozzle-0.2-thick-sticker/` or `out/nozzle-0.4-thick-sticker/`) | 2.0 mm thick |
 | Over 0.40 mm ("coins", "anti-metal" tags, hard plastic discs) | Not supported | |
 
 If the listing doesn't say, measure one sticker with its backing peeled off, using calipers. If
@@ -166,8 +166,8 @@ The printer needs to stop halfway so you can put the sticker in.
 
    | | 0.2 mm nozzle | 0.4 mm nozzle |
    | --- | --- | --- |
-   | Thin stickers (0.10–0.20 mm, 1.6 mm card) | **Layer 11** | **Layer 6** |
-   | Thick stickers (0.20–0.40 mm, 1.8 mm card) | **Layer 13** | **Layer 7** |
+   | Thin stickers (0.10–0.20 mm, 1.8 mm card) | **Layer 11** | **Layer 6** |
+   | Thick stickers (0.20–0.40 mm, 2.0 mm card) | **Layer 13** | **Layer 7** |
 
 3. Right-click the **+** on the slider and choose **Add pause**.
 

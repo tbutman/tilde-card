@@ -39,6 +39,7 @@ parser.add_argument("--face-down", choices=["front", "back"], default="front", h
 parser.add_argument("--min-stroke", type=float, default=0.3)
 parser.add_argument("--min-gap", type=float, default=0.22)
 parser.add_argument("--gaps-advisory", action="store_true", help="report narrow gaps as WARN instead of failing")
+parser.add_argument("--pocket-top", type=float, help="print height (mm) of the NFC pocket's ceiling, to check the lid over it")
 args = parser.parse_args()
 EXPECTED = args.url
 OUT = ROOT / args.dir
@@ -161,6 +162,22 @@ for name, mesh in meshes.items():
     _, counts = np.unique(np.sort(mesh.edges, axis=1), axis=0, return_counts=True)
     bad = int((counts != 2).sum())
     failed |= report(not bad, f"card-{name}.stl manifold", f"{bad} bad edges" if bad else "")
+
+# The layers printed straight after the pause cover the NFC tag. They must be solid body (black) for
+# LID_MM before any inlay starts: an inlay's small islands printed onto the sticker's smooth face
+# drag into strings (the first print with a sticker, 7 October 2026).
+LID_MM = 0.4
+if args.pocket_top is not None:
+    body = meshes["body"]
+    ceiling = (body.face_normals[:, 2] < -0.99) & (np.abs(body.triangles[:, :, 2] - args.pocket_top).max(axis=1) < 1e-3)
+    # Every inlay triangle that reaches above the ceiling, and how low it goes: the front's inlays
+    # end below the pocket, so they don't count.
+    above = [t[t.max(axis=1) > args.pocket_top + 1e-3].min(axis=1) for t in
+             (m.triangles[:, :, 2] for name, m in meshes.items() if name != "body")]
+    lowest = min((z.min() for z in above if len(z)), default=body.bounds[1][2])
+    lid = lowest - args.pocket_top
+    detail = f"{lid:.2f} mm of black over it" if ceiling.any() else f"no pocket ceiling at {args.pocket_top} mm"
+    failed |= report(ceiling.any() and lid >= LID_MM - 1e-6, f"solid lid over the NFC pocket >= {LID_MM} mm", detail)
 
 front, back = faces(meshes, args.face_down)
 def save(image, name):

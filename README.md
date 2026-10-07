@@ -17,7 +17,7 @@ own, and any NFC app can write the sticker. More about Tilde and the card:
 | --- | --- |
 | ![Front](out/nozzle-0.2/card-top-surface.png) | ![Back](out/nozzle-0.2/card-back-surface.png) |
 
-- **Credit-card size** (85.6 × 54 mm), 1.6 mm thick (1.8 mm for thicker NFC stickers), so it fits
+- **Credit-card size** (85.6 × 54 mm), 1.6 mm thick (1.8 mm with an NFC sticker, 2.0 mm with a thick one), so it fits
   a wallet.
 - **A QR code that works with any phone camera.** It's the heart of the card.
 - **NFC is optional.** If you add it, the printer pauses halfway, you drop in a sticker, and the
