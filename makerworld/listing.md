@@ -44,7 +44,7 @@ open pocket at the pause, with a tag going in; a stack of cards on the plate.
 
 | File | Caption |
 | --- | --- |
-| `01-cover.png` | Tilde turns your phone into an NFC business card; print the card to go with it |
+| `01-cover.png` | Tilde turns your phone into an NFC business card; print a Tilde card to go with it |
 | `02-card-3d.png` | Four colours, printed in one go |
 | `03-front.png` | The front: your name, your link and a QR code |
 | `04-back.png` | The back: a terminal window with your details |
@@ -56,13 +56,14 @@ open pocket at the pause, with a tag going in; a stack of cards on the plate.
 
 ## Title
 
-NFC Business Card for Tilde: free, customisable, tap or scan
+Tilde Card: Customisable NFC + QR Business Card (Free)
 
 ## Summary
 
-A free, customisable business card with a QR code on the front, and an optional NFC tag sealed
-inside so people can tap it too. Made to go with Tilde, the free, open-source app that turns your
-Android phone into an NFC business card. No account, subscription or app needed on either side.
+A free business card you customise and print: a QR code on the front, and an optional NFC
+sticker sealed inside so people can tap it too. Prints in one go on a multi-colour printer (AMS
+or similar). Made for Tilde, the free, open-source Android app that turns your phone into the
+same card. Nobody you hand it to needs an app.
 
 ## Description
 
@@ -173,7 +174,7 @@ your screen. One tap on your screen switches what you share, to suit who you're 
 No account, no ads, no subscription and no internet permission: your details stay on your phone.
 Download it at [tbutman.com/tilde](https://tbutman.com/tilde).
 It keeps a list of who you've met, and it writes your link or contact card onto this card's tag.
-The card is optional for Tilde users, and Tilde is optional for the card.
+The Tilde card is optional for Tilde users, and Tilde is optional for the card.
 
 ### Print settings
 

@@ -1,4 +1,4 @@
-# Printing the card
+# Printing the Tilde card
 
 This guide is written for a Bambu Lab A1 mini with an AMS lite, using Bambu Studio. Other
 multi-colour printers work too; the steps are much the same.
