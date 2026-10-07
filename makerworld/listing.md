@@ -214,6 +214,14 @@ No account, no ads, no subscription and no internet permission: your details sta
 The Tilde card is optional for Tilde users, and Tilde is optional for the card. Download Tilde at
 [tbutman.com/tilde](https://tbutman.com/tilde).
 
+### Get involved
+
+- **Post your make.** A photo of your printed card helps the next person see what it looks like
+  in real life.
+- **Remix it.** CC BY 4.0: change it however you like, and credit the original.
+- **Ideas or problems?** Open an issue on [GitHub](https://github.com/tbutman/tilde-card/issues).
+  The model and the Tilde app are both open source, and pull requests are welcome.
+
 ## Tags
 
 business card, NFC, QR code, NTAG215, vCard, contact card, multicolor, AMS, customizable, wallet
