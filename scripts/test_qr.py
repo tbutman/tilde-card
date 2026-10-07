@@ -1,4 +1,4 @@
-"""Test the QR encoder in card.scad, which MakerWorld runs to make each customised card.
+"""Test the QR encoder in card.scad, which MakerWorld runs to make each customized card.
 
 For a range of links (every version and error level the card uses, accented letters, and text that
 exactly fills each size) and every mask, OpenSCAD encodes the symbol and this checks that:
