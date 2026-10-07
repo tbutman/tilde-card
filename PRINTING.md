@@ -3,9 +3,9 @@
 This guide is written for a Bambu Lab A1 mini with an AMS lite, using Bambu Studio. Other
 multi-colour printers work too; the steps are much the same.
 
-The model is free and open source: no account, sign-up or payment, and the card links straight to
-your own website. The NFC sticker is optional. Without one you get a QR card, and you can skip
-everything about stickers and the pause.
+The model is free and open source (MIT; CC BY 4.0 on MakerWorld): no account, sign-up or payment,
+and the card links straight to your own website. The NFC sticker is optional. Without one you get a
+QR card, and you can skip everything about stickers and the pause.
 
 ## What you need
 
