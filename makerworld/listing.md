@@ -46,7 +46,7 @@ open pocket at the pause, with a sticker going in; a stack of cards on the plate
 
 | File | Caption |
 | --- | --- |
-| `01-cover.png` | Tilde turns your phone into an NFC business card; print a Tilde card to go with it |
+| `01-cover.png` | Parametric NFC + QR business card: customize it in your browser |
 | `02-card-3d.png` | Four colors, printed in one go |
 | `03-front.png` | The front: your name, your link and a QR code |
 | `04-back.png` | The back: a terminal window with your details |

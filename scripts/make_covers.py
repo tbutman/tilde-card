@@ -1,8 +1,11 @@
 """Build the MakerWorld cover options in makerworld/images/covers/, 1600 x 1200 PNGs:
 
 - cover-card.png: the card on its own
-- cover-card-app.png: the card and the app on a phone (the layout of makerworld/images/01-cover.png)
+- cover-card-app.png: the card and the app on a phone (the layout of the first cover)
 - cover-card-title.png, cover-card-app-title.png: the same with a title
+
+The chosen one, cover-card-app-title.png, is also copied to makerworld/images/01-cover.png, the
+model page's cover.
 
 From the repo's own assets: the sample card's render (out/makerworld-sample/preview.png, written
 by build.sh), the app screenshot makerworld/images/05-app-share.png and the fonts in fonts/. The
@@ -11,6 +14,7 @@ phone is drawn here.
     .venv/bin/python scripts/make_covers.py
 """
 
+import shutil
 from pathlib import Path
 
 import numpy as np
@@ -135,6 +139,8 @@ def main():
     cover.save(OUT / "cover-card-app-title.png", optimize=True)
     for name in ["cover-card", "cover-card-app", "cover-card-title", "cover-card-app-title"]:
         print(f"wrote makerworld/images/covers/{name}.png")
+    shutil.copyfile(OUT / "cover-card-app-title.png", ROOT / "makerworld" / "images" / "01-cover.png")
+    print("wrote makerworld/images/01-cover.png (cover-card-app-title.png)")
 
 
 if __name__ == "__main__":

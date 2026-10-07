@@ -58,7 +58,7 @@ Two versions are built from the same model, `out/nozzle-0.2/` and `out/nozzle-0.
 | `out/nozzle-*/preview.png` | A 3/4 render of the front, from the color STLs. |
 | `out/local/` | Your own card, built from `card.local.scad` when it exists, in the same layout as `out/`. Git-ignored. |
 | `fonts/` | Static instances of the site's variable fonts (SIL Open Font License; see the license files). |
-| `scripts/` | Checks (`verify.py`, `test_qr.py`), the preview render, the MakerWorld copy and the MakerWorld cover options (`make_covers.py`, into `makerworld/images/covers/`). |
+| `scripts/` | Checks (`verify.py`, `test_qr.py`), the preview render, the MakerWorld copy and the MakerWorld cover options (`make_covers.py`, into `makerworld/images/covers/`, and the chosen one to `makerworld/images/01-cover.png`). |
 
 ## Build
 
