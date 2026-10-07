@@ -174,7 +174,7 @@ Do this **before** the sticker goes in the card, so a faulty sticker only costs 
 
 **On Android, with [Tilde](https://github.com/tbutman/tilde)** (free, the companion app):
 
-1. Fill in your card in Tilde, then go to **Settings** → **Write a card**.
+1. Fill in your card in Tilde, then go to **Settings** → **Write a sticker**.
 2. Choose what the card should open: your website, contact card, LinkedIn and so on.
 3. Hold the sticker to the back of your phone until it buzzes. Hold the next one to write that too.
 
@@ -185,9 +185,9 @@ Do this **before** the sticker goes in the card, so a faulty sticker only costs 
 2. Tap **Write** and hold your phone against the sticker until it confirms.
 3. To check: go to **Read** and hold the phone to the sticker. It should show your link.
 
-**Locking is optional and permanent.** NFC Tools can lock a tag (Other → Lock tag) so nobody can
-change it, but then you can't change it either, ever. If you lock it, only do it once the finished
-card works.
+**Locking is optional and permanent.** Tilde (tick **Lock it after writing**) and NFC Tools
+(Other → Lock tag) can lock a sticker so nobody can change it, but then you can't either, ever.
+Only lock it once the finished card works; you can lock it through the card.
 
 ## Check your first card
 

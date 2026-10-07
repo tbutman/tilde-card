@@ -41,7 +41,7 @@ and, if you add NFC, which stickers to buy, the pause for the tag and how to put
 [Tilde](https://github.com/tbutman/tilde) is a free, open-source Android app (MIT, no account, no ads,
 no internet permission) that does what the card does, from your phone: people tap your phone, or scan the code on its screen, to get your website,
 contact card, WhatsApp or LinkedIn. It also writes your link onto the card's tag
-(**Settings → Write a card**).
+(**Settings → Write a sticker**).
 
 ## For developers
 

@@ -86,7 +86,7 @@ The QR code is made for your link automatically, and long names shrink to fit.
 your **contact card** (a vCard) to it, and one tap offers to save your name, phone numbers, email,
 website and social links to an Android phone's contacts. (iPhones only open links from a tap, so
 they open your website instead.) Or write a link, your WhatsApp or your LinkedIn. Change it any
-time by writing it again.
+time by writing it again, or lock it so nobody can (that's permanent).
 
 ### What you need
 
@@ -141,7 +141,7 @@ thick they are, because it decides which version you print:
    | Thin stickers | Layer 11 | Layer 6 |
    | Thick stickers | Layer 13 | Layer 7 |
 
-5. Before printing, write the sticker. With Tilde: Settings → Write a card, choose what it opens
+5. Before printing, write the sticker. With Tilde: Settings → Write a sticker, choose what it opens
    (your website, your contact card, WhatsApp…), then hold the sticker to your phone. With NFC
    Tools: Write → Add a record → URL, then hold it to your phone.
 6. When the printer pauses, peel the sticker and press it flat into the round pocket, then resume.
