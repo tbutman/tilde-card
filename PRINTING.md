@@ -58,7 +58,7 @@ the difference is in the small text and the print time.
 | **Files** | `out/nozzle-0.2/` | `out/nozzle-0.4/` |
 | **Files for thick stickers** | `out/nozzle-0.2-thick-sticker/` | `out/nozzle-0.4-thick-sticker/` |
 | **Small text** | Sharp. Every letter prints exactly as designed | The front is clean. Small letters on the back (`m`, `@`, `$`) can come out a little soft or partly filled in |
-| **Tap label** | "tap" in Inter Bold, 2.6 mm | "tap" in Inter ExtraBold, 3 mm (the lighter weight is too fine for this nozzle) |
+| **Tap label** ("tap" by default) | Inter Bold, 2.6 mm | Inter ExtraBold, 3 mm (the lighter weight is too fine for this nozzle) |
 | **Layers** | 16 layers of 0.1 mm | 8 layers of 0.2 mm |
 | **Colour changes** | About 30 per plate | About half as many |
 | **Print time** | About 4½ hours for one card | About 75 minutes for one card |
@@ -111,33 +111,42 @@ before you buy.
 
 ## Set up the print in Bambu Studio
 
+New to it? Print a QR card first (**NFC sticker: none**): no pause, nothing to buy.
+
 1. Fit the nozzle you chose. In Bambu Studio, pick your printer with that nozzle (for example
-   **Bambu Lab A1 mini 0.2 nozzle**) and a process with the matching layer height: **0.10 mm** for
-   the 0.2 mm nozzle, **0.20mm Standard** for the 0.4 mm nozzle.
+   **Bambu Lab A1 mini 0.2 nozzle**) and its standard process: **0.10mm Standard @BBL A1M 0.2
+   nozzle** for the 0.2 mm nozzle, **0.20mm Standard @BBL A1M** for the 0.4 mm nozzle. Other
+   printers have their own Standard processes with the same layer heights.
 2. Open your card:
-   - **Your own card (a 3MF from MakerWorld or OpenSCAD):** open it, then check that each of its
-     four colours is assigned to the right filament: black, white, orange and grey.
+   - **Your own card (a 3MF from MakerWorld or OpenSCAD):** open it, then check the four colours
+     are assigned to the right filaments (black, white, orange, grey) in the **Filament** list.
    - **The sample card (the STLs in `out/`):** drag in all four files from one version's folder at
      once (`card-body.stl`, `card-light.stl`, `card-accent.stl`, `card-chrome.stl`). When asked
      whether to load them as **a single object with multiple parts**, choose **Yes**.
 3. If you loaded the STLs, set each part's filament: **body** → black, **light** → white,
    **accent** → orange, **chrome** → grey.
-4. Change these settings (most are under **Quality** and **Strength**):
+4. Change these three settings (the same for both nozzles):
 
-   | Setting | Set to | Why |
+   | Setting | Where | Change to | Why |
+   | --- | --- | --- | --- |
+   | Sparse infill density | Strength | **100 %** (from 15 %) | Makes the card solid all the way through |
+   | Wall generator | Quality | **Arachne** (from Classic) | Fills thin letter strokes properly |
+   | Bottom surface pattern | Strength | **Monotonic line** (from Monotonic) | Gives the front an even finish |
+
+   Already right in Bambu's standard profiles; check them if you've changed your defaults or use
+   another printer:
+
+   | Setting | Should be | Why |
    | --- | --- | --- |
    | Initial layer height | Same as the layer height (0.10 or 0.20 mm) | The card is built from whole layers |
-   | Sparse infill density | **100 %** | Makes the card solid all the way through |
-   | Wall generator | **Arachne** | Fills thin letter strokes properly |
-   | Bottom surface pattern | **Monotonic line** | Gives the front an even finish |
-   | Top surface pattern | **Monotonic line** | Gives the back an even finish |
-   | Elephant foot compensation | **0 mm** | Stops small gaps opening around the front's letters |
+   | Elephant foot compensation | 0 mm | Stops small gaps opening around the front's letters |
+   | Top surface pattern | Monotonic line | Gives the back an even finish |
    | Brim | None | |
 
 5. Leave room on the plate for the **prime tower** (the small block the printer purges into when
    it changes colour). Drag it onto an empty spot if it's off the plate.
-6. Print one card first. For more, right-click the card, choose **Clone**, then **Arrange**. Two
-   or three cards fit comfortably on the A1 mini's plate.
+6. Fill the plate: select the card, press **+** to add copies, then **Arrange** (**A**). Three
+   cards take barely longer than one, and fit comfortably on the A1 mini's plate.
 
 **The card prints face-down, and that's correct.** The side touching the plate comes out
 smoothest, so the files are already turned over: you'll see the back facing up, upside down. Don't

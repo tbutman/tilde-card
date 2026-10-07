@@ -1,7 +1,9 @@
 # MakerWorld page (draft)
 
 The text below the line is the model page, ready to paste into MakerWorld. Images are in
-[images/](images/), in the order they should appear.
+[images/](images/), in the order they should appear. **Print settings** gives the three changes
+twice, as a table and as plain lines: keep whichever MakerWorld's editor shows well, and delete the
+other.
 
 **Before publishing:**
 
@@ -76,8 +78,7 @@ account, subscription or service in between: the card opens your own website, an
 whatever you write to it.
 
 **Make it yours.** Click **Customize** to type in your name, website, the lines on the back and the
-colours.
-The QR code is made for your link automatically, and long names shrink to fit.
+colours. The QR code is made for your link automatically, and long text shrinks to fit.
 
 **Choose your card:**
 - **NFC sticker:** none (a QR card: no stickers, no pause), or thin or thick NFC stickers, sealed
@@ -137,12 +138,17 @@ thick they are, because it decides which version you print:
 
 ### How to print
 
+New to it? Print a QR card first (**NFC sticker: none**): no pause, nothing to buy.
+
 1. Click **Customize** and fill in your details. Under **Printing**, choose your nozzle and NFC
    option. Then open it in Bambu Studio.
-2. Use 0.10 mm layers for the 0.2 mm nozzle or 0.20 mm layers for the 0.4 mm nozzle, with 100 %
-   infill (all the settings are listed below).
-3. **QR card (no NFC): that's it, print it.** With NFC, carry on.
-4. Add a pause so you can put the sticker in: slice, then drag the layer slider to the layer in
+2. Check the four colours are assigned to the right filaments (black, white, orange, grey) in the
+   **Filament** list.
+3. Pick the process and change three settings: see **Print settings** below.
+4. Fill the plate: select the card, press **+** to add copies, then **Arrange** (**A**). Three
+   cards take barely longer than one.
+5. **QR card (no NFC): that's it, print it.** With NFC, carry on.
+6. Add a pause so you can put the sticker in: slice, then drag the layer slider to the layer in
    this table (the first one that covers the round pocket), right-click the **+** and choose
    **Add pause**.
 
@@ -151,17 +157,39 @@ thick they are, because it decides which version you print:
    | Thin stickers | Layer 11 | Layer 6 |
    | Thick stickers | Layer 13 | Layer 7 |
 
-5. Before printing, write the sticker. With Tilde: Settings → Write a sticker, choose what it opens
+7. Before printing, write the sticker. With Tilde: Settings → Write a sticker, choose what it opens
    (your website, your contact card, WhatsApp…), then hold the sticker to your phone. With NFC
    Tools: Write → Add a record → URL, then hold it to your phone.
-6. When the printer pauses, peel the sticker and press it flat into the round pocket, then resume.
-7. Done. Tap it with your phone to try it.
+8. When the printer pauses, peel the sticker and press it flat into the round pocket, then resume.
+9. Done. Tap it with your phone to try it.
 
 **What fits:** a link of up to 53 characters. Long names shrink to fit; if one is still too long,
 the preview tells you what to change (such as splitting it between first name and last name).
 
 The card prints face-down, so you'll see the back on top in the slicer. That's on purpose: the
 side on the plate comes out smoothest, so that's the front.
+
+### Print settings
+
+Pick your printer with the nozzle you chose, and its standard process: **0.10mm Standard** for a
+0.2 mm nozzle, **0.20mm Standard** for a 0.4 mm nozzle. Then change three settings:
+
+| Setting | Where | Change to | Why |
+| --- | --- | --- | --- |
+| Sparse infill density | Strength | **100 %** (from 15 %) | Makes the card solid all the way through |
+| Wall generator | Quality | **Arachne** (from Classic) | Fills thin letter strokes properly |
+| Bottom surface pattern | Strength | **Monotonic line** (from Monotonic) | Gives the front an even finish |
+
+- **Sparse infill density** (Strength): **100 %**, from 15 %. Makes the card solid all the way
+  through.
+- **Wall generator** (Quality): **Arachne**, from Classic. Fills thin letter strokes properly.
+- **Bottom surface pattern** (Strength): **Monotonic line**, from Monotonic. Gives the front an
+  even finish.
+
+Already right in Bambu's standard profiles (check them if you've changed your defaults or use
+another printer): initial layer height the same as the layer height, elephant foot compensation 0,
+top surface pattern Monotonic line. A textured PEI plate gives the front a matte finish with no
+glare on the QR code.
 
 Full instructions, troubleshooting and the source files:
 [github.com/tbutman/tilde-card](https://github.com/tbutman/tilde-card)
@@ -185,15 +213,6 @@ sticker.
 No account, no ads, no subscription and no internet permission: your details stay on your phone.
 The Tilde card is optional for Tilde users, and Tilde is optional for the card. Download Tilde at
 [tbutman.com/tilde](https://tbutman.com/tilde).
-
-### Print settings
-
-- Layer height: 0.10 mm (0.2 mm nozzle) or 0.20 mm (0.4 mm nozzle), first layer the same
-- Infill: 100 %
-- Wall generator: Arachne
-- Top and bottom surface pattern: Monotonic line
-- Elephant foot compensation: 0
-- Plate: textured PEI recommended (matte front, no glare on the QR code)
 
 ## Tags
 
