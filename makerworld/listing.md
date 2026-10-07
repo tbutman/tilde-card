@@ -85,10 +85,10 @@ The QR code is made for your link automatically, and long names shrink to fit.
   title and email, or none, which prints fastest.
 
 **Your whole contact card in one tap.** With an NFC sticker, the card can hold more than a link:
-write your **contact card** (a vCard) to it, and one tap offers to save your name, phone numbers,
-email, website and social links to an Android phone's contacts. (iPhones only open links from a tap,
-so they open your website instead.) Or write a link, your WhatsApp or your LinkedIn. Change it any
-time by writing it again, or lock it so nobody can (that's permanent).
+write your **contact card** to it, and one tap offers to save your name, phone numbers, email,
+website and social links to an Android phone's contacts. (iPhones only open links from a tap, so
+they open your website instead.) Or write a link, your WhatsApp or your LinkedIn. Change it any time
+by writing it again, or lock it so nobody can (that's permanent).
 
 ### What you need
 
