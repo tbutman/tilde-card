@@ -80,7 +80,7 @@ window_bar_color = "#8e9089"; // color
 /* [Printing] */
 // Your printer's nozzle. 0.2 mm prints the sharpest text; 0.4 mm is over three times faster.
 nozzle = 0.2; // [0.2:0.2 mm nozzle (sharpest), 0.4:0.4 mm nozzle (fastest)]
-// An NFC sticker sealed inside lets phones tap the card. Measure your stickers to pick thin or thick.
+// An NFC sticker sealed inside lets phones tap the card: round NTAG215, 22-25 mm across (25.5 mm at most). Measure yours to pick thin or thick.
 nfc_sticker = "thin"; // [none:No NFC sticker (QR code only), thin:Thin NFC stickers 0.10-0.20 mm (1.6 mm card), thick:Thick NFC stickers 0.20-0.40 mm (1.8 mm card)]
 
 /* [Hidden] */
@@ -197,8 +197,8 @@ back_text_gap = 2.8;                  // rule to the top of the first line's cap
 back_cursor = [2.0, 3.6];             // cursor block width and height at back_size
 
 // NFC tag
-nfc_d = 25.0;            // tag diameter (25 mm round NTAG215 sticker)
-nfc_clearance = 0.3;     // added to the diameter
+nfc_d = 25.0;            // tag diameter: round NTAG215 stickers are 22-25 mm, 25.5 mm at most
+nfc_clearance = 0.8;     // added to the diameter: a 25.8 mm pocket, so slightly large stickers still fit
 nfc_tag_t = thick_sticker ? 0.4 : 0.2; // thickest sticker that fits; the pocket rounds this up to whole layers
 nfc_floor_t = 0.6;       // plastic under the tag: at least the back inlay's 3 layers
 nfc_wall = 2.0;          // plastic between the pocket and the card edge
