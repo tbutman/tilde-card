@@ -16,16 +16,19 @@ The technical side of the card: how the model is built, checked and generated. T
   with 0.8 mm of plastic between it and the front face (the 0.6 mm inlay and 0.2 mm of black, so
   the tag can't show through the white field). The pocket is 0.2 mm deep for stickers 0.10–0.20 mm
   thick, or 0.4 mm deep with `nfc_sticker = "thick"`, which makes the card 1.8 mm thick. A tap marker (NFC waves, not the EMVCo payment symbol, and
-  `tap_label`, "tap" by default, both amber), turned to read upwards, sits in the strip right of
-  the QR code, over the tag. A longer label shrinks to fit the QR code's height, down to the
+  `tap_label`, "tap" by default), turned to read upwards, sits in the strip right of the QR code,
+  over the tag. The waves and the label each take one of the card's colors (`tap_waves_color`,
+  `tap_label_color`: `accent`, `light` or `chrome`; by default amber waves and a light label), on
+  both sides; each goes into that color's inlay part, flush with the face. A longer label shrinks to fit the QR code's height, down to the
   nozzle's smallest text (about 14 characters on 0.4 mm, 17 on 0.2 mm); an empty one leaves just
   the waves. `back_tap_mark` (`waves` or `label`) repeats the marker on the back: the waves, plus
   `tap_label` for `label`, turned like the front's, in the same strip seen from behind, so it sits
   over the tag. With the mark on, the back's lines (and the terminal window) start 2.69 mm further
   right, a `text_gap` past the strip, on all three styles; with it off, nothing moves.
-  `back_tap_mark_color` picks one of the card's own colors, so an existing part: `chrome` (the
-  window bar color, the default), `accent` or `light`. On a None back the mark brings back the
-  back's inlay layers, and with the window bar color that filament too.
+  The back's mark uses the same two colors. On a None back the mark brings back the back's inlay
+  layers (about one more color change per layer: 6 layers on 0.2 mm, 3 on 0.4 mm), and with the
+  window bar color the gray filament too; the window bar color on the front adds it to the front's
+  layers the same way.
   `verify.py` lists the sample's reviewed spots at both positions.
 - **Back:** `back_style` is `terminal`, `plain` or `none` (plain black). Both designs print the
   same three lines, `back_line_1` to `back_line_3`; an empty one is skipped. The terminal style is

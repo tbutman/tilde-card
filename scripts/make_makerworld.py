@@ -34,8 +34,8 @@ HEADER = """\
 // sticker, sealed inside during the print, lets phones tap it too. Made for Tilde, the free
 // Android app that turns your phone into the same card.
 //
-// Click Customize and fill in Front of the card, Back of the card and Printing. The print settings
-// and the pause for the NFC sticker are in the model's description.
+// Click Customize and fill in the sections: the front, the back, the tap mark, colors and printing.
+// The print settings and the pause for the NFC sticker are in the model's description.
 //
 // Full source, instructions and the developer version: https://github.com/tbutman/tilde-card
 // (MIT; CC BY 4.0 on MakerWorld).

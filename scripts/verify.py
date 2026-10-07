@@ -190,6 +190,7 @@ def unreviewed(spots, face, reviewed):
 for label, img, colour, skip_x in [
     ("front light text", front, PARTS["light"], QR_FIELD_X_MM),
     ("front accent text", front, PARTS["accent"], None),
+    ("front chrome", front, PARTS["chrome"], None),  # only the tap mark, when it takes the window bar color
     ("back light text", back, PARTS["light"], None),
     ("back accent text", back, PARTS["accent"], None),
     ("back window bar", back, PARTS["chrome"], None),

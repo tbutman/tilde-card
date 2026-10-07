@@ -3,8 +3,8 @@
 // sticker, sealed inside during the print, lets phones tap it too. Made for Tilde, the free
 // Android app that turns your phone into the same card.
 //
-// Click Customize and fill in Front of the card, Back of the card and Printing. The print settings
-// and the pause for the NFC sticker are in the model's description.
+// Click Customize and fill in the sections: the front, the back, the tap mark, colors and printing.
+// The print settings and the pause for the NFC sticker are in the model's description.
 //
 // Full source, instructions and the developer version: https://github.com/tbutman/tilde-card
 // (MIT; CC BY 4.0 on MakerWorld).
@@ -24,10 +24,6 @@ website_on_card = "example.com";
 /* [Back of the card] */
 // What the back shows. None is plain black and prints fastest, with about half the color changes.
 back_style = "terminal"; // [terminal:Terminal window (a command and your lines), plain:Plain (your lines), none:None (plain black)]
-// Show the tap waves on the back too (only with an NFC sticker). Waves and label uses your tap label.
-back_tap_mark = "no"; // [no:No, waves:Waves only, label:Waves and label]
-// Which of your colors the back tap mark uses. The window bar color matches the terminal window's dots and bar.
-back_tap_mark_color = "chrome"; // [chrome:Window bar color, accent:Accent color, light:Light color]
 // The command shown after $ on the Terminal window back. Example: whoami
 terminal_command = "whoami";
 // Printed on the back, in either style. Leave a line empty to skip it. Example: jane doe
@@ -37,12 +33,22 @@ back_line_2 = "product designer";
 // Printed on the back, in either style. Leave a line empty to skip it. Example: jane@example.com
 back_line_3 = "jane@example.com";
 
+/* [Tap mark] */
+// The word next to the tap waves, up to about 14 characters (17 on the 0.2 mm nozzle). Leave it empty for just the waves. Example: tap to connect
+tap_label = "tap";
+// Which of your colors the tap waves use, on the front and the back.
+tap_waves_color = "accent"; // [accent:Accent color, light:Light color, chrome:Window bar color]
+// Which of your colors the tap label uses, on the front and the back.
+tap_label_color = "light"; // [light:Light color, accent:Accent color, chrome:Window bar color]
+// Show the tap waves on the back too (only with an NFC sticker). Waves and label uses your tap label.
+back_tap_mark = "no"; // [no:No, waves:Waves only, label:Waves and label]
+
 /* [Colors] */
 // The card, and the QR code's dark squares. Keep it dark so the code scans.
 card_color = "#16181b"; // color
-// The QR code's background, your name and the back's text. Keep it light so the code scans.
+// The QR code's background, your name, the back's text and the tap label. Keep it light so the code scans.
 light_color = "#f1efe8"; // color
-// The ~/, the line under your name, your website and the tap mark.
+// The ~/, the line under your name, your website and the tap waves.
 accent_color = "#ff9f1c"; // color
 // The window bar on the terminal back.
 window_bar_color = "#8e9089"; // color
@@ -52,8 +58,6 @@ window_bar_color = "#8e9089"; // color
 nozzle = 0.2; // [0.2:0.2 mm nozzle (sharpest), 0.4:0.4 mm nozzle (fastest)]
 // An NFC sticker sealed inside lets phones tap the card. Measure your stickers to pick thin or thick.
 nfc_sticker = "thin"; // [none:No NFC sticker (QR code only), thin:Thin NFC stickers 0.10-0.20 mm (1.6 mm card), thick:Thick NFC stickers 0.20-0.40 mm (1.8 mm card)]
-// The word next to the tap waves, up to about 14 characters (17 on the 0.2 mm nozzle). Leave it empty for just the waves. Example: tap to connect
-tap_label = "tap";
 
 /* [Hidden] */
 part = "preview"; // preview, body, light, accent or chrome
@@ -108,7 +112,7 @@ accent_w = 10.0;                      // amber rule under the name
 accent_h = 0.8;
 accent_gap = 3.4;                     // last name baseline to the top of the rule
 // Tap marker in the strip right of the QR code, over the NFC tag: generic NFC waves (not the
-// EMVCo payment symbol) and tap_label ("tap" by default), both amber, turned to read upwards.
+// EMVCo payment symbol) and tap_label, each in its chosen color, turned to read upwards.
 // The 0.2 nozzle uses Inter Bold at 2.6 mm; the 0.4 nozzle needs ExtraBold at 3 mm. A longer label
 // shrinks to fit the QR code's height, down to min_cap.
 tap_font = fine ? "Inter:style=Bold" : "Inter:style=ExtraBold";
@@ -518,7 +522,7 @@ module tap_label_2d() {
 }
 
 // The marker is laid out left to right around the dot at the origin, then turned to read upwards
-// and centered in the strip right of the QR code (amber, on the front), or, on the back, in the
+// and centered in the strip right of the QR code, or, on the back, in the
 // same strip seen from behind, at x = qr_right_margin / 2. Without a label, the waves center alone.
 module tap_place(x = card_w - qr_right_margin / 2, label = tap_label != "") {
     start = -tap_dot_d / 2;
@@ -526,13 +530,22 @@ module tap_place(x = card_w - qr_right_margin / 2, label = tap_label != "") {
     translate([x, card_h / 2]) rotate(90) translate([-(start + end) / 2, 0]) children();
 }
 
-// The back tap mark, as seen from behind, in the part `colour` names.
+// The parts of the front's tap marker that go in the part `colour` names: the waves in
+// tap_waves_color, the label in tap_label_color.
+module front_tap_2d(colour) {
+    if (nfc_enabled) tap_place() {
+        if (tap_waves_color == colour) tap_icon_2d();
+        if (tap_label_color == colour) tap_label_2d();
+    }
+}
+
+// The same for the back tap mark, as seen from behind.
 module back_tap_2d(colour) {
     with_label = back_tap_mark == "label" && tap_label != "";
-    if (back_mark_on && back_tap_mark_color == colour)
+    if (back_mark_on)
         tap_place(qr_right_margin / 2, with_label) {
-            tap_icon_2d();
-            if (with_label) tap_label_2d();
+            if (tap_waves_color == colour) tap_icon_2d();
+            if (with_label && tap_label_color == colour) tap_label_2d();
         }
 }
 
@@ -542,10 +555,7 @@ module accent_2d() {
     last_baseline = name_baseline - (len(name_lines) - 1) * name_size_fit * name_leading;
     translate([text_x, last_baseline - accent_gap - accent_h]) square([accent_w, accent_h]);
     // Without a tag the marker goes too; the QR code keeps its place, with even margins on three sides.
-    if (nfc_enabled) tap_place() {
-        tap_icon_2d();
-        tap_label_2d();
-    }
+    front_tap_2d("accent");
     translate([text_x, field_y]) offset(delta = domain_bolden) text(domain_text, size = domain_size_fit, font = domain_font);
 }
 
@@ -630,6 +640,7 @@ module light_2d() {
         mark_2d();
         mark_prefix_2d();
     }
+    front_tap_2d("light");
 }
 
 // ---- 3D parts ----
@@ -647,6 +658,7 @@ module body() {
         linear_extrude(card_t) rounded_rect([card_w, card_h], corner_r);
         inlay(0.01) light_2d();
         inlay(0.01) accent_2d();
+        inlay(0.01) front_tap_2d("chrome");
         back_inlay(0.01) back_light_view_2d();
         back_inlay(0.01) back_accent_view_2d();
         back_inlay(0.01) back_chrome_view_2d();
@@ -671,6 +683,7 @@ module accent() {
 }
 
 module chrome() {
+    inlay() front_tap_2d("chrome");
     back_inlay() back_chrome_view_2d();
 }
 
