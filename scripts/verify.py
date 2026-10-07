@@ -13,7 +13,8 @@ bottom-facing triangles at z = 0, flipped so it reads as it will when the card i
   thinner than that. Closing it with a `min_gap` disk must fill nothing: no gap inside or between
   letters is narrower than one nozzle line. Acute inner corners (the middle of a "w") always
   fill a sliver; fragments under 0.06 mm^2 are ignored, as for strokes.
-  Sharp glyph corners always lose a sliver, so fragments under 0.06 mm^2 are ignored.
+  Sharp glyph corners always lose a sliver, so fragments under 0.06 mm^2 are ignored, and
+  reviewed pointed tips are listed in KNOWN_THIN_TIPS.
 
     .venv/bin/python scripts/verify.py --dir out/nozzle-0.2 --min-stroke 0.3 --min-gap 0.22 [expected-url]
 
@@ -53,6 +54,17 @@ QR_FIELD_X_MM = (38.5, 78.6)  # the QR field's light area; light text sits on ei
 # mm; a change to the text moves them and brings the check back. Reviewed 5 October 2026:
 KNOWN_ACUTE_CORNERS = [
     ("back", 13.5, 37.8),  # the middle V of the mono "w" in "whoami"; it rounds slightly, still reads as a w
+]
+# Pointed stroke ends can lose more than a sliver to the stroke check's opening, though the stroke
+# itself is wide enough. Each reviewed tip is listed here the same way, matched by position.
+# Reviewed 7 October 2026, the Jane Doe sample on the 0.4 mm nozzle (0.5 mm opening):
+KNOWN_THIN_TIPS = [
+    # The four outer arm tips of the mono "x" in "jane@example.com" on the back: each loses
+    # 0.072 mm^2 and prints slightly blunt; the x still reads as an x.
+    ("back", 24.3, 20.2),
+    ("back", 26.7, 20.2),
+    ("back", 24.2, 17.5),
+    ("back", 26.8, 17.5),
 ]
 PARTS = {  # print colours: black PLA, white PLA, orange PLA
     "body": (22, 24, 27),
@@ -161,8 +173,8 @@ for label, img in {
     second = decode_opencv(img)
     report(second == EXPECTED, f"{label} (OpenCV, second opinion)", f"decoded {second!r}", advisory=True)
 
-def unreviewed(spots, face):
-    return [s for s in spots if not any(f == face and abs(s[0] - x) < 0.3 and abs(s[1] - y) < 0.3 for f, x, y in KNOWN_ACUTE_CORNERS)]
+def unreviewed(spots, face, reviewed):
+    return [s for s in spots if not any(f == face and abs(s[0] - x) < 0.3 and abs(s[1] - y) < 0.3 for f, x, y in reviewed)]
 
 
 for label, img, colour, skip_x in [
@@ -172,9 +184,9 @@ for label, img, colour, skip_x in [
     ("back accent text", back, PARTS["accent"], None),
     ("back window bar", back, PARTS["chrome"], None),
 ]:
-    thin = thin_strokes(img, colour, skip_x)
+    thin = unreviewed(thin_strokes(img, colour, skip_x), label.split()[0], KNOWN_THIN_TIPS)
     failed |= report(not thin, f"{label} strokes >= {MIN_STROKE_MM} mm", f"thin at {thin}" if thin else "")
-    narrow = unreviewed(thin_strokes(img, colour, skip_x, gaps=True), label.split()[0])
+    narrow = unreviewed(thin_strokes(img, colour, skip_x, gaps=True), label.split()[0], KNOWN_ACUTE_CORNERS)
     detail = f"{len(narrow)} narrow spots, e.g. {narrow[:3]}" if narrow else ""
     failed |= report(not narrow, f"{label} gaps >= {MIN_GAP_MM} mm", detail, advisory=args.gaps_advisory)
 

@@ -87,7 +87,11 @@ limits to `verify.py`.
   it misses some valid symbols (for `https://tbutman.com/hello`, masks 5 and 6 at full
   resolution, including segno's own), which ZXing reads;
 - on both faces, opening each text mask with a `min_stroke` disk (0.3 mm / 0.5 mm) loses nothing
-  larger than a glyph-corner sliver (0.06 mm²): no stroke is thinner than that;
+  larger than a glyph-corner sliver (0.06 mm²): no stroke is thinner than that. Pointed stroke
+  ends can lose a little more though the stroke is wide enough, so each reviewed one is listed in
+  `KNOWN_THIN_TIPS`, matched by position so a change to the text brings the check back (currently
+  the four arm tips of the `x` in the sample's `jane@example.com` on the 0.4 mm back, 0.072 mm²
+  each: they print slightly blunt);
 - closing it with a `min_gap` disk (0.22 mm, one 0.2 mm line / 0.34 mm, the slicer's narrowest
   wall for a 0.4 mm nozzle) fills nothing: no gap inside or between letters is narrower. Acute
   inner corners always fill a little, so each reviewed one is listed in `KNOWN_ACUTE_CORNERS`
