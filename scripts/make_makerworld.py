@@ -17,9 +17,10 @@ EXAMPLE = {
     "handle": "janedoe",
     "qr_code_link": "https://example.com",
     "website_on_card": "example.com",
-    "terminal_name": "jane doe",
-    "job_title": "product designer",
-    "email": "jane@example.com",
+    "terminal_command": "whoami",
+    "back_line_1": "jane doe",
+    "back_line_2": "product designer",
+    "back_line_3": "jane@example.com",
 }
 
 source = (ROOT / "card.scad").read_text()

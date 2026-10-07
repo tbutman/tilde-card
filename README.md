@@ -24,8 +24,9 @@ own, and any NFC app can write the sticker. More about Tilde and the card:
   rest of the card prints over it, sealing it inside; iPhones and Android phones with NFC then open
   your link when tapped against the marked spot. Without one, it's a QR card: no stickers and no
   pause.
-- **Three backs to choose from:** a terminal window (`$ whoami`, as above), a plain one with your
-  name, title and email, or none, which prints fastest.
+- **Three backs to choose from:** a terminal window (`$ whoami`, as above), a plain one, or none,
+  which prints fastest. Both designs print three lines you choose, such as your name, title and
+  email.
 - **Four colours of PLA**, printed in one go on a printer with an AMS (or another multi-colour
   system). No painting or gluing.
 

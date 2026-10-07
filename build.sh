@@ -63,13 +63,13 @@ fi
 
 # The MakerWorld file: write it, then build and check sample cards from it the way MakerWorld
 # would, with the fonts found by name (OPENSCAD_FONT_PATH stands in for its installed fonts): the
-# default, and a QR-only card with no NFC sticker and the plain back.
+# default, and a QR-only card with no NFC sticker and the plain back, its first line typed as "Jane Doe".
 .venv/bin/python scripts/make_makerworld.py
 sample_url=$(link_in makerworld/tilde-card.scad)
 for sample in default qr-only-plain; do
   dir="out/makerworld-sample"
   extra=()
-  if [[ $sample == qr-only-plain ]]; then dir+="-qr-only-plain"; extra=(-D 'nfc_sticker="none"' -D 'back_style="plain"'); fi
+  if [[ $sample == qr-only-plain ]]; then dir+="-qr-only-plain"; extra=(-D 'nfc_sticker="none"' -D 'back_style="plain"' -D 'back_line_1="Jane Doe"'); fi
   mkdir -p "$dir"
   rm -f "$dir"/card-*.stl  # a part with nothing in it writes no file, so clear old ones
   echo "== MakerWorld file, $sample, 0.2 mm nozzle -> $dir"

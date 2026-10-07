@@ -75,14 +75,20 @@ phones with NFC read it straight away.
 account, subscription or service in between: the card opens your own website, and the sticker holds
 whatever you write to it.
 
-**Make it yours.** Click **Customize** to type in your name, job title, email, website and colours.
+**Make it yours.** Click **Customize** to type in your name, website, the lines on the back and the
+colours.
 The QR code is made for your link automatically, and long names shrink to fit.
 
 **Choose your card:**
 - **NFC sticker:** none (a QR card: no stickers, no pause), or thin or thick NFC stickers, sealed
   inside halfway through the print, invisible and protected.
-- **The back:** a terminal window (`$ whoami`, for the developers), a plain back with your name,
-  title and email, or none, which prints fastest.
+- **The back:** a terminal window (`$ whoami`, for the developers; the command is yours to
+  change), a plain back, or none, which prints fastest. Both designs print three lines you choose,
+  such as your name, title and email.
+
+Want your own design on the back? Choose **None** for a plain back and add your text or logo in
+Bambu Studio: the back is the top face as it prints, so the text and colour-painting tools work
+there, and the sticker's pause layer doesn't change.
 
 **Your whole contact card in one tap.** With an NFC sticker, the card can hold more than a link:
 write your **contact card** to it, and one tap offers to save your name, title, company, phone

@@ -12,9 +12,10 @@
 // - Front: your name over one or two lines, the ~/ handle, the QR code's link and your website.
 //   Long text shrinks to fit; if it still won't, the preview stops with a message saying what to
 //   change.
-// - Back: a terminal window prints terminal_name, job_title and email; the plain back prints your
-//   name from the front, job_title and email in Inter; none is plain black. Empty lines are left
-//   out.
+// - Back: three lines that both styles share. The terminal window prints "$ " and the command,
+//   then the lines, then a cursor, in JetBrains Mono; the plain back prints the lines in Inter, the
+//   first larger and the second in the accent colour; none is plain black. Empty lines are
+//   skipped, and long lines shrink to fit.
 // - Printing: the nozzle and NFC sticker change the layers, the pocket and the pause; PRINTING.md
 //   explains them. Up to 0.20 mm stickers are thin (a 1.6 mm card), up to 0.40 mm thick (1.8 mm).
 //
@@ -37,13 +38,15 @@ website_on_card = "example.com";
 
 /* [Back of the card] */
 // What the back shows. None is plain black and prints fastest, with about half the colour changes.
-back_style = "terminal"; // [terminal:Terminal window (whoami), plain:Plain (name and title and email), none:None (plain black)]
-// Your name as the terminal back prints it, usually in lower case. Leave it empty to leave it out. Example: jane doe
-terminal_name = "jane doe";
-// Your job title, on either back. Leave it empty to leave it out. Example: product designer
-job_title = "product designer";
-// Your email, on either back. Leave it empty to leave it out. Example: jane@example.com
-email = "jane@example.com";
+back_style = "terminal"; // [terminal:Terminal window (a command and your lines), plain:Plain (your lines), none:None (plain black)]
+// The command shown after $ on the Terminal window back. Example: whoami
+terminal_command = "whoami";
+// Printed on the back, in either style. Leave a line empty to skip it. Example: jane doe
+back_line_1 = "jane doe";
+// Printed on the back, in either style. Leave a line empty to skip it. Example: product designer
+back_line_2 = "product designer";
+// Printed on the back, in either style. Leave a line empty to skip it. Example: jane@example.com
+back_line_3 = "jane@example.com";
 
 /* [Colours] */
 // The card, and the QR code's dark squares. Keep it dark so the code scans.
@@ -136,13 +139,13 @@ domain_size = 3.2;
 domain_bolden = fine ? 0 : 0.03;       // the "a" joint sits right at 0.5 mm
 
 // Back. Terminal style: lines as [amber prompt, light text]; the last line ends in an amber cursor
-// block. Plain style: name (light), title (amber) and email (light) in Inter, centred vertically.
+// block. Plain style: the three lines in Inter, centred vertically: the first larger (light), the
+// second amber, the third light.
 back_enabled = back_style != "none";
 terminal = back_style == "terminal";
 plain = back_style == "plain";
-plain_name = str(first_name, first_name != "" && last_name != "" ? " " : "", last_name);
-plain_lines = [for (line = [[plain_name, "light", true], [job_title, "accent", false], [email, "light", false]])
-    if (line[0] != "") line];             // [text, colour, is the name]
+plain_lines = [for (line = [[back_line_1, "light", true], [back_line_2, "accent", false], [back_line_3, "light", false]])
+    if (line[0] != "") line];             // [text, colour, is the first (larger) line]
 plain_name_size = 4.4;
 plain_size = 3.2;
 plain_font = "Inter:style=ExtraBold";
@@ -150,8 +153,8 @@ plain_bolden = fine ? 0 : 0.03;       // as for the website on the front
 plain_name_gap = 7.0;                 // name baseline to the next baseline
 plain_gap = 5.4;                      // between the smaller lines
 back_lines = [
-    ["$ ", "whoami"],
-    each [for (line = [terminal_name, job_title, email]) if (line != "") ["", line]],
+    ["$ ", terminal_command],
+    each [for (line = [back_line_1, back_line_2, back_line_3]) if (line != "") ["", line]],
     ["$ ", ""],
 ];
 back_font = "JetBrains Mono:style=ExtraBold";
@@ -396,13 +399,15 @@ assert(name_size_fit >= min_cap - 1e-6,
 assert(mark_size_fit >= min_cap - 1e-6,
        str("The handle is too long: up to ", floor(text_room / (0.822 * min_cap)) - len(mark_prefix), " characters fit.", too_long_hint));
 assert(domain_size_fit >= min_cap - 1e-6, str("The website text is too long. Shorten it, or leave out the https:// and www.", too_long_hint));
+back_max_chars = floor((card_w - 2 * back_x) / (0.822 * min_cap));
 assert(!terminal || back_size_fit >= min_cap - 1e-6,
-       str("A line on the back is too long: up to ", floor((card_w - 2 * back_x) / (0.822 * min_cap)) - 2, " characters fit.", too_long_hint));
+       str("A back line or the terminal command is too long: up to ", back_max_chars, " characters fit on a line, and ",
+           back_max_chars - 2, " in the command after $. Shorten it.", too_long_hint));
 assert(qr_module >= 1, "QR modules must be at least 1 mm");
 assert(qr_quiet >= 4, "QR needs a 4-module quiet zone");
 assert(inlay_t >= 0.4, "contrast layer must be at least 0.4 mm");
 assert(!plain || min(plain_name_fit, plain_size_fit) >= min_cap - 1e-6,
-       str("A line on the back is too long. Shorten it, or use the terminal style, which fits more.", too_long_hint));
+       str("A back line is too long for the plain back. Shorten it, or use the Terminal window style, which fits more.", too_long_hint));
 assert(back_style == "terminal" || back_style == "plain" || back_style == "none", "back_style is terminal, plain or none");
 assert(min(mark_size_fit, name_size_fit, domain_size_fit, tap_size, back_size_fit, plain ? plain_name_fit : min_cap, plain ? plain_size_fit : min_cap) >= min_cap - 1e-6, str("cap height must be at least ", min_cap, " mm"));
 assert(min(tap_stroke, tap_dot_d) >= min_stroke, str("strokes must be at least ", min_stroke, " mm"));

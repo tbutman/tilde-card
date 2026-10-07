@@ -18,12 +18,12 @@ The technical side of the card: how the model is built, checked and generated. T
   thick, or 0.4 mm deep with `nfc_sticker = "thick"`, which makes the card 1.8 mm thick. A "tap" marker (NFC waves, not the EMVCo payment symbol, and
   the word "tap", both amber), turned to read upwards, sits in the strip right of the QR code,
   over the tag.
-- **Back:** `back_style` is `terminal`, `plain` (the name from the front, the title in amber and
-  the email, in Inter, centred vertically and shrunk to fit like the front) or `none` (plain
-  black). The terminal style is a window: a gray title bar (three dots and a rule), then a session
-  (`$ whoami`, name, role, email, cursor) anchored under it, inlaid 0.6 mm. It reads correctly
-  when the card is turned over sideways. Each line is a setting (`terminal_name`, `job_title`,
-  `email`); an empty one is left out.
+- **Back:** `back_style` is `terminal`, `plain` or `none` (plain black). Both designs print the
+  same three lines, `back_line_1` to `back_line_3`; an empty one is skipped. The terminal style is
+  a window: a gray title bar (three dots and a rule), then a session (`$ ` and `terminal_command`,
+  `whoami` by default, the three lines, a cursor) anchored under it, inlaid 0.6 mm. The plain style
+  prints the lines in Inter, centred vertically: the first larger, the second in amber. Both shrink
+  to fit like the front. The back reads correctly when the card is turned over sideways.
 - **Print orientation:** the front prints face-down (`face_down = "front"`), because the plate
   side came out flat and matte on the first sample and the top side came out ridged. The STLs
   are exported already lying that way: the model turned over about its long axis, a rotation
@@ -42,7 +42,7 @@ Two versions are built from the same model, `out/nozzle-0.2/` and `out/nozzle-0.
 | `card.scad` | The parametric model, one self-contained file. The Customizer sections at the top are the settings people change, one help line each (MakerWorld shows only one); `[Hidden]` holds the layout. The defaults are the sample card, Jane Doe. |
 | `card.local.example.scad` | A template for `card.local.scad` (git-ignored): your own settings, one `setting = value;` per line, which `build.sh` passes to OpenSCAD as `-D` flags. |
 | `makerworld/tilde-card.scad` | The copy uploaded to MakerWorld's customizer, written by `scripts/make_makerworld.py`: no font file lines, and the example person Jane Doe as the defaults. Never edited by hand. |
-| `out/makerworld-sample/`, `out/makerworld-sample-qr-only-plain/` | Cards built from the MakerWorld copy, to check it renders and passes the checks: the default, and one with no NFC sticker and the plain back. |
+| `out/makerworld-sample/`, `out/makerworld-sample-qr-only-plain/` | Cards built from the MakerWorld copy, to check it renders and passes the checks: the default, and one with no NFC sticker and the plain back (its first line typed as "Jane Doe"). |
 | `out/nozzle-{0.2,0.4}/card-{body,light,accent,chrome}.stl` | The sample card (Jane Doe): one STL per colour (black, white, orange, gray), per nozzle, for stickers up to 0.2 mm. |
 | `out/nozzle-{0.2,0.4}-thick-sticker/` | The same for stickers up to 0.4 mm: a 1.8 mm card with a deeper pocket. |
 | `out/nozzle-*/card-{top,back}-surface.png` | Each face as printed, rasterised from the STLs (the back as seen from behind); the QR check decodes the front. |
