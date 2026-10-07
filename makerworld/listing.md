@@ -21,7 +21,7 @@ The text below the line is the model page, ready to paste into MakerWorld. Image
       card.
 - [x] Licence: **CC BY 4.0** (anyone may print, remix and sell cards, with credit). The source
       repo is MIT.
-- [ ] Publish Tilde on GitHub first, and this repo too (or drop its link), so the links below work.
+- [x] Publish Tilde on GitHub first, and this repo too (or drop its link), so the links below work.
 
 **Trying it in the Parametric Model Maker** (before publishing):
 
@@ -171,10 +171,12 @@ your screen. One tap on your screen switches what you share, to suit who you're 
 - **WhatsApp:** opens a chat with you, with a greeting ready to send.
 - **Guest Wi-Fi:** joins your network without typing the password.
 
-No account, no ads, no subscription and no internet permission: your details stay on your phone.
-Download it at [tbutman.com/tilde](https://tbutman.com/tilde).
+Keep several cards (work, personal, an event) and switch with a swipe. In English and Portuguese.
 It keeps a list of who you've met, and it writes your link or contact card onto this card's tag.
-The Tilde card is optional for Tilde users, and Tilde is optional for the card.
+
+No account, no ads, no subscription and no internet permission: your details stay on your phone.
+The Tilde card is optional for Tilde users, and Tilde is optional for the card. Download Tilde at
+[tbutman.com/tilde](https://tbutman.com/tilde).
 
 ### Print settings
 
