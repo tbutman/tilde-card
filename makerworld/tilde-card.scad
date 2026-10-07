@@ -8,45 +8,58 @@
 // both faces; the dark QR modules are the black body showing through the white field. The QR code
 // is generated here, so the model is a single file.
 //
+// The settings, one help line each (MakerWorld shows only one):
+// - Front: your name over one or two lines, the ~/ handle, the QR code's link and your website.
+//   Long text shrinks to fit; if it still won't, the preview stops with a message saying what to
+//   change.
+// - Back: a terminal window prints terminal_name, job_title and email; the plain back prints your
+//   name from the front, job_title and email in Inter; none is plain black. Empty lines are left
+//   out.
+// - Printing: the nozzle and NFC sticker change the layers, the pocket and the pause; PRINTING.md
+//   explains them. Up to 0.20 mm stickers are thin (a 1.6 mm card), up to 0.40 mm thick (1.8 mm).
+//
+// The defaults are the sample card, Jane Doe. build.sh builds your own card from card.local.scad
+// when it exists (see card.local.example.scad).
+//
 // part = "preview" gives all four in colour; build.sh exports one STL per part with -D part=...
 
-/* [Your details] */
-// Your name, over one or two lines. Leave the second line empty for one line.
-name_line_1 = "Jane";
-name_line_2 = "Doe";
-// Shown after "~/" at the top, like a folder in a terminal. Leave empty to leave it out.
+/* [Front of the card] */
+// Your first name, on the first line. Example: Jane
+first_name = "Jane";
+// Your last name, on the second line. Leave it empty to fit your whole name on one line. Example: Doe
+last_name = "Doe";
+// Shown after ~/ at the top, like a folder in a terminal. Leave it empty to leave it out. Example: janedoe
 handle = "janedoe";
-// What the QR code opens. Use the same link when you write the NFC sticker. Up to 53 characters.
-qr_url = "https://example.com";
-// Your website as printed under your name. Leave empty to leave it out.
-website_text = "example.com";
+// The link the QR code opens: up to 53 characters. Write the same one to your NFC sticker. Example: https://example.com
+qr_code_link = "https://example.com";
+// Your website, printed under your name. Leave it empty to leave it out. Example: example.com
+website_on_card = "example.com";
 
 /* [Back of the card] */
-// Terminal: a terminal window running "whoami". Plain: your name, title and email. None: a plain
-// black back, which prints faster with far fewer colour changes.
-back_style = "terminal"; // [terminal:Terminal window, plain:Plain, none:None (plain black)]
-// Your name as the terminal style prints it. The plain style uses your name from the front.
-back_name = "jane doe";
-back_title = "product designer";
-back_email = "jane@example.com";
+// What the back shows. None is plain black and prints fastest, with about half the colour changes.
+back_style = "terminal"; // [terminal:Terminal window (whoami), plain:Plain (name and title and email), none:None (plain black)]
+// Your name as the terminal back prints it, usually in lower case. Leave it empty to leave it out. Example: jane doe
+terminal_name = "jane doe";
+// Your job title, on either back. Leave it empty to leave it out. Example: product designer
+job_title = "product designer";
+// Your email, on either back. Leave it empty to leave it out. Example: jane@example.com
+email = "jane@example.com";
 
 /* [Colours] */
-// The card itself and the QR code's dark squares.
-body_color = "#16181b"; // color
-// The QR code's background, your name and the back's text.
+// The card, and the QR code's dark squares. Keep it dark so the code scans.
+card_color = "#16181b"; // color
+// The QR code's background, your name and the back's text. Keep it light so the code scans.
 light_color = "#f1efe8"; // color
-// The "~/", the line under your name, the website and the tap waves.
+// The ~/, the line under your name, your website and the tap mark.
 accent_color = "#ff9f1c"; // color
-// The window bar on the back.
-chrome_color = "#8e9089"; // color
+// The window bar on the terminal back.
+window_bar_color = "#8e9089"; // color
 
 /* [Printing] */
-// The 0.2 mm nozzle prints the sharpest text; the 0.4 mm nozzle is over three times faster.
-nozzle = 0.2; // [0.2:0.2 mm nozzle, 0.4:0.4 mm nozzle]
-// The NFC sticker is optional: without one, the card is QR code only, with no pause in the print.
-// With one, measure your stickers: up to 0.20 mm is "thin" (a 1.6 mm card); up to 0.40 mm is
-// "thick" (1.8 mm).
-nfc_sticker = "thin"; // [none:No NFC sticker (QR code only), thin:Thin NFC stickers (0.10-0.20 mm), thick:Thick NFC stickers (0.20-0.40 mm)]
+// Your printer's nozzle. 0.2 mm prints the sharpest text; 0.4 mm is over three times faster.
+nozzle = 0.2; // [0.2:0.2 mm nozzle (sharpest), 0.4:0.4 mm nozzle (fastest)]
+// An NFC sticker sealed inside lets phones tap the card. Measure your stickers to pick thin or thick.
+nfc_sticker = "thin"; // [none:No NFC sticker (QR code only), thin:Thin NFC stickers 0.10-0.20 mm (1.6 mm card), thick:Thick NFC stickers 0.20-0.40 mm (1.8 mm card)]
 
 /* [Hidden] */
 part = "preview"; // preview, body, light, accent or chrome
@@ -92,7 +105,7 @@ mark_name = handle;                   // light
 mark_font = "JetBrains Mono:style=ExtraBold";
 mark_size = 4.0;
 mark_bolden = fine ? 0 : 0.05;        // grows each stroke edge: the mono "a" joint is under 0.5 mm
-name_lines = [for (line = [name_line_1, name_line_2]) if (line != "") line];
+name_lines = [for (line = [first_name, last_name]) if (line != "") line];
 name_font = "Inter:style=ExtraBold";
 name_size = 5.2;
 name_leading = 1.45;                  // baseline-to-baseline, as a multiple of the name's size
@@ -117,7 +130,7 @@ tap_stroke = 0.6;                     // leaves 0.55 mm of black between waves
 tap_spread = 80;                      // degrees covered by each wave; sets the icon's width in the strip
 tap_gap = 1.6;                        // icon to label
 tap_bolden = fine ? 0 : 0.05;         // grows each stroke edge: the ExtraBold "a" joint is under 0.5 mm
-domain_text = website_text;
+domain_text = website_on_card;
 domain_font = "Inter:style=ExtraBold";
 domain_size = 3.2;
 domain_bolden = fine ? 0 : 0.03;       // the "a" joint sits right at 0.5 mm
@@ -127,8 +140,8 @@ domain_bolden = fine ? 0 : 0.03;       // the "a" joint sits right at 0.5 mm
 back_enabled = back_style != "none";
 terminal = back_style == "terminal";
 plain = back_style == "plain";
-plain_name = str(name_line_1, name_line_1 != "" && name_line_2 != "" ? " " : "", name_line_2);
-plain_lines = [for (line = [[plain_name, "light", true], [back_title, "accent", false], [back_email, "light", false]])
+plain_name = str(first_name, first_name != "" && last_name != "" ? " " : "", last_name);
+plain_lines = [for (line = [[plain_name, "light", true], [job_title, "accent", false], [email, "light", false]])
     if (line[0] != "") line];             // [text, colour, is the name]
 plain_name_size = 4.4;
 plain_size = 3.2;
@@ -138,7 +151,7 @@ plain_name_gap = 7.0;                 // name baseline to the next baseline
 plain_gap = 5.4;                      // between the smaller lines
 back_lines = [
     ["$ ", "whoami"],
-    each [for (line = [back_name, back_title, back_email]) if (line != "") ["", line]],
+    each [for (line = [terminal_name, job_title, email]) if (line != "") ["", line]],
     ["$ ", ""],
 ];
 back_font = "JetBrains Mono:style=ExtraBold";
@@ -177,7 +190,7 @@ function mono_width(s) = 0.822 * len(s);
 function fit(size, widths, room) = let(widest = max(concat([0], widths))) widest == 0 ? size : min(size, room / widest);
 
 // ---- QR encoder ----
-// Turns qr_url into a QR code inside OpenSCAD, so the model is one file (MakerWorld's customizer
+// Turns qr_code_link into a QR code inside OpenSCAD, so the model is one file (MakerWorld's customizer
 // takes a single file). Byte mode, versions 1-3 (21-29 modules, which fit the card at 1 mm or more
 // per module), error correction M, or L when M can't fit the link. ISO/IEC 18004; the comments
 // name the steps. scripts/test_qr.py checks the output module for module against segno.
@@ -342,8 +355,8 @@ function qr_runs(matrix) = [for (r = [0 : len(matrix) - 1]) let(row = matrix[r],
 $fn = 96;
 
 // ---- Derived values ----
-qr = qr_encode(qr_url, qr_mask);
-assert(qr != undef, str("The QR code's link is ", len(qr_utf8(qr_url)), " characters long, and up to 53 fit on the card. Use a shorter link."));
+qr = qr_encode(qr_code_link, qr_mask);
+assert(qr != undef, str("The QR code's link is ", len(qr_utf8(qr_code_link)), " characters long, and up to 53 fit on the card. Use a shorter link."));
 qr_n = qr[0];
 qr_module = qr_field / (qr_n + 2 * qr_quiet);
 field = qr_field;
@@ -379,7 +392,7 @@ assert(len(name_lines) > 0, "Add your name.");
 // Long text can shrink to the smallest size the nozzle prints cleanly; past that, say what to do.
 too_long_hint = fine ? "" : " The 0.2 mm nozzle prints smaller text, so more fits.";
 assert(name_size_fit >= min_cap - 1e-6,
-       str("Your name is too long to fit. Split it over the two name lines, or shorten it.", too_long_hint));
+       str("Your name is too long to fit. Split it between first name and last name, or shorten it.", too_long_hint));
 assert(mark_size_fit >= min_cap - 1e-6,
        str("The handle is too long: up to ", floor(text_room / (0.822 * min_cap)) - len(mark_prefix), " characters fit.", too_long_hint));
 assert(domain_size_fit >= min_cap - 1e-6, str("The website text is too long. Shorten it, or leave out the https:// and www.", too_long_hint));
@@ -649,9 +662,9 @@ print_orientation() {
     else if (part == "accent") accent();
     else if (part == "chrome") chrome();
     else {
-        color(body_color) body();
+        color(card_color) body();
         color(light_color) light();
         color(accent_color) accent();
-        color(chrome_color) chrome();
+        color(window_bar_color) chrome();
     }
 }

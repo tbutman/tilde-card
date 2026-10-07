@@ -151,7 +151,7 @@ thick they are, because it decides which version you print:
 7. Done. Tap it with your phone to try it.
 
 **What fits:** a link of up to 53 characters. Long names shrink to fit; if one is still too long,
-the preview tells you what to change (such as splitting it over the two name lines).
+the preview tells you what to change (such as splitting it between first name and last name).
 
 The card prints face-down, so you'll see the back on top in the slicer. That's on purpose: the
 side on the plate comes out smoothest, so that's the front.

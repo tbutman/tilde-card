@@ -29,8 +29,8 @@ own, and any NFC app can write the sticker. More about Tilde and the card:
 - **Four colours of PLA**, printed in one go on a printer with an AMS (or another multi-colour
   system). No painting or gluing.
 
-The files in `out/` are Thomas Butman's own card. To make yours, type in your name, links and
-colours on MakerWorld (coming soon) or in OpenSCAD's Customizer: see
+The files in `out/` are a sample card for Jane Doe, an example person. To make yours, type in your
+name, links and colours on MakerWorld (coming soon) or in OpenSCAD's Customizer: see
 [Make it yours](PRINTING.md#make-it-yours).
 
 ## Print one

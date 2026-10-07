@@ -23,7 +23,8 @@ QR card, and you can skip everything about stickers and the pause.
 
 ## Make it yours
 
-The files in `out/` are Thomas's own card. To print yours, put in your details first:
+The files in `out/` are a sample card for Jane Doe, an example person. To print yours, put in your
+details first:
 
 - **On MakerWorld (coming soon; the easiest):** open the model page, click **Customize**, and fill
   in your name, link, website, the back of the card and the colours. Under **Printing**, choose your
@@ -44,7 +45,7 @@ The choices that change the print:
 **What fits:** a link of up to 53 characters (shorter is better: the QR code gets bigger squares).
 Long names, handles and websites shrink to fit; if something is too long even at the smallest
 printable size, the preview stops with a message saying what to change, such as splitting a long
-name over the two name lines. The 0.2 mm nozzle prints smaller text, so more fits.
+name between **first name** and **last name**. The 0.2 mm nozzle prints smaller text, so more fits.
 
 ## Choose a nozzle
 
@@ -115,7 +116,7 @@ before you buy.
 2. Open your card:
    - **Your own card (a 3MF from MakerWorld or OpenSCAD):** open it, then check that each of its
      four colours is assigned to the right filament: black, white, orange and grey.
-   - **Thomas's card (the STLs in `out/`):** drag in all four files from one version's folder at
+   - **The sample card (the STLs in `out/`):** drag in all four files from one version's folder at
      once (`card-body.stl`, `card-light.stl`, `card-accent.stl`, `card-chrome.stl`). When asked
      whether to load them as **a single object with multiple parts**, choose **Yes**.
 3. If you loaded the STLs, set each part's filament: **body** → black, **light** → white,

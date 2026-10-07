@@ -1,8 +1,8 @@
 """Write makerworld/tilde-card.scad, the file uploaded to MakerWorld's customizer.
 
-It is card.scad with two changes: no `use <fonts/...>` lines (MakerWorld has the same fonts
-installed, and the local files aren't there), and the example person Jane Doe as the defaults, so
-the model page shows a sample card rather than Thomas's.
+It is card.scad without the `use <fonts/...>` lines (MakerWorld has the same fonts installed, and
+the local files aren't there). The defaults are set to the example person Jane Doe, as card.scad's
+already are, so the model page always shows the sample card.
 
     .venv/bin/python scripts/make_makerworld.py
 """
@@ -12,14 +12,14 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 EXAMPLE = {
-    "name_line_1": "Jane",
-    "name_line_2": "Doe",
+    "first_name": "Jane",
+    "last_name": "Doe",
     "handle": "janedoe",
-    "qr_url": "https://example.com",
-    "website_text": "example.com",
-    "back_name": "jane doe",
-    "back_title": "product designer",
-    "back_email": "jane@example.com",
+    "qr_code_link": "https://example.com",
+    "website_on_card": "example.com",
+    "terminal_name": "jane doe",
+    "job_title": "product designer",
+    "email": "jane@example.com",
 }
 
 source = (ROOT / "card.scad").read_text()

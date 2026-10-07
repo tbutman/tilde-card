@@ -6,7 +6,7 @@ The technical side of the card: how the model is built, checked and generated. T
 ## Specifications
 
 - **Size:** ID-1 (85.60 × 53.98 mm, 3.2 mm corners), 1.6 mm thick; 1.8 mm for thick stickers.
-- **QR code:** generated in `card.scad` from `qr_url`: byte mode, version 1–3 with error
+- **QR code:** generated in `card.scad` from `qr_code_link`: byte mode, version 1–3 with error
   correction M (or L when M can't hold the link), up to 53 characters. The modules scale to fill a
   fixed 39.6 mm white field that includes the full 4-module quiet zone: 1.37 mm (version 1),
   1.2 mm (version 2, as for `https://tbutman.com/hello`) or 1.07 mm (version 3). Black modules on
@@ -22,8 +22,8 @@ The technical side of the card: how the model is built, checked and generated. T
   the email, in Inter, centred vertically and shrunk to fit like the front) or `none` (plain
   black). The terminal style is a window: a gray title bar (three dots and a rule), then a session
   (`$ whoami`, name, role, email, cursor) anchored under it, inlaid 0.6 mm. It reads correctly
-  when the card is turned over sideways. Each line is a setting (`back_name`, `back_title`,
-  `back_email`); an empty one is left out.
+  when the card is turned over sideways. Each line is a setting (`terminal_name`, `job_title`,
+  `email`); an empty one is left out.
 - **Print orientation:** the front prints face-down (`face_down = "front"`), because the plate
   side came out flat and matte on the first sample and the top side came out ridged. The STLs
   are exported already lying that way: the model turned over about its long axis, a rotation
@@ -39,13 +39,15 @@ Two versions are built from the same model, `out/nozzle-0.2/` and `out/nozzle-0.
 
 | Path | What |
 | --- | --- |
-| `card.scad` | The parametric model, one self-contained file. The Customizer sections at the top are the settings people change; `[Hidden]` holds the layout. |
+| `card.scad` | The parametric model, one self-contained file. The Customizer sections at the top are the settings people change, one help line each (MakerWorld shows only one); `[Hidden]` holds the layout. The defaults are the sample card, Jane Doe. |
+| `card.local.example.scad` | A template for `card.local.scad` (git-ignored): your own settings, one `setting = value;` per line, which `build.sh` passes to OpenSCAD as `-D` flags. |
 | `makerworld/tilde-card.scad` | The copy uploaded to MakerWorld's customizer, written by `scripts/make_makerworld.py`: no font file lines, and the example person Jane Doe as the defaults. Never edited by hand. |
-| `out/makerworld-sample/`, `out/makerworld-sample-qr-only-plain/` | Cards built from the MakerWorld copy, to check it renders and passes the checks: the default, and one with no NFC tag and the plain back. |
-| `out/nozzle-{0.2,0.4}/card-{body,light,accent,chrome}.stl` | One STL per colour (black, white, orange, gray), per nozzle, for stickers up to 0.2 mm. |
+| `out/makerworld-sample/`, `out/makerworld-sample-qr-only-plain/` | Cards built from the MakerWorld copy, to check it renders and passes the checks: the default, and one with no NFC sticker and the plain back. |
+| `out/nozzle-{0.2,0.4}/card-{body,light,accent,chrome}.stl` | The sample card (Jane Doe): one STL per colour (black, white, orange, gray), per nozzle, for stickers up to 0.2 mm. |
 | `out/nozzle-{0.2,0.4}-thick-sticker/` | The same for stickers up to 0.4 mm: a 1.8 mm card with a deeper pocket. |
 | `out/nozzle-*/card-{top,back}-surface.png` | Each face as printed, rasterised from the STLs (the back as seen from behind); the QR check decodes the front. |
 | `out/nozzle-*/preview.png` | A 3/4 render of the front, from the colour STLs. |
+| `out/local/` | Your own card, built from `card.local.scad` when it exists, in the same layout as `out/`. Git-ignored. |
 | `fonts/` | Static instances of the site's variable fonts (SIL Open Font License; see the licence files). |
 | `scripts/` | Checks (`verify.py`, `test_qr.py`), the preview render and the MakerWorld copy. |
 
@@ -61,7 +63,8 @@ python3.13 -m venv .venv && .venv/bin/pip install -r requirements.txt
 ```
 
 For each nozzle (`./build.sh 0.2` builds just one) and sticker thickness, `build.sh` exports the
-four STLs, runs the checks below and re-renders the preview. Then it writes the MakerWorld copy
+four STLs, runs the checks below and re-renders the preview: the sample card into `out/`, and, if
+`card.local.scad` exists, your own card into `out/local/` (copy `card.local.example.scad` to start). Then it writes the MakerWorld copy
 and builds and checks a sample card from it, with the fonts found by name as MakerWorld finds
 them. To try settings interactively, open `card.scad` in any recent OpenSCAD and use the
 Customizer.

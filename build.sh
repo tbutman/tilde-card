@@ -4,6 +4,8 @@
 # out/nozzle-<size>-thick-sticker/ (up to 0.4 mm). Pass nozzle sizes to build only those:
 #   ./build.sh          # 0.2 and 0.4
 #   ./build.sh 0.2
+# out/ holds the sample card, Jane Doe (card.scad's defaults). If card.local.scad exists (git-ignored;
+# start from card.local.example.scad), your own card is built too, into out/local/ (also ignored).
 # Needs Docker (OpenSCAD runs in the openscad/openscad:dev image) and the Python venv:
 #   python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 set -euo pipefail
@@ -13,12 +15,16 @@ nozzles=("$@")
 [[ ${#nozzles[@]} -gt 0 ]] || nozzles=(0.2 0.4)
 
 # The QR code is generated inside card.scad; verify.py checks it decodes to this link.
-url=$(sed -n 's/^qr_url = "\(.*\)";.*/\1/p' card.scad)
+link_in() { sed -n 's/^qr_code_link = "\(.*\)";.*/\1/p' "$1"; }
 
 status=0
+# Builds every nozzle and sticker version into $1/nozzle-*/; the rest are -D settings for OpenSCAD.
+build_cards() {
+local root=$1 url=$2
+shift 2
 for nozzle in "${nozzles[@]}"; do
 for sticker in thin thick; do
-  dir="out/nozzle-$nozzle"
+  dir="$root/nozzle-$nozzle"
   [[ $sticker == thick ]] && dir+="-thick-sticker"
   mkdir -p "$dir"
   rm -f "$dir"/card-*.stl
@@ -26,7 +32,7 @@ for sticker in thin thick; do
   log=$(mktemp)
   for part in body light accent chrome; do
     docker run --rm -v "$PWD":/w -w /w openscad/openscad:dev \
-      openscad --backend=manifold -D "nozzle=$nozzle" -D "nfc_sticker=\"$sticker\"" -D "part=\"$part\"" --export-format binstl \
+      openscad --backend=manifold "$@" -D "nozzle=$nozzle" -D "nfc_sticker=\"$sticker\"" -D "part=\"$part\"" --export-format binstl \
       -o "$dir/card-$part.stl" card.scad 2>&1 | grep -E '^(ECHO|WARNING|ERROR)' >>"$log" || true
   done
   sort -u "$log" | grep -v PRINTER || true
@@ -42,12 +48,24 @@ for sticker in thin thick; do
   .venv/bin/python scripts/render_preview.py --dir "$dir" --face-down "$face_down"
 done
 done
+}
+
+build_cards out "$(link_in card.scad)"
+
+# Your own card: each `setting = value;` line in card.local.scad becomes a -D flag.
+if [[ -f card.local.scad ]]; then
+  local_flags=()
+  while IFS= read -r line; do local_flags+=(-D "$line"); done \
+    < <(sed -n 's/^\([a-z_][a-z0-9_]*\) *= *\(.*\);.*/\1=\2/p' card.local.scad)
+  local_url=$(link_in card.local.scad)
+  build_cards out/local "${local_url:-$(link_in card.scad)}" ${local_flags[@]+"${local_flags[@]}"}
+fi
 
 # The MakerWorld file: write it, then build and check sample cards from it the way MakerWorld
 # would, with the fonts found by name (OPENSCAD_FONT_PATH stands in for its installed fonts): the
-# default, and a QR-only card with no NFC tag and the plain back.
+# default, and a QR-only card with no NFC sticker and the plain back.
 .venv/bin/python scripts/make_makerworld.py
-sample_url=$(sed -n 's/^qr_url = "\(.*\)";.*/\1/p' makerworld/tilde-card.scad)
+sample_url=$(link_in makerworld/tilde-card.scad)
 for sample in default qr-only-plain; do
   dir="out/makerworld-sample"
   extra=()
