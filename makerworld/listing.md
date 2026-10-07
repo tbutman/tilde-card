@@ -126,15 +126,15 @@ Most of the time goes on color changes, which happen once per layer for the whol
 Buy **25 mm round NTAG215 stickers**, about $0.25–0.65 each ($5–10 for a small pack). Check how
 thick they are, because it decides which version you print:
 
-- **0.10–0.20 mm** (wet inlays and thin paper stickers): the standard card, 1.6 mm thick. For
+- **0.10–0.20 mm** (wet inlays and thin paper stickers): the **thin stickers** option, a 1.6 mm card. For
   example [Seritag's 25 mm NTAG215 wet inlay](https://seritag.com/nfc-tags/25mm-ntag215-wet),
   0.12 mm.
-- **0.20–0.40 mm** (most thicker paper stickers): the **thick sticker** option, a 1.8 mm card. For
+- **0.20–0.40 mm** (most thicker paper stickers): the **thick stickers** option, a 1.8 mm card. For
   example [GoToTags' 25 mm NTAG215 sticker](https://store.gototags.com/nfc-sticker-ntag215-25-mm-circle/),
   0.35 mm.
 - **Not sure?** Many multipacks don't list a thickness, like these on
   [Amazon](https://www.amazon.com/clp/B091FCQW7N) and [eBay](https://www.ebay.com/itm/307182392836).
-  Measure one, or print the thick-sticker option: thin stickers work in it too.
+  Measure one, or choose the thick stickers option: thin stickers work in it too.
 - **Don't use** NFC coins, anti-metal tags or hard plastic discs. They're too thick.
 
 ### How to print
@@ -150,13 +150,16 @@ New to it? Print a QR card first (**NFC sticker: none**): no pause, nothing to b
    cards take barely longer than one.
 5. **QR card (no NFC): that's it, print it.** With NFC, carry on.
 6. Add a pause so you can put the sticker in: slice, then drag the layer slider to the layer in
-   this table (the first one that covers the round pocket), right-click the **+** and choose
-   **Add pause**.
+   this table for your nozzle and the NFC sticker option you chose in Customize (the first layer
+   that covers the round pocket), right-click the **+** and choose **Add pause**.
 
    | | 0.2 mm nozzle | 0.4 mm nozzle |
    | --- | --- | --- |
-   | Thin stickers | Layer 11 | Layer 6 |
-   | Thick stickers | Layer 13 | Layer 7 |
+   | Thin stickers (0.10–0.20 mm, 1.6 mm card) | Layer 11 | Layer 6 |
+   | Thick stickers (0.20–0.40 mm, 1.8 mm card) | Layer 13 | Layer 7 |
+
+   Thin stickers: layer 11 (0.2 mm nozzle) or layer 6 (0.4 mm). Thick stickers: layer 13 (0.2 mm)
+   or layer 7 (0.4 mm).
 
 7. Before printing, write the sticker. With Tilde: Settings → Write a sticker, choose what it opens
    (your website, your contact card, WhatsApp…), then hold the sticker to your phone. With NFC

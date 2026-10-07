@@ -84,24 +84,24 @@ packs of 10 to 100, for about **$0.25 to $0.65 per sticker** ($5–10 for a smal
 
 **Check the thickness, because it decides which files you print:**
 
-| Sticker thickness | Print | The card |
+| Sticker thickness | Option (files in `out/`) | The card |
 | --- | --- | --- |
-| **0.10–0.20 mm** (wet inlays, thin paper stickers) | The standard files, `out/nozzle-0.2/` or `out/nozzle-0.4/` | 1.6 mm thick |
-| **0.20–0.40 mm** (most thicker paper stickers) | The thick-sticker files, `out/nozzle-0.2-thick-sticker/` or `out/nozzle-0.4-thick-sticker/` | 1.8 mm thick |
+| **0.10–0.20 mm** (wet inlays, thin paper stickers) | **Thin stickers** (`out/nozzle-0.2/` or `out/nozzle-0.4/`) | 1.6 mm thick |
+| **0.20–0.40 mm** (most thicker paper stickers) | **Thick stickers** (`out/nozzle-0.2-thick-sticker/` or `out/nozzle-0.4-thick-sticker/`) | 1.8 mm thick |
 | Over 0.40 mm ("coins", "anti-metal" tags, hard plastic discs) | Not supported | |
 
 If the listing doesn't say, measure one sticker with its backing peeled off, using calipers. If
-you can't measure, print the thick-sticker version: thin stickers work in it too.
+you can't measure, choose thick stickers: thin stickers work in it too.
 
 **About the chip:** NTAG215 holds 504 bytes, enough for a link or a contact card. NTAG216 (888
 bytes) also works. NTAG213 (144 bytes) is enough for a link only.
 
 Some options, with prices as listed on 5 October 2026:
 
-| Where | What | Thickness | Files | Price |
+| Where | What | Thickness | Option | Price |
 | --- | --- | --- | --- | --- |
-| [Seritag](https://seritag.com/nfc-tags/25mm-ntag215-wet) (UK, prices in £/€/$) | 25 mm NTAG215 wet inlay | 0.12 mm | Standard | £0.42 each for 10–99, £0.36 for 100+ |
-| [GoToTags](https://store.gototags.com/nfc-sticker-ntag215-25-mm-circle/) (US) | 25 mm NTAG215 paper sticker | 0.35 mm | Thick sticker | $0.54 each in 10s |
+| [Seritag](https://seritag.com/nfc-tags/25mm-ntag215-wet) (UK, prices in £/€/$) | 25 mm NTAG215 wet inlay | 0.12 mm | Thin stickers | £0.42 each for 10–99, £0.36 for 100+ |
+| [GoToTags](https://store.gototags.com/nfc-sticker-ntag215-25-mm-circle/) (US) | 25 mm NTAG215 paper sticker | 0.35 mm | Thick stickers | $0.54 each in 10s |
 | [Tagstand](https://www.tagstand.com/products/ntag215-round-sticker-25mm-diameter/) (US) | 25 mm NTAG215 paper sticker | Not listed: measure | | $0.62 each, $0.44 for 100+ |
 | [Amazon](https://www.amazon.com/clp/B091FCQW7N) (K LAKEY, 100 pack) | 25 mm NTAG215 stickers | Not listed: measure | | Varies |
 | [eBay](https://www.ebay.com/itm/307182392836) (100 pack) | 25 mm NTAG215 stickers | Not listed: measure | | About $0.37 each |
@@ -159,13 +159,13 @@ flip them.
 The printer needs to stop halfway so you can put the sticker in.
 
 1. Click **Slice plate**, then use the layer slider on the right of the preview.
-2. Go to the layer for your version. The layer just below it should show an open round pocket;
-   this layer should cover it.
+2. Go to the layer for your nozzle and NFC sticker option. The layer just below it should show an
+   open round pocket; this layer should cover it.
 
    | | 0.2 mm nozzle | 0.4 mm nozzle |
    | --- | --- | --- |
-   | Standard | **Layer 11** | **Layer 6** |
-   | Thick sticker | **Layer 13** | **Layer 7** |
+   | Thin stickers (0.10–0.20 mm, 1.6 mm card) | **Layer 11** | **Layer 6** |
+   | Thick stickers (0.20–0.40 mm, 1.8 mm card) | **Layer 13** | **Layer 7** |
 
 3. Right-click the **+** on the slider and choose **Add pause**.
 
@@ -217,8 +217,8 @@ Only lock it once the finished card works; you can lock it through the card.
 - **Small letters on the front are missing or didn't stick:** wash the plate with dish soap and
   water (fingerprints stop small details sticking) and lower the initial layer speed, for example
   to 30 mm/s.
-- **There's a bump over the sticker:** the sticker is too thick for the pocket. Print the
-  thick-sticker version, or use thinner stickers.
+- **There's a bump over the sticker:** the sticker is too thick for the pocket. Choose
+  thick stickers, or use thinner stickers.
 - **The phone doesn't react to a tap:** check NFC is on (Android), move the phone slowly over the
   marker, and check the sticker works by tapping it before printing.
 
