@@ -25,9 +25,9 @@ everything about stickers and the pause.
 
 The files in `out/` are Thomas's own card. To print yours, put in your details first:
 
-- **On MakerWorld (easiest):** open the model page, click **Customize**, and fill in your name,
-  link, website, the back of the card and the colours. Under **Printing**, choose your nozzle and
-  whether to add an NFC tag. The preview updates as you type; then open the result in Bambu Studio.
+- **On MakerWorld (coming soon; the easiest):** open the model page, click **Customize**, and fill
+  in your name, link, website, the back of the card and the colours. Under **Printing**, choose
+  your nozzle and whether to add an NFC tag. The preview updates as you type; then open the result in Bambu Studio.
 - **In OpenSCAD (free, [openscad.org](https://openscad.org)):** open `card.scad`, show the
   Customizer (**Window → Customizer**), change the settings in the first sections and export a
   3MF. Use a recent development snapshot of OpenSCAD: it keeps the four colours in the 3MF.
@@ -172,7 +172,7 @@ When the printer pauses:
 Do this **before** the sticker goes in the card, so a faulty sticker only costs you the sticker.
 (You can also rewrite a tag through the finished card later.)
 
-**On Android, with [Tilde](https://github.com/tbutman/tilde)** (free, the companion app):
+**On Android, with [Tilde](https://tbutman.com/tilde)** (free, the companion app):
 
 1. Fill in your card in Tilde, then go to **Settings** → **Write a sticker**.
 2. Choose what the card should open: your website, contact card, LinkedIn and so on.
