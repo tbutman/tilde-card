@@ -83,8 +83,8 @@ colors. The QR code is made for your link automatically, and long text shrinks t
 **Choose your card:**
 - **NFC sticker:** none (a QR card: no stickers, no pause), or thin or thick NFC stickers, sealed
   inside halfway through the print, invisible and protected. The word by the tap waves is yours
-  to change ("tap", "tap to connect", or none), and a small tap mark can go on the back too, in
-  gray, orange or white.
+  to change ("tap", "tap to connect", or none), and the tap mark can go on the back too, over
+  the sticker, in one of your card's colors.
 - **The back:** a terminal window (`$ whoami`, for the developers; the command is yours to
   change), a plain back, or none, which prints fastest. Both designs print three lines you choose,
   such as your name, title and email.

@@ -54,6 +54,11 @@ QR_FIELD_X_MM = (38.5, 78.6)  # the QR field's light area; light text sits on ei
 # mm; a change to the text moves them and brings the check back. Reviewed 5 October 2026:
 KNOWN_ACUTE_CORNERS = [
     ("back", 13.5, 37.8),  # the middle V of the mono "w" in "whoami"; it rounds slightly, still reads as a w
+    # The same V with the back tap mark on, which moves the back's text 2.69 mm right (back_shift:
+    # qr_right_margin + text_gap - back_x). Shifted, it rasterizes as its two inner corners.
+    # Reviewed 7 October 2026:
+    ("back", 16.2, 37.8),
+    ("back", 16.7, 37.8),
 ]
 # Pointed stroke ends can lose more than a sliver to the stroke check's opening, though the stroke
 # itself is wide enough. Each reviewed tip is listed here the same way, matched by position.
@@ -65,6 +70,11 @@ KNOWN_THIN_TIPS = [
     ("back", 26.7, 20.2),
     ("back", 24.2, 17.5),
     ("back", 26.8, 17.5),
+    # The same tips with the back tap mark on, 2.69 mm right. Reviewed 7 October 2026:
+    ("back", 27.0, 20.2),
+    ("back", 29.4, 20.2),
+    ("back", 26.9, 17.5),
+    ("back", 29.5, 17.5),
 ]
 PARTS = {  # print colors: black PLA, white PLA, orange PLA
     "body": (22, 24, 27),

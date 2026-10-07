@@ -26,8 +26,8 @@ website_on_card = "example.com";
 back_style = "terminal"; // [terminal:Terminal window (a command and your lines), plain:Plain (your lines), none:None (plain black)]
 // Show the tap waves on the back too (only with an NFC sticker). Waves and label uses your tap label.
 back_tap_mark = "no"; // [no:No, waves:Waves only, label:Waves and label]
-// The back tap mark's color: gray matches the terminal window.
-back_tap_mark_color = "chrome"; // [chrome:Gray (window bar), accent:Orange (accent), light:White]
+// Which of your colors the back tap mark uses. The window bar color matches the terminal window's dots and bar.
+back_tap_mark_color = "chrome"; // [chrome:Window bar color, accent:Accent color, light:Light color]
 // The command shown after $ on the Terminal window back. Example: whoami
 terminal_command = "whoami";
 // Printed on the back, in either style. Leave a line empty to skip it. Example: jane doe
@@ -153,14 +153,11 @@ back_bolden = fine ? 0 : 0.05;        // grows each stroke edge: the mono "m" an
 back_prompt_bolden = fine ? 0 : 0.15; // the mono "$" has a hairline bar
 back_leading = 1.75;                  // baseline-to-baseline, as a multiple of back_size
 back_x = 6.0;                         // left margin, seen from the back (matches the front)
-back_room = card_w - 2 * back_x;
-// Back tap mark: the front's dot and inner two waves, laid out left to right like the front's marker
-// before it turns, with tap_label after them for "label". It sits in the bottom-left corner, its
-// dot at back_x and its middle back_tap_y above the bottom edge: below the terminal's last line,
-// clear of the plain and none backs' text. The pocket is above it (from y = 14.3 mm), within reach
-// of a phone held there.
-back_tap_radii = [tap_radii[0], tap_radii[1]];
-back_tap_y = 6.5;
+// With the back tap mark, the strip over the tag (the front's tap strip, seen from behind) holds the
+// mark, and the lines start where the front's QR field would: a text_gap past the strip.
+back_shift = back_mark_on ? qr_right_margin + text_gap - back_x : 0;
+back_left = back_x + back_shift;
+back_room = card_w - 2 * back_x - back_shift;
 // Terminal window bar at the top: three dots and a rule, in their own "chrome" part (gray).
 back_bar_top = 6.0;                   // card edge to the top of the dots
 back_dot_d = 2.2;
@@ -375,9 +372,6 @@ tap_size_fit = tap_label == "" ? tap_size : fit(tap_size, [inter_width(tap_label
 // ExtraBold advance widths, slightly long for Bold, so they center a little early.
 tap_label_len = tap_label == "" ? 0 : tap_label == "tap" ? (fine ? 2.14 : 2.18) * tap_size_fit : inter_width(tap_label) * tap_size_fit;
 tap_label_mid = 0.328 * tap_size_fit;
-// Its top: the waves' tips, or the label's ascenders (about 0.75 of its size above the baseline).
-back_tap_top = back_tap_y + max(max(back_tap_radii) * sin(tap_spread / 2) + tap_stroke / 2,
-                                back_tap_mark == "label" && tap_label != "" ? 0.75 * tap_size_fit - tap_label_mid : 0);
 // The last line also holds the cursor: one more advance, then the block. Only the terminal style
 // uses these lines.
 back_size_fit = !terminal ? back_size : fit(back_size, [for (i = [0 : len(back_lines) - 1])
@@ -511,9 +505,9 @@ module stroke_2d(points, width) {
         }
 }
 
-module tap_icon_2d(radii = tap_radii) {
+module tap_icon_2d() {
     circle(d = tap_dot_d, $fn = 32);
-    for (r = radii)
+    for (r = tap_radii)
         stroke_2d([for (a = [-tap_spread / 2 : 5 : tap_spread / 2]) r * [cos(a), sin(a)]], tap_stroke);
 }
 
@@ -524,21 +518,21 @@ module tap_label_2d() {
 }
 
 // The marker is laid out left to right around the dot at the origin, then turned to read upwards
-// and centered in the strip right of the QR code. Both icon and label are amber.
-module tap_place() {
+// and centered in the strip right of the QR code (amber, on the front), or, on the back, in the
+// same strip seen from behind, at x = qr_right_margin / 2. Without a label, the waves center alone.
+module tap_place(x = card_w - qr_right_margin / 2, label = tap_label != "") {
     start = -tap_dot_d / 2;
-    end = tap_label == "" ? max(tap_radii) + tap_stroke / 2 : max(tap_radii) + tap_stroke / 2 + tap_gap + tap_label_len;
-    translate([card_w - qr_right_margin / 2, card_h / 2]) rotate(90) translate([-(start + end) / 2, 0]) children();
+    end = !label ? max(tap_radii) + tap_stroke / 2 : max(tap_radii) + tap_stroke / 2 + tap_gap + tap_label_len;
+    translate([x, card_h / 2]) rotate(90) translate([-(start + end) / 2, 0]) children();
 }
 
 // The back tap mark, as seen from behind, in the part `colour` names.
 module back_tap_2d(colour) {
+    with_label = back_tap_mark == "label" && tap_label != "";
     if (back_mark_on && back_tap_mark_color == colour)
-        translate([back_x + tap_dot_d / 2, back_tap_y]) {
-            tap_icon_2d(back_tap_radii);
-            if (back_tap_mark == "label" && tap_label != "")
-                translate([max(back_tap_radii) + tap_stroke / 2 + tap_gap, -tap_label_mid])
-                    offset(delta = tap_bolden) text(tap_label, size = tap_size_fit, font = tap_font);
+        tap_place(qr_right_margin / 2, with_label) {
+            tap_icon_2d();
+            if (with_label) tap_label_2d();
         }
 }
 
@@ -564,13 +558,10 @@ back_top = back_rule_y - back_text_gap - back_size_fit; // first baseline, ancho
 // The last line's descenders must keep at least the bar's margin from the bottom edge.
 assert(!terminal || back_top - (len(back_lines) - 1) * back_pitch - 0.3 * back_size_fit >= back_bar_top,
        "the back's lines run off the bottom: shrink back_size or back_leading, or drop a line");
-// The back tap mark stays clear of the text above it.
-assert(!back_mark_on || !terminal || back_top - (len(back_lines) - 1) * back_pitch - 0.3 * back_size_fit - back_tap_top >= 1,
-       "the back tap mark runs into the terminal's last line");
 
 module back_chrome_view_2d() {
-    if (terminal) for (i = [0 : 2]) translate([back_x + back_dot_d / 2 + i * back_dot_pitch, back_dots_y]) circle(d = back_dot_d, $fn = 48);
-    if (terminal) translate([back_x, back_rule_y]) square([back_room, back_rule_h]);
+    if (terminal) for (i = [0 : 2]) translate([back_left + back_dot_d / 2 + i * back_dot_pitch, back_dots_y]) circle(d = back_dot_d, $fn = 48);
+    if (terminal) translate([back_left, back_rule_y]) square([back_room, back_rule_h]);
     back_tap_2d("chrome");
 }
 
@@ -582,19 +573,17 @@ plain_baselines = [for (i = [0 : len(plain_lines) - 1])
     i == 0 ? plain_first : plain_first + qr_sum([for (k = [1 : i]) plain_step(k)])];
 plain_height = len(plain_lines) == 0 ? 0 : plain_baselines[len(plain_lines) - 1] + 0.25 * plain_size_fit;
 plain_top = (card_h + plain_height) / 2;
-assert(!back_mark_on || !plain || len(plain_lines) == 0 || plain_top - plain_height - back_tap_top >= 1,
-       "the back tap mark runs into the plain back's lines");
 
 module plain_lines_2d(colour) {
     if (len(plain_lines) > 0) for (i = [0 : len(plain_lines) - 1])
         if (plain_lines[i][1] == colour)
-            translate([back_x, plain_top - plain_baselines[i]])
+            translate([back_left, plain_top - plain_baselines[i]])
                 offset(delta = plain_bolden)
                     text(plain_lines[i][0], size = plain_lines[i][2] ? plain_name_fit : plain_size_fit, font = plain_font);
 }
 
 module back_line_2d(i, s, bolden = back_bolden) {
-    translate([back_x, back_top - i * back_pitch])
+    translate([back_left, back_top - i * back_pitch])
         offset(delta = bolden) text(s, size = back_size_fit, font = back_font);
 }
 
@@ -610,7 +599,7 @@ module terminal_accent_2d() {
     // Cursor block after the last prompt; mono advance is 0.6 em and an em is size / 0.73.
     last = len(back_lines) - 1;
     advance = 0.822 * back_size_fit;
-    translate([back_x + len(str(back_lines[last][0], back_lines[last][1])) * advance, back_top - last * back_pitch - 0.3])
+    translate([back_left + len(str(back_lines[last][0], back_lines[last][1])) * advance, back_top - last * back_pitch - 0.3])
         square(back_cursor * back_size_fit / back_size);
 }
 
