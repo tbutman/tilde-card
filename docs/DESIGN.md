@@ -19,8 +19,13 @@ The technical side of the card: how the model is built, checked and generated. T
   `tap_label`, "tap" by default, both amber), turned to read upwards, sits in the strip right of
   the QR code, over the tag. A longer label shrinks to fit the QR code's height, down to the
   nozzle's smallest text (about 14 characters on 0.4 mm, 17 on 0.2 mm); an empty one leaves just
-  the waves. `back_tap_mark = "yes"` repeats the marker on the back, in the same strip seen from
-  behind (still over the tag), and moves the back's lines right to clear it.
+  the waves. `back_tap_mark` (`waves` or `label`) adds a small mark on the back: the dot and the
+  two inner waves, plus `tap_label` for `label`, read left to right in the bottom-left corner,
+  below the terminal's last line (the same spot on the plain and none backs), so the back's text
+  doesn't move. `back_tap_mark_color` picks an existing part: `chrome` (gray, the default),
+  `accent` or `light`. The mark sits about 6 mm below the pocket's lower edge, in line with it
+  horizontally; on a None back it brings back the back's inlay layers, and in gray the gray
+  filament too.
 - **Back:** `back_style` is `terminal`, `plain` or `none` (plain black). Both designs print the
   same three lines, `back_line_1` to `back_line_3`; an empty one is skipped. The terminal style is
   a window: a gray title bar (three dots and a rule), then a session (`$ ` and `terminal_command`,
