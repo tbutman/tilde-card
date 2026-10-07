@@ -1,6 +1,6 @@
 // MakerWorld version, generated from card.scad by scripts/make_makerworld.py.
 // Tilde card: a printable business card with your name and website on the front, a QR code that
-// opens your link, an optional NFC tag that does the same, and a choice of back.
+// opens your link, an optional NFC sticker that does the same, and a choice of back.
 //
 // Open it in OpenSCAD's Customizer (or MakerWorld's) and fill in the first sections; everything
 // under [Hidden] is the layout. One colour body per part: body (black), light (white), accent
@@ -16,7 +16,7 @@ name_line_1 = "Jane";
 name_line_2 = "Doe";
 // Shown after "~/" at the top, like a folder in a terminal. Leave empty to leave it out.
 handle = "janedoe";
-// What the QR code opens. Use the same link when you write the NFC tag. Up to 53 characters.
+// What the QR code opens. Use the same link when you write the NFC sticker. Up to 53 characters.
 qr_url = "https://example.com";
 // Your website as printed under your name. Leave empty to leave it out.
 website_text = "example.com";
@@ -43,10 +43,10 @@ chrome_color = "#8e9089"; // color
 /* [Printing] */
 // The 0.2 mm nozzle prints the sharpest text; the 0.4 mm nozzle is over three times faster.
 nozzle = 0.2; // [0.2:0.2 mm nozzle, 0.4:0.4 mm nozzle]
-// The NFC tag is optional: without one, the card is QR code only, with no pause in the print.
+// The NFC sticker is optional: without one, the card is QR code only, with no pause in the print.
 // With one, measure your stickers: up to 0.20 mm is "thin" (a 1.6 mm card); up to 0.40 mm is
 // "thick" (1.8 mm).
-nfc_sticker = "thin"; // [none:No NFC tag (QR code only), thin:Thin NFC stickers (0.10-0.20 mm), thick:Thick NFC stickers (0.20-0.40 mm)]
+nfc_sticker = "thin"; // [none:No NFC sticker (QR code only), thin:Thin NFC stickers (0.10-0.20 mm), thick:Thick NFC stickers (0.20-0.40 mm)]
 
 /* [Hidden] */
 part = "preview"; // preview, body, light, accent or chrome
