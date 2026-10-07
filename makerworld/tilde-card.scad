@@ -1,30 +1,13 @@
-// MakerWorld version, generated from card.scad by scripts/make_makerworld.py.
-// Tilde card: a printable business card with your name and website on the front, a QR code that
-// opens your link, an optional NFC sticker that does the same, and a choice of back.
+// Tilde card: a credit-card-sized business card you print in one go on a multi-colour printer.
+// The front has your name, your website and a QR code that opens your link; an optional NFC
+// sticker, sealed inside during the print, lets phones tap it too. Made for Tilde, the free
+// Android app that turns your phone into the same card.
 //
-// Open it in OpenSCAD's Customizer (or MakerWorld's) and fill in the first sections; everything
-// under [Hidden] is the layout. One colour body per part: body (black), light (white), accent
-// (orange) and chrome (grey, the back's window bar). The light and accent parts are flush inlays in
-// both faces; the dark QR modules are the black body showing through the white field. The QR code
-// is generated here, so the model is a single file.
+// Click Customize and fill in Front of the card, Back of the card and Printing. The print settings
+// and the pause for the NFC sticker are in the model's description.
 //
-// The settings, one help line each (MakerWorld shows only one):
-// - Front: your name over one or two lines, the ~/ handle, the QR code's link and your website.
-//   Long text shrinks to fit; if it still won't, the preview stops with a message saying what to
-//   change.
-// - Back: three lines that both styles share. The terminal window prints "$ " and the command,
-//   then the lines, then a cursor, in JetBrains Mono; the plain back prints the lines in Inter, the
-//   first larger and the second in the accent colour; none is plain black. Empty lines are
-//   skipped, and long lines shrink to fit. With back_tap_mark (and an NFC sticker), the tap waves
-//   and label are repeated on the back, in the strip over the sticker, and the lines move right.
-// - Printing: the nozzle and NFC sticker change the layers, the pocket and the pause; PRINTING.md
-//   explains them. Up to 0.20 mm stickers are thin (a 1.6 mm card), up to 0.40 mm thick (1.8 mm).
-//   tap_label is the word by the tap waves; it shrinks to fit the QR code's height.
-//
-// The defaults are the sample card, Jane Doe. build.sh builds your own card from card.local.scad
-// when it exists (see card.local.example.scad).
-//
-// part = "preview" gives all four in colour; build.sh exports one STL per part with -D part=...
+// Full source, instructions and the developer version: https://github.com/tbutman/tilde-card
+// (MIT; CC BY 4.0 on MakerWorld).
 
 /* [Front of the card] */
 // Your first name, on the first line. Example: Jane
@@ -72,8 +55,8 @@ tap_label = "tap";
 
 /* [Hidden] */
 part = "preview"; // preview, body, light, accent or chrome
-// Which face prints against the plate. The plate side comes out flatter and matte (the 0.4 mm
-// sample, 5 October 2026), so the front goes down. The output is in print orientation.
+// Which face prints against the plate. The plate side comes out flatter and matte, so the front
+// goes down. The output is in print orientation.
 face_down = "front"; // front or back
 qr_mask = -1; // QR mask pattern 0-7; -1 picks the one the standard scores best
 
@@ -109,7 +92,7 @@ qr_overlap = 0.02;      // grows dark modules so diagonal neighbours overlap ins
 // column left of the QR code, down to the smallest size that prints.
 text_x = 6.0;                         // left edge of the text column
 text_gap = 1.5;                       // text column to the QR field
-mark_prefix = "~/";                   // amber, like the site header's "~/tbutman"
+mark_prefix = "~/";                   // amber, like the ~/ in a terminal prompt
 mark_name = handle;                   // light
 mark_font = "JetBrains Mono:style=ExtraBold";
 mark_size = 4.0;
@@ -123,10 +106,9 @@ accent_w = 10.0;                      // amber rule under the name
 accent_h = 0.8;
 accent_gap = 3.4;                     // last name baseline to the top of the rule
 // Tap marker in the strip right of the QR code, over the NFC tag: generic NFC waves (not the
-// EMVCo payment symbol) and tap_label ("tap" by default), both amber, turned to read upwards. The
-// 0.2 mm sample (5 October 2026) printed "tap to connect" cleanly, but the short label reads better
-// at a glance. The 0.2 nozzle keeps that sample's lighter Bold at 2.6 mm; the 0.4 nozzle needs
-// ExtraBold at 3 mm. A longer label shrinks to fit the QR code's height, down to min_cap.
+// EMVCo payment symbol) and tap_label ("tap" by default), both amber, turned to read upwards.
+// The 0.2 nozzle uses Inter Bold at 2.6 mm; the 0.4 nozzle needs ExtraBold at 3 mm. A longer label
+// shrinks to fit the QR code's height, down to min_cap.
 tap_font = fine ? "Inter:style=Bold" : "Inter:style=ExtraBold";
 tap_size = fine ? 2.6 : 3.0;
 tap_dot_d = 1.1;                      // the source dot
@@ -207,7 +189,7 @@ function fit(size, widths, room) = let(widest = max(concat([0], widths))) widest
 // Turns qr_code_link into a QR code inside OpenSCAD, so the model is one file (MakerWorld's customizer
 // takes a single file). Byte mode, versions 1-3 (21-29 modules, which fit the card at 1 mm or more
 // per module), error correction M, or L when M can't fit the link. ISO/IEC 18004; the comments
-// name the steps. scripts/test_qr.py checks the output module for module against segno.
+// name the steps.
 
 // Versions that fit the card: [version, level, data codewords, error correction codewords].
 // Every one of them is a single block, so no interleaving is needed.
@@ -332,8 +314,8 @@ function qr_runs_penalty(line) = let(n = len(line), starts = [for (i = [0 : n - 
     lengths = [for (k = [0 : len(starts) - 1]) (k + 1 < len(starts) ? starts[k + 1] : n) - starts[k]])
     qr_sum([for (l = lengths) if (l >= 5) l - 2]);
 // Rule 3: dark-light-dark-dark-dark-light-dark with 4 light modules on either side, where the
-// edge of the symbol counts as light (the quiet zone is). Scans like segno does, so both pick the
-// same mask for the same data.
+// edge of the symbol counts as light (the quiet zone is). Scans the way reference encoders do, so
+// the mask matches theirs for the same data.
 QR_FINDER_LIKE = [1, 0, 1, 1, 1, 0, 1];
 function qr_light(line, a, b) = a >= b || max([for (k = [a : b - 1]) line[k]]) == 0;
 function qr_find_finder_like(line, start) = let(n = len(line))
@@ -452,9 +434,7 @@ assert(!nfc_enabled || nfc_center[0] - pocket_d / 2 >= nfc_wall - 1e-6 && nfc_ce
        && abs(nfc_center[1] - card_h / 2) + pocket_d / 2 <= card_h / 2 - nfc_wall + 1e-6,
        "the NFC pocket needs a wall to every card edge");
 
-// build.sh reads this line to give verify.py the same limits.
-// The 0.4 version's small type has gaps narrower than its nozzle can print (the 0.2 version exists
-// for that), so its gap check reports rather than fails.
+// A summary in the console: thickness, the nozzle's limits, the QR code, text sizes and the pause.
 echo(str("CARD ", nfc_enabled ? str(nfc_sticker, " sticker") : "no NFC tag", ": ", card_t, " mm thick, ", round(card_t / layer_h), " layers"));
 echo(str("PRINTER nozzle=", nozzle, " layer_h=", layer_h, " min_stroke=", min_stroke, " min_gap=", min_gap,
          " strict_gaps=", fine, " face_down=", face_down));
@@ -500,7 +480,8 @@ module name_2d() {
             text(name_lines[i], size = name_size_fit, font = name_font);
 }
 
-// The header mark is set as one string so the spacing matches the site, then split by colour.
+// The header mark is set as one string, so the ~/ and the handle keep the font's spacing, then
+// split by colour.
 module mark_2d() {
     if (mark_name != "")
         translate([text_x, field_y + field - mark_size_fit])

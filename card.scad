@@ -114,7 +114,7 @@ qr_overlap = 0.02;      // grows dark modules so diagonal neighbours overlap ins
 // column left of the QR code, down to the smallest size that prints.
 text_x = 6.0;                         // left edge of the text column
 text_gap = 1.5;                       // text column to the QR field
-mark_prefix = "~/";                   // amber, like the site header's "~/tbutman"
+mark_prefix = "~/";                   // amber, like the ~/ in a terminal prompt
 mark_name = handle;                   // light
 mark_font = "JetBrains Mono:style=ExtraBold";
 mark_size = 4.0;
@@ -505,7 +505,8 @@ module name_2d() {
             text(name_lines[i], size = name_size_fit, font = name_font);
 }
 
-// The header mark is set as one string so the spacing matches the site, then split by colour.
+// The header mark is set as one string, so the ~/ and the handle keep the font's spacing, then
+// split by colour.
 module mark_2d() {
     if (mark_name != "")
         translate([text_x, field_y + field - mark_size_fit])
