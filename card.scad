@@ -14,9 +14,11 @@
 // - Back: three lines that both styles share. The terminal window prints "$ " and the command,
 //   then the lines, then a cursor, in JetBrains Mono; the plain back prints the lines in Inter, the
 //   first larger and the second in the accent colour; none is plain black. Empty lines are
-//   skipped, and long lines shrink to fit.
+//   skipped, and long lines shrink to fit. With back_tap_mark (and an NFC sticker), the tap waves
+//   and label are repeated on the back, in the strip over the sticker, and the lines move right.
 // - Printing: the nozzle and NFC sticker change the layers, the pocket and the pause; PRINTING.md
 //   explains them. Up to 0.20 mm stickers are thin (a 1.6 mm card), up to 0.40 mm thick (1.8 mm).
+//   tap_label is the word by the tap waves; it shrinks to fit the QR code's height.
 //
 // The defaults are the sample card, Jane Doe. build.sh builds your own card from card.local.scad
 // when it exists (see card.local.example.scad).
@@ -44,6 +46,8 @@ website_on_card = "example.com";
 /* [Back of the card] */
 // What the back shows. None is plain black and prints fastest, with about half the colour changes.
 back_style = "terminal"; // [terminal:Terminal window (a command and your lines), plain:Plain (your lines), none:None (plain black)]
+// Repeat the tap waves and label on the back too (only with an NFC sticker).
+back_tap_mark = "no"; // [no:No, yes:Yes]
 // The command shown after $ on the Terminal window back. Example: whoami
 terminal_command = "whoami";
 // Printed on the back, in either style. Leave a line empty to skip it. Example: jane doe
@@ -68,6 +72,8 @@ window_bar_color = "#8e9089"; // color
 nozzle = 0.2; // [0.2:0.2 mm nozzle (sharpest), 0.4:0.4 mm nozzle (fastest)]
 // An NFC sticker sealed inside lets phones tap the card. Measure your stickers to pick thin or thick.
 nfc_sticker = "thin"; // [none:No NFC sticker (QR code only), thin:Thin NFC stickers 0.10-0.20 mm (1.6 mm card), thick:Thick NFC stickers 0.20-0.40 mm (1.8 mm card)]
+// The word next to the tap waves, up to about 14 characters (17 on the 0.2 mm nozzle). Leave it empty for just the waves. Example: tap to connect
+tap_label = "tap";
 
 /* [Hidden] */
 part = "preview"; // preview, body, light, accent or chrome
@@ -121,23 +127,21 @@ name_baseline = 30.5;                 // baseline of the first name line, from t
 accent_w = 10.0;                      // amber rule under the name
 accent_h = 0.8;
 accent_gap = 3.4;                     // last name baseline to the top of the rule
-// "tap" marker in the strip right of the QR code, over the NFC tag: generic NFC waves (not the
-// EMVCo payment symbol) and the word "tap", both amber, turned to read upwards. The 0.2 mm sample
-// (5 October 2026) printed "tap to connect" cleanly, but the short label reads better at a glance.
-// The 0.2 nozzle keeps that sample's lighter Bold at 2.6 mm; the 0.4 nozzle needs ExtraBold at 3 mm.
-tap_label = "tap";
+// Tap marker in the strip right of the QR code, over the NFC tag: generic NFC waves (not the
+// EMVCo payment symbol) and tap_label ("tap" by default), both amber, turned to read upwards. The
+// 0.2 mm sample (5 October 2026) printed "tap to connect" cleanly, but the short label reads better
+// at a glance. The 0.2 nozzle keeps that sample's lighter Bold at 2.6 mm; the 0.4 nozzle needs
+// ExtraBold at 3 mm. A longer label shrinks to fit the QR code's height, down to min_cap.
 tap_font = fine ? "Inter:style=Bold" : "Inter:style=ExtraBold";
 tap_size = fine ? 2.6 : 3.0;
-// Measured per mm of size: the label's length (to the end of its ink), and the middle of its ink
-// (the p's descender to the t's top) above the baseline. Re-measure if the label changes.
-tap_label_len = (fine ? 2.14 : 2.18) * tap_size;
-tap_label_mid = 0.328 * tap_size;
 tap_dot_d = 1.1;                      // the source dot
 tap_radii = [1.4, 2.55, 3.7];         // the waves, radiating towards the label; 1.15 mm apart
 tap_stroke = 0.6;                     // leaves 0.55 mm of black between waves
 tap_spread = 80;                      // degrees covered by each wave; sets the icon's width in the strip
 tap_gap = 1.6;                        // icon to label
 tap_bolden = fine ? 0 : 0.05;         // grows each stroke edge: the ExtraBold "a" joint is under 0.5 mm
+// The whole marker stays within the QR code's height; the label gets what the waves leave.
+tap_label_room = qr_field - (tap_dot_d / 2 + max(tap_radii) + tap_stroke / 2 + tap_gap);
 domain_text = website_on_card;
 domain_font = "Inter:style=ExtraBold";
 domain_size = 3.2;
@@ -147,6 +151,8 @@ domain_bolden = fine ? 0 : 0.03;       // the "a" joint sits right at 0.5 mm
 // block. Plain style: the three lines in Inter, centred vertically: the first larger (light), the
 // second amber, the third light.
 back_enabled = back_style != "none";
+back_mark_on = back_tap_mark == "yes" && nfc_enabled;
+back_inked = back_enabled || back_mark_on;   // anything inlaid in the back
 terminal = back_style == "terminal";
 plain = back_style == "plain";
 plain_lines = [for (line = [[back_line_1, "light", true], [back_line_2, "accent", false], [back_line_3, "light", false]])
@@ -168,6 +174,11 @@ back_bolden = fine ? 0 : 0.05;        // grows each stroke edge: the mono "m" an
 back_prompt_bolden = fine ? 0 : 0.15; // the mono "$" has a hairline bar
 back_leading = 1.75;                  // baseline-to-baseline, as a multiple of back_size
 back_x = 6.0;                         // left margin, seen from the back (matches the front)
+// With the back tap mark, the strip over the tag (the front's tap strip, seen from behind) holds the
+// mark, and the lines start where the front's QR field would: a text_gap past the strip.
+back_shift = back_mark_on ? qr_right_margin + text_gap - back_x : 0;
+back_left = back_x + back_shift;
+back_room = card_w - 2 * back_x - back_shift;
 // Terminal window bar at the top: three dots and a rule, in their own "chrome" part (gray).
 back_bar_top = 6.0;                   // card edge to the top of the dots
 back_dot_d = 2.2;
@@ -376,13 +387,19 @@ text_room = field_x - text_gap - text_x;
 mark_size_fit = fit(mark_size, [mark_name == "" ? 0 : mono_width(str(mark_prefix, mark_name))], text_room);
 name_size_fit = fit(name_size, [for (line = name_lines) inter_width(line)], text_room);
 domain_size_fit = fit(domain_size, [inter_width(domain_text)], text_room);
+tap_size_fit = tap_label == "" ? tap_size : fit(tap_size, [inter_width(tap_label)], tap_label_room);
+// The label's length (to the end of its ink) and the middle of its ink above the baseline, per mm
+// of size. For "tap" both are measured (the p's descender to the t's top); other labels use the
+// ExtraBold advance widths, slightly long for Bold, so they centre a little early.
+tap_label_len = tap_label == "" ? 0 : tap_label == "tap" ? (fine ? 2.14 : 2.18) * tap_size_fit : inter_width(tap_label) * tap_size_fit;
+tap_label_mid = 0.328 * tap_size_fit;
 // The last line also holds the cursor: one more advance, then the block. Only the terminal style
 // uses these lines.
 back_size_fit = !terminal ? back_size : fit(back_size, [for (i = [0 : len(back_lines) - 1])
     mono_width(str(back_lines[i][0], back_lines[i][1])) + (i == len(back_lines) - 1 ? 0.822 + back_cursor[0] / back_size : 0)],
-    card_w - 2 * back_x);
-plain_name_fit = fit(plain_name_size, [for (line = plain_lines) if (line[2]) inter_width(line[0])], card_w - 2 * back_x);
-plain_size_fit = fit(plain_size, [for (line = plain_lines) if (!line[2]) inter_width(line[0])], card_w - 2 * back_x);
+    back_room);
+plain_name_fit = fit(plain_name_size, [for (line = plain_lines) if (line[2]) inter_width(line[0])], back_room);
+plain_size_fit = fit(plain_size, [for (line = plain_lines) if (!line[2]) inter_width(line[0])], back_room);
 
 pocket_d = nfc_d + nfc_clearance;
 pocket_depth = ceil(nfc_tag_t / layer_h - 1e-6) * layer_h;
@@ -404,7 +421,7 @@ assert(name_size_fit >= min_cap - 1e-6,
 assert(mark_size_fit >= min_cap - 1e-6,
        str("The handle is too long: up to ", floor(text_room / (0.822 * min_cap)) - len(mark_prefix), " characters fit.", too_long_hint));
 assert(domain_size_fit >= min_cap - 1e-6, str("The website text is too long. Shorten it, or leave out the https:// and www.", too_long_hint));
-back_max_chars = floor((card_w - 2 * back_x) / (0.822 * min_cap));
+back_max_chars = floor(back_room / (0.822 * min_cap));
 assert(!terminal || back_size_fit >= min_cap - 1e-6,
        str("A back line or the terminal command is too long: up to ", back_max_chars, " characters fit on a line, and ",
            back_max_chars - 2, " in the command after $. Shorten it.", too_long_hint));
@@ -414,14 +431,18 @@ assert(inlay_t >= 0.4, "contrast layer must be at least 0.4 mm");
 assert(!plain || min(plain_name_fit, plain_size_fit) >= min_cap - 1e-6,
        str("A back line is too long for the plain back. Shorten it, or use the Terminal window style, which fits more.", too_long_hint));
 assert(back_style == "terminal" || back_style == "plain" || back_style == "none", "back_style is terminal, plain or none");
-assert(min(mark_size_fit, name_size_fit, domain_size_fit, tap_size, back_size_fit, plain ? plain_name_fit : min_cap, plain ? plain_size_fit : min_cap) >= min_cap - 1e-6, str("cap height must be at least ", min_cap, " mm"));
+// About 0.75 mm of advance per mm of size for lowercase text with spaces.
+assert(!nfc_enabled || tap_size_fit >= min_cap - 1e-6,
+       str("The tap label is too long: up to about ", floor(tap_label_room / (0.75 * min_cap)),
+           " characters fit. Shorten it, or leave it empty for just the waves.", too_long_hint));
+assert(min(mark_size_fit, name_size_fit, domain_size_fit, tap_size_fit, back_size_fit, plain ? plain_name_fit : min_cap, plain ? plain_size_fit : min_cap) >= min_cap - 1e-6, str("cap height must be at least ", min_cap, " mm"));
 assert(min(tap_stroke, tap_dot_d) >= min_stroke, str("strokes must be at least ", min_stroke, " mm"));
 // Black between the dot and the first wave, and between waves, must also print.
 assert(tap_radii[0] - tap_stroke / 2 - tap_dot_d / 2 >= min_stroke
        && min([for (i = [1 : len(tap_radii) - 1]) tap_radii[i] - tap_radii[i - 1]]) - tap_stroke >= min_stroke,
        str("the tap waves need at least ", min_stroke, " mm of black between them"));
-assert(!back_enabled || back_inlay_t >= 0.4, "contrast layer must be at least 0.4 mm");
-assert(!back_enabled || nfc_floor_t >= back_inlay_t, "the NFC pocket must sit above the back inlays");
+assert(!back_inked || back_inlay_t >= 0.4, "contrast layer must be at least 0.4 mm");
+assert(!back_inked || nfc_floor_t >= back_inlay_t, "the NFC pocket must sit above the back inlays");
 assert(min(back_dot_d, back_rule_h) >= min_stroke, str("strokes must be at least ", min_stroke, " mm"));
 for (t = [card_t, inlay_t, back_inlay_t, nfc_floor_t])
     assert(abs(t / layer_h - round(t / layer_h)) < 1e-6, str(t, " mm is not a whole number of ", layer_h, " mm layers"));
@@ -452,7 +473,7 @@ else
     echo("No NFC tag: no pocket, no tap marker and no pause");
 down_t = face_down == "front" ? inlay_t : back_inlay_t;
 up_t = face_down == "front" ? back_inlay_t : inlay_t;
-if (back_enabled)
+if (back_inked)
     echo(str("Colour layers: ", face_down, " inlays in layers 1-", round(down_t / layer_h), "; ",
              face_down == "front" ? "back" : "front", " inlays from layer ", round((card_t - up_t) / layer_h) + 1));
 else
@@ -513,16 +534,18 @@ module tap_icon_2d() {
 }
 
 module tap_label_2d() {
-    translate([max(tap_radii) + tap_stroke / 2 + tap_gap, -tap_label_mid])
-        offset(delta = tap_bolden) text(tap_label, size = tap_size, font = tap_font);
+    if (tap_label != "")
+        translate([max(tap_radii) + tap_stroke / 2 + tap_gap, -tap_label_mid])
+            offset(delta = tap_bolden) text(tap_label, size = tap_size_fit, font = tap_font);
 }
 
 // The marker is laid out left to right around the dot at the origin, then turned to read upwards
-// and centred in the strip right of the QR code. The icon is amber and the label light.
-module tap_place() {
+// and centred in the strip right of the QR code (or, on the back, the same strip seen from behind,
+// at x = qr_right_margin / 2). Both icon and label are amber.
+module tap_place(x = card_w - qr_right_margin / 2) {
     start = -tap_dot_d / 2;
-    end = max(tap_radii) + tap_stroke / 2 + tap_gap + tap_label_len;
-    translate([card_w - qr_right_margin / 2, card_h / 2]) rotate(90) translate([-(start + end) / 2, 0]) children();
+    end = tap_label == "" ? max(tap_radii) + tap_stroke / 2 : max(tap_radii) + tap_stroke / 2 + tap_gap + tap_label_len;
+    translate([x, card_h / 2]) rotate(90) translate([-(start + end) / 2, 0]) children();
 }
 
 module accent_2d() {
@@ -549,8 +572,8 @@ assert(!terminal || back_top - (len(back_lines) - 1) * back_pitch - 0.3 * back_s
        "the back's lines run off the bottom: shrink back_size or back_leading, or drop a line");
 
 module back_chrome_view_2d() {
-    if (terminal) for (i = [0 : 2]) translate([back_x + back_dot_d / 2 + i * back_dot_pitch, back_dots_y]) circle(d = back_dot_d, $fn = 48);
-    if (terminal) translate([back_x, back_rule_y]) square([card_w - 2 * back_x, back_rule_h]);
+    if (terminal) for (i = [0 : 2]) translate([back_left + back_dot_d / 2 + i * back_dot_pitch, back_dots_y]) circle(d = back_dot_d, $fn = 48);
+    if (terminal) translate([back_left, back_rule_y]) square([back_room, back_rule_h]);
 }
 
 // Plain style: each baseline measured down from the top of the first line's capitals, then the
@@ -565,19 +588,23 @@ plain_top = (card_h + plain_height) / 2;
 module plain_lines_2d(colour) {
     if (len(plain_lines) > 0) for (i = [0 : len(plain_lines) - 1])
         if (plain_lines[i][1] == colour)
-            translate([back_x, plain_top - plain_baselines[i]])
+            translate([back_left, plain_top - plain_baselines[i]])
                 offset(delta = plain_bolden)
                     text(plain_lines[i][0], size = plain_lines[i][2] ? plain_name_fit : plain_size_fit, font = plain_font);
 }
 
 module back_line_2d(i, s, bolden = back_bolden) {
-    translate([back_x, back_top - i * back_pitch])
+    translate([back_left, back_top - i * back_pitch])
         offset(delta = bolden) text(s, size = back_size_fit, font = back_font);
 }
 
 module back_accent_view_2d() {
     if (plain) plain_lines_2d("accent");
     if (terminal) terminal_accent_2d();
+    if (back_mark_on) tap_place(qr_right_margin / 2) {
+        tap_icon_2d();
+        tap_label_2d();
+    }
 }
 
 module terminal_accent_2d() {
@@ -586,7 +613,7 @@ module terminal_accent_2d() {
     // Cursor block after the last prompt; mono advance is 0.6 em and an em is size / 0.73.
     last = len(back_lines) - 1;
     advance = 0.822 * back_size_fit;
-    translate([back_x + len(str(back_lines[last][0], back_lines[last][1])) * advance, back_top - last * back_pitch - 0.3])
+    translate([back_left + len(str(back_lines[last][0], back_lines[last][1])) * advance, back_top - last * back_pitch - 0.3])
         square(back_cursor * back_size_fit / back_size);
 }
 
@@ -625,7 +652,7 @@ module inlay(extra = 0) {
 }
 
 module back_inlay(extra = 0) {
-    if (back_enabled) translate([0, 0, -extra]) linear_extrude(back_inlay_t + extra) from_behind() children();
+    if (back_inked) translate([0, 0, -extra]) linear_extrude(back_inlay_t + extra) from_behind() children();
 }
 
 module body() {

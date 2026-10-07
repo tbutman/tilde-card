@@ -41,6 +41,7 @@ The choices that change the print:
 | **NFC sticker** | **None:** a QR card, with no pocket, no "tap" marker and no pause. **Thin** or **thick stickers:** a card people can tap too; see [Buying NFC stickers](#buying-nfc-stickers). |
 | **Back of the card** | Three lines of your choice, such as your name, title and email. **Terminal window:** a command such as `$ whoami`, then your lines. **Plain:** just your lines. **None:** plain black, the quickest to print, with roughly half the colour changes. Choose None to add your own text or logo in Bambu Studio: the back is the top face as it prints, so the text and colour-painting tools work there, and the sticker's pause layer doesn't change. |
 | **Nozzle** | **0.2 mm** or **0.4 mm**; see [Choose a nozzle](#choose-a-nozzle). |
+| **Tap label** and **back tap mark** | With NFC: the word by the tap waves ("tap", or your own, such as "tap to connect"; empty for just the waves), and whether to repeat the waves and label on the back, over the sticker. |
 
 **What fits:** a link of up to 53 characters (shorter is better: the QR code gets bigger squares).
 Long names, handles and websites shrink to fit; if something is too long even at the smallest

@@ -15,9 +15,12 @@ The technical side of the card: how the model is built, checked and generated. T
   card with no pause; the QR code keeps its place. Otherwise, a 25 mm NTAG215 sticker in a 25.3 mm pocket against the right edge, under the QR code,
   with 0.8 mm of plastic between it and the front face (the 0.6 mm inlay and 0.2 mm of black, so
   the tag can't show through the white field). The pocket is 0.2 mm deep for stickers 0.10–0.20 mm
-  thick, or 0.4 mm deep with `nfc_sticker = "thick"`, which makes the card 1.8 mm thick. A "tap" marker (NFC waves, not the EMVCo payment symbol, and
-  the word "tap", both amber), turned to read upwards, sits in the strip right of the QR code,
-  over the tag.
+  thick, or 0.4 mm deep with `nfc_sticker = "thick"`, which makes the card 1.8 mm thick. A tap marker (NFC waves, not the EMVCo payment symbol, and
+  `tap_label`, "tap" by default, both amber), turned to read upwards, sits in the strip right of
+  the QR code, over the tag. A longer label shrinks to fit the QR code's height, down to the
+  nozzle's smallest text (about 14 characters on 0.4 mm, 17 on 0.2 mm); an empty one leaves just
+  the waves. `back_tap_mark = "yes"` repeats the marker on the back, in the same strip seen from
+  behind (still over the tag), and moves the back's lines right to clear it.
 - **Back:** `back_style` is `terminal`, `plain` or `none` (plain black). Both designs print the
   same three lines, `back_line_1` to `back_line_3`; an empty one is skipped. The terminal style is
   a window: a gray title bar (three dots and a rule), then a session (`$ ` and `terminal_command`,
