@@ -16,8 +16,9 @@ The text below the line is the model page, ready to paste into MakerWorld. Image
 - [x] Tag thickness: standard pocket for 0.10–0.20 mm stickers, plus a thick-sticker option up to
       0.40 mm (a 1.8 mm card). Make it a setting in the customizer and a profile each.
 - [ ] Print and photograph real cards for both nozzles (shot list below).
-- [ ] Make a print profile for each nozzle with the settings in. The pause can't be stored in a
-      customised card, so the page explains how to add it.
+- [ ] Optional: make a print profile for each nozzle with the settings in. The page lists the
+      settings instead, and explains how to add the pause, which can't be stored in a customised
+      card.
 - [x] Licence: **CC BY 4.0** (anyone may print, remix and sell cards, with credit). The source
       repo is MIT.
 - [ ] Publish Tilde on GitHub first, and this repo too (or drop its link), so the links below work.
@@ -100,7 +101,7 @@ time by writing it again, or lock it so nobody can (that's permanent).
 
 ### 0.2 mm or 0.4 mm nozzle?
 
-There's a print profile for each.
+The settings for each are listed below.
 
 - **0.2 mm nozzle:** the sharpest card: every letter prints exactly as designed. About 4½ hours
   for one card.
@@ -133,8 +134,9 @@ thick they are, because it decides which version you print:
 2. Use 0.10 mm layers for the 0.2 mm nozzle or 0.20 mm layers for the 0.4 mm nozzle, with 100 %
    infill (all the settings are listed below).
 3. **QR card (no NFC): that's it, print it.** With NFC, carry on.
-4. Add a pause so you can put the sticker in: slice, drag the layer slider to the layer below,
-   right-click the **+** and choose **Add pause**.
+4. Add a pause so you can put the sticker in: slice, then drag the layer slider to the layer in
+   this table (the first one that covers the round pocket), right-click the **+** and choose
+   **Add pause**.
 
    | | 0.2 mm nozzle | 0.4 mm nozzle |
    | --- | --- | --- |
