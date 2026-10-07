@@ -2,8 +2,8 @@
 // opens your link, an optional NFC sticker that does the same, and a choice of back.
 //
 // Open it in OpenSCAD's Customizer (or MakerWorld's) and fill in the first sections; everything
-// under [Hidden] is the layout. One colour body per part: body (black), light (white), accent
-// (orange) and chrome (grey, the back's window bar). The light and accent parts are flush inlays in
+// under [Hidden] is the layout. One color body per part: body (black), light (white), accent
+// (orange) and chrome (gray, the back's window bar). The light and accent parts are flush inlays in
 // both faces; the dark QR modules are the black body showing through the white field. The QR code
 // is generated here, so the model is a single file.
 //
@@ -13,7 +13,7 @@
 //   change.
 // - Back: three lines that both styles share. The terminal window prints "$ " and the command,
 //   then the lines, then a cursor, in JetBrains Mono; the plain back prints the lines in Inter, the
-//   first larger and the second in the accent colour; none is plain black. Empty lines are
+//   first larger and the second in the accent color; none is plain black. Empty lines are
 //   skipped, and long lines shrink to fit. With back_tap_mark (and an NFC sticker), the tap waves
 //   and label are repeated on the back, in the strip over the sticker, and the lines move right.
 // - Printing: the nozzle and NFC sticker change the layers, the pocket and the pause; PRINTING.md
@@ -23,7 +23,7 @@
 // The defaults are the sample card, Jane Doe. build.sh builds your own card from card.local.scad
 // when it exists (see card.local.example.scad).
 //
-// part = "preview" gives all four in colour; build.sh exports one STL per part with -D part=...
+// part = "preview" gives all four in color; build.sh exports one STL per part with -D part=...
 
 // Local copies of the fonts. The MakerWorld copy (scripts/make_makerworld.py) leaves these lines
 // out: MakerWorld has the same Google Fonts installed under these names.
@@ -44,7 +44,7 @@ qr_code_link = "https://example.com";
 website_on_card = "example.com";
 
 /* [Back of the card] */
-// What the back shows. None is plain black and prints fastest, with about half the colour changes.
+// What the back shows. None is plain black and prints fastest, with about half the color changes.
 back_style = "terminal"; // [terminal:Terminal window (a command and your lines), plain:Plain (your lines), none:None (plain black)]
 // Repeat the tap waves and label on the back too (only with an NFC sticker).
 back_tap_mark = "no"; // [no:No, yes:Yes]
@@ -57,7 +57,7 @@ back_line_2 = "product designer";
 // Printed on the back, in either style. Leave a line empty to skip it. Example: jane@example.com
 back_line_3 = "jane@example.com";
 
-/* [Colours] */
+/* [Colors] */
 // The card, and the QR code's dark squares. Keep it dark so the code scans.
 card_color = "#16181b"; // color
 // The QR code's background, your name and the back's text. Keep it light so the code scans.
@@ -107,7 +107,7 @@ qr_field = 39.6;
 qr_quiet = 4;           // quiet zone, in modules
 qr_right_margin = 7.19; // card edge to the light field; matches the top and bottom margins
 qr_field_r = 1.0;       // corner radius of the light field (inside the quiet zone)
-qr_overlap = 0.02;      // grows dark modules so diagonal neighbours overlap instead of meeting at
+qr_overlap = 0.02;      // grows dark modules so diagonal neighbors overlap instead of meeting at
                         // a zero-width edge, which would make both STLs non-manifold
 
 // Front text. Sizes are cap heights in mm, and the largest used: longer text shrinks to fit the
@@ -148,7 +148,7 @@ domain_size = 3.2;
 domain_bolden = fine ? 0 : 0.03;       // the "a" joint sits right at 0.5 mm
 
 // Back. Terminal style: lines as [amber prompt, light text]; the last line ends in an amber cursor
-// block. Plain style: the three lines in Inter, centred vertically: the first larger (light), the
+// block. Plain style: the three lines in Inter, centered vertically: the first larger (light), the
 // second amber, the third light.
 back_enabled = back_style != "none";
 back_mark_on = back_tap_mark == "yes" && nfc_enabled;
@@ -156,7 +156,7 @@ back_inked = back_enabled || back_mark_on;   // anything inlaid in the back
 terminal = back_style == "terminal";
 plain = back_style == "plain";
 plain_lines = [for (line = [[back_line_1, "light", true], [back_line_2, "accent", false], [back_line_3, "light", false]])
-    if (line[0] != "") line];             // [text, colour, is the first (larger) line]
+    if (line[0] != "") line];             // [text, color, is the first (larger) line]
 plain_name_size = 4.4;
 plain_size = 3.2;
 plain_font = "Inter:style=ExtraBold";
@@ -390,7 +390,7 @@ domain_size_fit = fit(domain_size, [inter_width(domain_text)], text_room);
 tap_size_fit = tap_label == "" ? tap_size : fit(tap_size, [inter_width(tap_label)], tap_label_room);
 // The label's length (to the end of its ink) and the middle of its ink above the baseline, per mm
 // of size. For "tap" both are measured (the p's descender to the t's top); other labels use the
-// ExtraBold advance widths, slightly long for Bold, so they centre a little early.
+// ExtraBold advance widths, slightly long for Bold, so they center a little early.
 tap_label_len = tap_label == "" ? 0 : tap_label == "tap" ? (fine ? 2.14 : 2.18) * tap_size_fit : inter_width(tap_label) * tap_size_fit;
 tap_label_mid = 0.328 * tap_size_fit;
 // The last line also holds the cursor: one more advance, then the block. Only the terminal style
@@ -474,10 +474,10 @@ else
 down_t = face_down == "front" ? inlay_t : back_inlay_t;
 up_t = face_down == "front" ? back_inlay_t : inlay_t;
 if (back_inked)
-    echo(str("Colour layers: ", face_down, " inlays in layers 1-", round(down_t / layer_h), "; ",
+    echo(str("Color layers: ", face_down, " inlays in layers 1-", round(down_t / layer_h), "; ",
              face_down == "front" ? "back" : "front", " inlays from layer ", round((card_t - up_t) / layer_h) + 1));
 else
-    echo(str("Colour layers: front inlays from layer ", round((card_t - inlay_t) / layer_h) + 1));
+    echo(str("Color layers: front inlays from layer ", round((card_t - inlay_t) / layer_h) + 1));
 
 // ---- 2D artwork ----
 module rounded_rect(size, r) {
@@ -506,7 +506,7 @@ module name_2d() {
 }
 
 // The header mark is set as one string, so the ~/ and the handle keep the font's spacing, then
-// split by colour.
+// split by color.
 module mark_2d() {
     if (mark_name != "")
         translate([text_x, field_y + field - mark_size_fit])
@@ -541,7 +541,7 @@ module tap_label_2d() {
 }
 
 // The marker is laid out left to right around the dot at the origin, then turned to read upwards
-// and centred in the strip right of the QR code (or, on the back, the same strip seen from behind,
+// and centered in the strip right of the QR code (or, on the back, the same strip seen from behind,
 // at x = qr_right_margin / 2). Both icon and label are amber.
 module tap_place(x = card_w - qr_right_margin / 2) {
     start = -tap_dot_d / 2;
@@ -578,7 +578,7 @@ module back_chrome_view_2d() {
 }
 
 // Plain style: each baseline measured down from the top of the first line's capitals, then the
-// block centred on the card. The gap after the name scales with the name's fitted size.
+// block centered on the card. The gap after the name scales with the name's fitted size.
 function plain_step(k) = plain_lines[k - 1][2] ? plain_name_gap * plain_name_fit / plain_name_size : plain_gap;
 plain_first = len(plain_lines) > 0 && plain_lines[0][2] ? plain_name_fit : plain_size_fit;
 plain_baselines = [for (i = [0 : len(plain_lines) - 1])

@@ -21,11 +21,11 @@ OUT = ROOT / "makerworld" / "images" / "covers"
 W, H = 1600, 1200
 BACKGROUND = (214, 211, 204)  # render_preview.py's background
 INK = (22, 24, 27)            # #16181b, the card's black
-SUBTLE = (72, 74, 79)         # the subtitle's dark grey
+SUBTLE = (72, 74, 79)         # the subtitle's dark gray
 AMBER = (255, 159, 28)        # #ff9f1c
 BRAND = "~/tilde card"
 TITLE = ["Parametric NFC + QR", "Business Card"]
-SUBTITLE = ["Your name, link and colours.", "Customize it in your browser. Free."]
+SUBTITLE = ["Your name, link and colors.", "Customize it in your browser. Free."]
 
 # The phone, at scale 1: measured from the original cover (a 540 x 1200 screenshot shown at 0.8).
 PHONE = (460, 988)            # outer size

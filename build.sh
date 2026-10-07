@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Regenerate everything from card.scad, once per nozzle and sticker thickness: one STL per colour,
+# Regenerate everything from card.scad, once per nozzle and sticker thickness: one STL per color,
 # the checks and the preview. Each version goes to out/nozzle-<size>/ (stickers up to 0.2 mm) or
 # out/nozzle-<size>-thick-sticker/ (up to 0.4 mm). Pass nozzle sizes to build only those:
 #   ./build.sh          # 0.2 and 0.4

@@ -1,8 +1,8 @@
 """Check the exported STLs, not the source: the QR code decodes and the text strokes are printable.
 
-Every colour body must be manifold (each edge shared by exactly two triangles), or the slicer
-will flag it for repair. Then it rasterises each face of the card from the STLs, in print
-colours: the front from the top-facing triangles at the top surface, the back from the
+Every color body must be manifold (each edge shared by exactly two triangles), or the slicer
+will flag it for repair. Then it rasterizes each face of the card from the STLs, in print
+colors: the front from the top-facing triangles at the top surface, the back from the
 bottom-facing triangles at z = 0, flipped so it reads as it will when the card is turned over.
 
 - The QR code on the front must decode with ZXing (the decoder behind many phone scanners) to
@@ -47,7 +47,7 @@ PX_PER_MM = 20
 MIN_STROKE_MM = args.min_stroke
 MIN_GAP_MM = args.min_gap
 CORNER_SLIVER_MM2 = 0.06
-OFF_CARD = (255, 0, 255)  # matches no print colour
+OFF_CARD = (255, 0, 255)  # matches no print color
 QR_FIELD_X_MM = (38.5, 78.6)  # the QR field's light area; light text sits on either side of it
 # Acute inner corners always fill a little when "closed", whatever their size: the gap check
 # cannot tell them from a real narrow gap. Each reviewed corner is listed here as (face, x, y) in
@@ -66,7 +66,7 @@ KNOWN_THIN_TIPS = [
     ("back", 24.2, 17.5),
     ("back", 26.8, 17.5),
 ]
-PARTS = {  # print colours: black PLA, white PLA, orange PLA
+PARTS = {  # print colors: black PLA, white PLA, orange PLA
     "body": (22, 24, 27),
     "light": (241, 239, 232),
     "accent": (255, 159, 28),
@@ -75,7 +75,7 @@ PARTS = {  # print colours: black PLA, white PLA, orange PLA
 
 
 def surface_raster(meshes, face, px_per_mm=PX_PER_MM):
-    """The STLs' "top" or "bottom" face in print colours, drawn as seen from above."""
+    """The STLs' "top" or "bottom" face in print colors, drawn as seen from above."""
     lo = min(mesh.bounds[0][2] for mesh in meshes.values())
     hi = max(mesh.bounds[1][2] for mesh in meshes.values())
     z, sign = (hi, 1) if face == "top" else (lo, -1)

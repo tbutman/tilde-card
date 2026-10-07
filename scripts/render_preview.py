@@ -1,6 +1,6 @@
-"""Render a 3/4 preview of the three colour bodies from the exported STLs.
+"""Render a 3/4 preview of the three color bodies from the exported STLs.
 
-A small z-buffer rasteriser (orthographic camera, one directional light), because OpenSCAD's
+A small z-buffer rasterizer (orthographic camera, one directional light), because OpenSCAD's
 PNG export needs an OpenGL context that the headless Docker image does not have.
 
     .venv/bin/python scripts/render_preview.py --dir out/nozzle-0.2   # writes <dir>/preview.png
@@ -38,7 +38,7 @@ meshes = {name: trimesh.load(ROOT / args.dir / f"card-{name}.stl") for name in P
 if args.face_down == "front":
     # The STLs lie front-down for printing; turn them back over (about the long axis) to show the front.
     for mesh in meshes.values():
-        mesh.apply_transform(trimesh.transformations.rotation_matrix(np.pi, [1, 0, 0]))  # the view centres itself
+        mesh.apply_transform(trimesh.transformations.rotation_matrix(np.pi, [1, 0, 0]))  # the view centers itself
 centre = meshes["body"].bounds.mean(axis=0)
 rot = rotation(-TILT_DEG, TURN_DEG)
 light = LIGHT / np.linalg.norm(LIGHT)
@@ -86,8 +86,8 @@ Image.fromarray(image.clip(0, 255).astype(np.uint8)).resize((WIDTH, HEIGHT), Ima
 print(f"wrote {out.relative_to(ROOT)}")
 
 if args.transparent:
-    # Scale colour premultiplied by coverage, then divide it back out, so the edges carry no
-    # trace of the background colour.
+    # Scale color premultiplied by coverage, then divide it back out, so the edges carry no
+    # trace of the background color.
     covered = depth > -np.inf
     alpha = Image.fromarray((covered * 255).astype(np.uint8)).resize((WIDTH, HEIGHT), Image.LANCZOS)
     premultiplied = np.where(covered[..., None], image, 0).clip(0, 255).astype(np.uint8)

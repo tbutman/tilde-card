@@ -25,7 +25,7 @@ The technical side of the card: how the model is built, checked and generated. T
   same three lines, `back_line_1` to `back_line_3`; an empty one is skipped. The terminal style is
   a window: a gray title bar (three dots and a rule), then a session (`$ ` and `terminal_command`,
   `whoami` by default, the three lines, a cursor) anchored under it, inlaid 0.6 mm. The plain style
-  prints the lines in Inter, centred vertically: the first larger, the second in amber. Both shrink
+  prints the lines in Inter, centered vertically: the first larger, the second in amber. Both shrink
   to fit like the front. The back reads correctly when the card is turned over sideways.
 - **Print orientation:** the front prints face-down (`face_down = "front"`), because the plate
   side came out flat and matte on the first sample and the top side came out ridged. The STLs
@@ -46,12 +46,12 @@ Two versions are built from the same model, `out/nozzle-0.2/` and `out/nozzle-0.
 | `card.local.example.scad` | A template for `card.local.scad` (git-ignored): your own settings, one `setting = value;` per line, which `build.sh` passes to OpenSCAD as `-D` flags. |
 | `makerworld/tilde-card.scad` | The copy uploaded to MakerWorld's customizer, written by `scripts/make_makerworld.py`: no font file lines, and the example person Jane Doe as the defaults. Never edited by hand. |
 | `out/makerworld-sample/`, `out/makerworld-sample-qr-only-plain/` | Cards built from the MakerWorld copy, to check it renders and passes the checks: the default, and one with no NFC sticker and the plain back (its first line typed as "Jane Doe"). |
-| `out/nozzle-{0.2,0.4}/card-{body,light,accent,chrome}.stl` | The sample card (Jane Doe): one STL per colour (black, white, orange, gray), per nozzle, for stickers up to 0.2 mm. |
+| `out/nozzle-{0.2,0.4}/card-{body,light,accent,chrome}.stl` | The sample card (Jane Doe): one STL per color (black, white, orange, gray), per nozzle, for stickers up to 0.2 mm. |
 | `out/nozzle-{0.2,0.4}-thick-sticker/` | The same for stickers up to 0.4 mm: a 1.8 mm card with a deeper pocket. |
-| `out/nozzle-*/card-{top,back}-surface.png` | Each face as printed, rasterised from the STLs (the back as seen from behind); the QR check decodes the front. |
-| `out/nozzle-*/preview.png` | A 3/4 render of the front, from the colour STLs. |
+| `out/nozzle-*/card-{top,back}-surface.png` | Each face as printed, rasterized from the STLs (the back as seen from behind); the QR check decodes the front. |
+| `out/nozzle-*/preview.png` | A 3/4 render of the front, from the color STLs. |
 | `out/local/` | Your own card, built from `card.local.scad` when it exists, in the same layout as `out/`. Git-ignored. |
-| `fonts/` | Static instances of the site's variable fonts (SIL Open Font License; see the licence files). |
+| `fonts/` | Static instances of the site's variable fonts (SIL Open Font License; see the license files). |
 | `scripts/` | Checks (`verify.py`, `test_qr.py`), the preview render, the MakerWorld copy and the MakerWorld cover options (`make_covers.py`, into `makerworld/images/covers/`). |
 
 ## Build
@@ -84,8 +84,8 @@ limits to `verify.py`.
 
 `scripts/verify.py` checks the exported STLs, not the source:
 
-- every colour body is manifold (each edge shared by exactly two triangles);
-- the front, rasterised from the STLs in print colours, decodes with ZXing to exactly the link:
+- every color body is manifold (each edge shared by exactly two triangles);
+- the front, rasterized from the STLs in print colors, decodes with ZXing to exactly the link:
   at 20 px/mm, at 4 px/mm, and with a heavy blur. OpenCV's decoder runs too, as a warning only:
   it misses some valid symbols (for `https://tbutman.com/hello`, masks 5 and 6 at full
   resolution, including segno's own), which ZXing reads;
@@ -112,7 +112,7 @@ The card is 1.6 mm thick. With the 0.2 mm nozzle that is 16 layers of 0.1 mm:
 
 | Layer | Height (top of layer) | Contents |
 | --- | --- | --- |
-| 1–6 | 0.10–0.60 mm | The front, face-down: black, white and orange inlays; the AMS swaps colours on each layer |
+| 1–6 | 0.10–0.60 mm | The front, face-down: black, white and orange inlays; the AMS swaps colors on each layer |
 | 7–8 | 0.70–0.80 mm | Black |
 | 9–10 | 0.90–1.00 mm | Black, with the open NFC pocket (25.3 mm round, under the QR code, against the card's right edge as seen from the front) |
 | — | — | **Pause: drop in the NFC tag** |
@@ -152,11 +152,11 @@ less than 0.2 mm of black between it and the front inlays.
   covers the difference. Two names shrink together, as do all the back's lines.
 
 - The QR modules are the black body showing through the white field, so the code has no
-  separate dark part. Dark modules are grown by 0.02 mm (`qr_overlap`), so diagonal neighbours
+  separate dark part. Dark modules are grown by 0.02 mm (`qr_overlap`), so diagonal neighbors
   overlap instead of meeting at a zero-width edge. That edge would make both STLs non-manifold.
 - `JetBrains Mono` set the domain at first, but its narrow `m` has stems under 0.5 mm at this
   size. Inter's `m` is wider. The mono face stays for the `~/tbutman` mark, which matches the
-  site header: amber `~/`, light `tbutman`. It is set as one string and split by colour, so the
+  site header: amber `~/`, light `tbutman`. It is set as one string and split by color, so the
   spacing is the font's own.
 - With a 0.4 mm nozzle, several glyphs need thickening to reach 0.5 mm strokes (the mono `a`
   joint, the `$` bar). The `*_bolden` parameters do that for the 0.4 version; for the 0.2 version

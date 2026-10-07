@@ -27,11 +27,11 @@ own, and any NFC app can write the sticker. More about Tilde and the card:
 - **Three backs to choose from:** a terminal window (`$ whoami`, as above), a plain one, or none,
   which prints fastest. Both designs print three lines you choose, such as your name, title and
   email.
-- **Four colours of PLA**, printed in one go on a printer with an AMS (or another multi-colour
+- **Four colors of PLA**, printed in one go on a printer with an AMS (or another multi-color
   system). No painting or gluing.
 
 The files in `out/` are a sample card for Jane Doe, an example person. To make yours, type in your
-name, links and colours on MakerWorld (coming soon) or in OpenSCAD's Customizer: see
+name, links and colors on MakerWorld (coming soon) or in OpenSCAD's Customizer: see
 [Make it yours](PRINTING.md#make-it-yours).
 
 ## Print one
@@ -53,9 +53,9 @@ The model is written in [OpenSCAD](https://openscad.org): `card.scad` holds ever
 line of text as a setting. [docs/DESIGN.md](docs/DESIGN.md) covers how it's built and checked,
 the design decisions, and the print log.
 
-## Licence
+## License
 
 The model and scripts are [MIT](LICENSE) © Thomas Butman. The printable files on MakerWorld are
 shared under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/): print, remix and sell
 cards freely, with credit. The fonts in `fonts/` are Inter and JetBrains Mono, under the SIL Open
-Font License (see the licence files beside them).
+Font License (see the license files beside them).

@@ -1,7 +1,7 @@
 # Printing the Tilde card
 
 This guide is written for a Bambu Lab A1 mini with an AMS lite, using Bambu Studio. Other
-multi-colour printers work too; the steps are much the same.
+multi-color printers work too; the steps are much the same.
 
 The model is free and open source (MIT; CC BY 4.0 on MakerWorld): no account, sign-up or payment,
 and the card links straight to your own website. The NFC sticker is optional. Without one you get a
@@ -9,10 +9,10 @@ QR card, and you can skip everything about stickers and the pause.
 
 ## What you need
 
-- **A printer that prints several colours in one go**, such as a Bambu Lab printer with an AMS or
-  AMS lite. The card changes colour about 30 times (roughly half that with no back design), which
+- **A printer that prints several colors in one go**, such as a Bambu Lab printer with an AMS or
+  AMS lite. The card changes color about 30 times (roughly half that with no back design), which
   is too many to do by hand.
-- **PLA in black, white and orange**, plus **grey** for the window bar on the terminal-style back
+- **PLA in black, white and orange**, plus **gray** for the window bar on the terminal-style back
   (optional: use white or orange instead).
 - **A 0.2 mm or 0.4 mm nozzle.** See [Choose a nozzle](#choose-a-nozzle).
 - **Optional, for a card people can tap:** a 25 mm round NFC sticker for each card (see [Buying NFC
@@ -27,19 +27,19 @@ The files in `out/` are a sample card for Jane Doe, an example person. To print 
 details first:
 
 - **On MakerWorld (coming soon; the easiest):** open the model page, click **Customize**, and fill
-  in your name, link, website, the back of the card and the colours. Under **Printing**, choose your
+  in your name, link, website, the back of the card and the colors. Under **Printing**, choose your
   nozzle and whether to add an NFC sticker. The preview updates as you type; then open the result in
   Bambu Studio.
 - **In OpenSCAD (free, [openscad.org](https://openscad.org)):** open `card.scad`, show the
   Customizer (**Window → Customizer**), change the settings in the first sections and export a
-  3MF. Use a recent development snapshot of OpenSCAD: it keeps the four colours in the 3MF.
+  3MF. Use a recent development snapshot of OpenSCAD: it keeps the four colors in the 3MF.
 
 The choices that change the print:
 
 | Setting | Options |
 | --- | --- |
 | **NFC sticker** | **None:** a QR card, with no pocket, no "tap" marker and no pause. **Thin** or **thick stickers:** a card people can tap too; see [Buying NFC stickers](#buying-nfc-stickers). |
-| **Back of the card** | Three lines of your choice, such as your name, title and email. **Terminal window:** a command such as `$ whoami`, then your lines. **Plain:** just your lines. **None:** plain black, the quickest to print, with roughly half the colour changes. Choose None to add your own text or logo in Bambu Studio: the back is the top face as it prints, so the text and colour-painting tools work there, and the sticker's pause layer doesn't change. |
+| **Back of the card** | Three lines of your choice, such as your name, title and email. **Terminal window:** a command such as `$ whoami`, then your lines. **Plain:** just your lines. **None:** plain black, the quickest to print, with roughly half the color changes. Choose None to add your own text or logo in Bambu Studio: the back is the top face as it prints, so the text and color-painting tools work there, and the sticker's pause layer doesn't change. |
 | **Nozzle** | **0.2 mm** or **0.4 mm**; see [Choose a nozzle](#choose-a-nozzle). |
 | **Tap label** and **back tap mark** | With NFC: the word by the tap waves ("tap", or your own, such as "tap to connect"; empty for just the waves), and whether to repeat the waves and label on the back, over the sticker. |
 
@@ -60,12 +60,12 @@ the difference is in the small text and the print time.
 | **Small text** | Sharp. Every letter prints exactly as designed | The front is clean. Small letters on the back (`m`, `@`, `$`) can come out a little soft or partly filled in |
 | **Tap label** ("tap" by default) | Inter Bold, 2.6 mm | Inter ExtraBold, 3 mm (the lighter weight is too fine for this nozzle) |
 | **Layers** | 16 layers of 0.1 mm | 8 layers of 0.2 mm |
-| **Colour changes** | About 30 per plate | About half as many |
+| **Color changes** | About 30 per plate | About half as many |
 | **Print time** | About 4½ hours for one card | About 75 minutes for one card |
-| **Filament** | About 9 g in the card, plus about 12 g purged during colour changes | Similar in the card, less purge |
+| **Filament** | About 9 g in the card, plus about 12 g purged during color changes | Similar in the card, less purge |
 | **Best for** | The best-looking card, if you have a 0.2 mm nozzle and the time | Most printers come with a 0.4 mm nozzle, and it's over three times faster |
 
-**The time is mostly colour changes, not the cards.** Colour changes happen once per layer for the
+**The time is mostly color changes, not the cards.** Color changes happen once per layer for the
 whole plate, so printing two or three cards at once takes only a little longer than printing one,
 and wastes almost no extra filament. If you're printing a stack of cards, fill the plate.
 
@@ -118,13 +118,13 @@ New to it? Print a QR card first (**NFC sticker: none**): no pause, nothing to b
    nozzle** for the 0.2 mm nozzle, **0.20mm Standard @BBL A1M** for the 0.4 mm nozzle. Other
    printers have their own Standard processes with the same layer heights.
 2. Open your card:
-   - **Your own card (a 3MF from MakerWorld or OpenSCAD):** open it, then check the four colours
-     are assigned to the right filaments (black, white, orange, grey) in the **Filament** list.
+   - **Your own card (a 3MF from MakerWorld or OpenSCAD):** open it, then check the four colors
+     are assigned to the right filaments (black, white, orange, gray) in the **Filament** list.
    - **The sample card (the STLs in `out/`):** drag in all four files from one version's folder at
      once (`card-body.stl`, `card-light.stl`, `card-accent.stl`, `card-chrome.stl`). When asked
      whether to load them as **a single object with multiple parts**, choose **Yes**.
 3. If you loaded the STLs, set each part's filament: **body** → black, **light** → white,
-   **accent** → orange, **chrome** → grey.
+   **accent** → orange, **chrome** → gray.
 4. Change these three settings (the same for both nozzles):
 
    | Setting | Where | Change to | Why |
@@ -144,7 +144,7 @@ New to it? Print a QR card first (**NFC sticker: none**): no pause, nothing to b
    | Brim | None | |
 
 5. Leave room on the plate for the **prime tower** (the small block the printer purges into when
-   it changes colour). Drag it onto an empty spot if it's off the plate.
+   it changes color). Drag it onto an empty spot if it's off the plate.
 6. Fill the plate: select the card, press **+** to add copies, then **Arrange** (**A**). Three
    cards take barely longer than one, and fit comfortably on the A1 mini's plate.
 
@@ -203,7 +203,7 @@ Only lock it once the finished card works; you can lock it through the card.
 
 ## Check your first card
 
-- The white square behind the QR code is white, not grey or speckled.
+- The white square behind the QR code is white, not gray or speckled.
 - The QR code's squares are crisp, and it scans with your phone's camera.
 - With NFC: tapping the card on the "tap" marker opens your link. iPhones read NFC near the top edge, by the
   camera; Android phones usually in the middle or upper part of the back.
@@ -212,7 +212,7 @@ Only lock it once the finished card works; you can lock it through the card.
 
 ## If something goes wrong
 
-- **The white looks grey or has black specks:** increase the flushing volume from black to white
+- **The white looks gray or has black specks:** increase the flushing volume from black to white
   (the **Flushing volumes** button next to the filament list).
 - **Small letters on the front are missing or didn't stick:** wash the plate with dish soap and
   water (fingerprints stop small details sticking) and lower the initial layer speed, for example
