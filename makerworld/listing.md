@@ -38,7 +38,7 @@ The text below the line is the model page, ready to paste into MakerWorld. Image
 
 **Photo shot list:** the card in a hand; front and back on a desk; a phone tapping the card with
 the website opening; the 0.2 mm and 0.4 mm cards side by side, close up on the small text; the
-open pocket at the pause, with a tag going in; a stack of cards on the plate.
+open pocket at the pause, with a sticker going in; a stack of cards on the plate.
 
 **Images:**
 
@@ -67,27 +67,27 @@ same card. Nobody you hand it to needs an app.
 
 ## Description
 
-Hand someone this card and they **scan the QR code** to open your website. Add an NFC tag and they
-can **tap it with their phone** too. Their phone doesn't need an app: iPhones and Android phones
-with NFC read it straight away.
+Hand someone this card and they **scan the QR code** to open your website. Add an NFC sticker and
+they can **tap it with their phone** too. Their phone doesn't need an app: iPhones and Android
+phones with NFC read it straight away.
 
 **Free, with nothing to sign up for.** The model is free (CC BY 4.0) and open source. There's no
-account, subscription or service in between: the card opens your own website, and the tag holds
+account, subscription or service in between: the card opens your own website, and the sticker holds
 whatever you write to it.
 
 **Make it yours.** Click **Customize** to type in your name, job title, email, website and colours.
 The QR code is made for your link automatically, and long names shrink to fit.
 
 **Choose your card:**
-- **NFC tag:** none (a QR card: no stickers, no pause), or thin or thick NFC stickers, sealed inside
-  halfway through the print, invisible and protected.
+- **NFC sticker:** none (a QR card: no stickers, no pause), or thin or thick NFC stickers, sealed
+  inside halfway through the print, invisible and protected.
 - **The back:** a terminal window (`$ whoami`, for the developers), a plain back with your name,
   title and email, or none, which prints fastest.
 
-**Your whole contact card in one tap.** With an NFC tag, the card can hold more than a link: write
-your **contact card** (a vCard) to it, and one tap offers to save your name, phone numbers, email,
-website and social links to an Android phone's contacts. (iPhones only open links from a tap, so
-they open your website instead.) Or write a link, your WhatsApp or your LinkedIn. Change it any
+**Your whole contact card in one tap.** With an NFC sticker, the card can hold more than a link:
+write your **contact card** (a vCard) to it, and one tap offers to save your name, phone numbers,
+email, website and social links to an Android phone's contacts. (iPhones only open links from a tap,
+so they open your website instead.) Or write a link, your WhatsApp or your LinkedIn. Change it any
 time by writing it again, or lock it so nobody can (that's permanent).
 
 ### What you need
@@ -171,8 +171,9 @@ your screen. One tap on your screen switches what you share, to suit who you're 
 - **WhatsApp:** opens a chat with you, with a greeting ready to send.
 - **Guest Wi-Fi:** joins your network without typing the password.
 
-Keep several cards (work, personal, an event) and switch with a swipe. In English and Portuguese.
-It keeps a list of who you've met, and it writes your link or contact card onto this card's tag.
+Keep several cards (work, personal, an event) and switch with a swipe. In English and Portuguese. It
+keeps a list of who you've met, and it writes your link or contact card onto this card's NFC
+sticker.
 
 No account, no ads, no subscription and no internet permission: your details stay on your phone.
 The Tilde card is optional for Tilde users, and Tilde is optional for the card. Download Tilde at

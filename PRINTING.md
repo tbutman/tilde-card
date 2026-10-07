@@ -4,7 +4,7 @@ This guide is written for a Bambu Lab A1 mini with an AMS lite, using Bambu Stud
 multi-colour printers work too; the steps are much the same.
 
 The model is free and open source: no account, sign-up or payment, and the card links straight to
-your own website. The NFC tag is optional. Without one you get a QR card, and you can skip
+your own website. The NFC sticker is optional. Without one you get a QR card, and you can skip
 everything about stickers and the pause.
 
 ## What you need
@@ -15,9 +15,9 @@ everything about stickers and the pause.
 - **PLA in black, white and orange**, plus **grey** for the window bar on the terminal-style back
   (optional: use white or orange instead).
 - **A 0.2 mm or 0.4 mm nozzle.** See [Choose a nozzle](#choose-a-nozzle).
-- **Optional, for a card people can tap:** a 25 mm round NFC sticker for each card (see
-  [Buying NFC tags](#buying-nfc-tags)), and a phone with NFC plus a free app to put your link on
-  the sticker: Tilde (Android) or NFC Tools (iPhone and Android).
+- **Optional, for a card people can tap:** a 25 mm round NFC sticker for each card (see [Buying NFC
+  stickers](#buying-nfc-stickers)), and a phone with NFC plus a free app to put your link on the
+  sticker: Tilde (Android) or NFC Tools (iPhone and Android).
 - **A textured PEI plate** (recommended). It gives the front a matte finish, which also stops the
   QR code reflecting light.
 
@@ -26,8 +26,9 @@ everything about stickers and the pause.
 The files in `out/` are Thomas's own card. To print yours, put in your details first:
 
 - **On MakerWorld (coming soon; the easiest):** open the model page, click **Customize**, and fill
-  in your name, link, website, the back of the card and the colours. Under **Printing**, choose
-  your nozzle and whether to add an NFC tag. The preview updates as you type; then open the result in Bambu Studio.
+  in your name, link, website, the back of the card and the colours. Under **Printing**, choose your
+  nozzle and whether to add an NFC sticker. The preview updates as you type; then open the result in
+  Bambu Studio.
 - **In OpenSCAD (free, [openscad.org](https://openscad.org)):** open `card.scad`, show the
   Customizer (**Window → Customizer**), change the settings in the first sections and export a
   3MF. Use a recent development snapshot of OpenSCAD: it keeps the four colours in the 3MF.
@@ -36,7 +37,7 @@ The choices that change the print:
 
 | Setting | Options |
 | --- | --- |
-| **NFC tag** | **None:** a QR card, with no pocket, no "tap" marker and no pause. **Thin** or **thick stickers:** a card people can tap too; see [Buying NFC tags](#buying-nfc-tags). |
+| **NFC sticker** | **None:** a QR card, with no pocket, no "tap" marker and no pause. **Thin** or **thick stickers:** a card people can tap too; see [Buying NFC stickers](#buying-nfc-stickers). |
 | **Back of the card** | **Terminal window:** `$ whoami`, your name, title and email. **Plain:** your name, title and email. **None:** plain black, the quickest to print, with roughly half the colour changes. |
 | **Nozzle** | **0.2 mm** or **0.4 mm**; see [Choose a nozzle](#choose-a-nozzle). |
 
@@ -68,11 +69,11 @@ and wastes almost no extra filament. If you're printing a stack of cards, fill t
 
 The 0.2 mm figures are Bambu Studio's estimate for one card on an A1 mini (5 October 2026); the
 0.4 mm time is a real print of one card on the same printer (an early sample, without the pause
-for a tag). Your printer and settings may differ,
+for a sticker). Your printer and settings may differ,
 and the thick-sticker versions take a little longer (two extra layers on the 0.2 mm nozzle, one on
 the 0.4 mm).
 
-## Buying NFC tags
+## Buying NFC stickers
 
 *Only for a card with NFC. Printing a QR card? Skip to [Set up the print](#set-up-the-print-in-bambu-studio).*
 
@@ -140,11 +141,11 @@ before you buy.
 smoothest, so the files are already turned over: you'll see the back facing up, upside down. Don't
 flip them.
 
-## Add the pause for the NFC tag
+## Add the pause for the NFC sticker
 
 *Only for a card with NFC. A QR card has no pocket, so it prints straight through.*
 
-The printer needs to stop halfway so you can put the tag in.
+The printer needs to stop halfway so you can put the sticker in.
 
 1. Click **Slice plate**, then use the layer slider on the right of the preview.
 2. Go to the layer for your version. The layer just below it should show an open round pocket;
@@ -165,12 +166,12 @@ When the printer pauses:
    catch it.
 3. Keep your fingers away from the hot nozzle, then press **Resume** on the printer.
 
-## Put your link on the tag
+## Put your link on the sticker
 
 *Only for a card with NFC.*
 
 Do this **before** the sticker goes in the card, so a faulty sticker only costs you the sticker.
-(You can also rewrite a tag through the finished card later.)
+(You can also rewrite a sticker through the finished card later.)
 
 **On Android, with [Tilde](https://tbutman.com/tilde)** (free, the companion app):
 
@@ -196,7 +197,7 @@ Only lock it once the finished card works; you can lock it through the card.
 - With NFC: tapping the card on the "tap" marker opens your link. iPhones read NFC near the top edge, by the
   camera; Android phones usually in the middle or upper part of the back.
 - The text is readable, including the small letters.
-- The card is flat, with no curled corners (and, with NFC, no bump over the tag).
+- The card is flat, with no curled corners (and, with NFC, no bump over the sticker).
 
 ## If something goes wrong
 
@@ -205,9 +206,9 @@ Only lock it once the finished card works; you can lock it through the card.
 - **Small letters on the front are missing or didn't stick:** wash the plate with dish soap and
   water (fingerprints stop small details sticking) and lower the initial layer speed, for example
   to 30 mm/s.
-- **There's a bump over the tag:** the sticker is too thick for the pocket. Print the
+- **There's a bump over the sticker:** the sticker is too thick for the pocket. Print the
   thick-sticker version, or use thinner stickers.
 - **The phone doesn't react to a tap:** check NFC is on (Android), move the phone slowly over the
-  marker, and check the tag works by tapping it before printing.
+  marker, and check the sticker works by tapping it before printing.
 
 Details on how the model is built are in [docs/DESIGN.md](docs/DESIGN.md).

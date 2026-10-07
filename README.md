@@ -2,12 +2,13 @@
 
 A business card you print yourself, made to go with [Tilde](https://tbutman.com/tilde), the
 Android app that turns your phone into an NFC business card. The front has a QR code that opens your
-website. Add an NFC tag, sealed inside during the print, and people can tap it with their phone too.
+website. Add an NFC sticker, sealed inside during the print, and people can tap it with their phone
+too.
 
 **Free and open source.** The model is free to download, print and change: MIT for the source,
 CC BY 4.0 on MakerWorld. No account, sign-up, subscription or payment, and no service in between:
 the card links straight to your own website. It works without the app too: phones read it on their
-own, and any NFC app can write the tag. More about Tilde and the card:
+own, and any NFC app can write the sticker. More about Tilde and the card:
 [tbutman.com/tilde](https://tbutman.com/tilde).
 
 ![The card](out/nozzle-0.2/preview.png)
@@ -19,9 +20,10 @@ own, and any NFC app can write the tag. More about Tilde and the card:
 - **Credit-card size** (85.6 × 54 mm), 1.6 mm thick (1.8 mm for thicker NFC stickers), so it fits
   a wallet.
 - **A QR code that works with any phone camera.** It's the heart of the card.
-- **NFC is optional.** With a tag, the printer pauses halfway, you drop in a sticker, and the rest
-  of the card prints over it, sealing it inside; iPhones and Android phones with NFC then open your
-  link when tapped against the marked spot. Without one, it's a QR card: no stickers and no pause.
+- **NFC is optional.** If you add it, the printer pauses halfway, you drop in a sticker, and the
+  rest of the card prints over it, sealing it inside; iPhones and Android phones with NFC then open
+  your link when tapped against the marked spot. Without one, it's a QR card: no stickers and no
+  pause.
 - **Three backs to choose from:** a terminal window (`$ whoami`, as above), a plain one with your
   name, title and email, or none, which prints fastest.
 - **Four colours of PLA**, printed in one go on a printer with an AMS (or another multi-colour
@@ -34,13 +36,14 @@ colours on MakerWorld (coming soon) or in OpenSCAD's Customizer: see
 ## Print one
 
 [PRINTING.md](PRINTING.md) walks through it step by step: which nozzle to use, the slicer settings
-and, if you add NFC, which stickers to buy, the pause for the tag and how to put your link on it.
+and, if you add NFC, which stickers to buy, the pause for the sticker and how to put your link on
+it.
 
 ## Tilde, the app it goes with
 
 [Tilde](https://github.com/tbutman/tilde) is a free, open-source Android app (MIT, no account, no ads,
 no internet permission) that does what the card does, from your phone: people tap your phone, or scan the code on its screen, to get your website,
-contact card, WhatsApp or LinkedIn. It also writes your link onto the card's tag
+contact card, WhatsApp or LinkedIn. It also writes your link onto the card's NFC sticker
 (**Settings → Write a sticker**). Get it at [tbutman.com/tilde](https://tbutman.com/tilde).
 
 ## For developers
