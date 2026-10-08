@@ -29,7 +29,7 @@ EXAMPLE = {
 }
 
 HEADER = """\
-// Tilde card: a credit-card-sized business card you print in one go on a multi-color printer.
+// Tilde card: a credit-card-sized business card you print all at once on a multi-color printer.
 // The front has your name, your website and a QR code that opens your link; an optional NFC
 // sticker, sealed inside during the print, lets phones tap it too. Made for Tilde, the free
 // Android app that turns your phone into the same card.

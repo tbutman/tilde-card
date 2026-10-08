@@ -9,7 +9,7 @@ QR card, and you can skip everything about stickers and the pause.
 
 ## What you need
 
-- **A printer that prints several colors in one go**, such as a Bambu Lab printer with an AMS or
+- **A printer that prints several colors in a single print**, such as a Bambu Lab printer with an AMS or
   AMS lite. The card changes color about 30 times (roughly half that with no back design), which
   is too many to do by hand.
 - **PLA in black, white and orange**, plus **gray** for the window bar on the terminal-style back
@@ -69,7 +69,7 @@ the difference is in the small text and the print time.
 whole plate, so printing two or three cards at once takes only a little longer than printing one,
 and wastes almost no extra filament. If you're printing a stack of cards, fill the plate.
 
-The 0.2 mm figures are Bambu Studio's estimate for one card on an A1 mini (5 October 2026); the
+The 0.2 mm figures are Bambu Studio's estimate for one card on an A1 mini (October 5, 2026); the
 0.4 mm time is a real print of one card on the same printer (an early sample, without the pause
 for a sticker). Your printer and settings may differ,
 and the thick-sticker versions take a little longer (two extra layers on the 0.2 mm nozzle, one on
@@ -122,7 +122,7 @@ the A1 mini's standard processes with the three changes below; see [bambu/](bamb
 preset is tested on a real print; the 0.2 mm one has the same changes and is still to be confirmed
 on a print. The pause is still added by hand. On other printers, follow the steps.
 
-1. Fit the nozzle you chose. In Bambu Studio, pick your printer with that nozzle (for example
+1. Install the nozzle you chose. In Bambu Studio, pick your printer with that nozzle (for example
    **Bambu Lab A1 mini 0.2 nozzle**) and its standard process: **0.10mm Standard @BBL A1M 0.2
    nozzle** for the 0.2 mm nozzle, **0.20mm Standard @BBL A1M** for the 0.4 mm nozzle. Other
    printers have their own Standard processes with the same layer heights.
@@ -148,7 +148,7 @@ on a print. The pause is still added by hand. On other printers, follow the step
    | Setting | Should be | Why |
    | --- | --- | --- |
    | Initial layer height | Same as the layer height (0.10 or 0.20 mm) | The card is built from whole layers |
-   | Elephant foot compensation | 0 mm | Stops small gaps opening around the front's letters |
+   | Elephant foot compensation | 0 mm | Keeps small gaps from opening around the front's letters |
    | Top surface pattern | Monotonic line | Gives the back an even finish |
    | Brim | None | |
 
@@ -182,7 +182,7 @@ When the printer pauses:
 
 1. Peel the backing off a sticker (with your link already on it; see below) and place it **sticky
    side down** on the floor of the pocket, **flat and centered**. Do this for every card on the
-   plate. Which way up doesn't matter for tapping: the card reads from both sides.
+   plate. Which side is up doesn't matter for tapping: the card reads from both sides.
 2. **Before you resume:** smooth each sticker out, with no bubbles, wrinkles or raised edges, and
    run a fingernail around the rim. A lifted edge or bubble can catch the nozzle, which can drag
    the sticker, leave a bump on the card or knock the print loose, and a sticker that doesn't sit
@@ -209,7 +209,7 @@ Do this **before** the sticker goes in the card, so a faulty sticker only costs 
 2. Tap **Write** and hold your phone against the sticker until it confirms.
 3. To check: go to **Read** and hold the phone to the sticker. It should show your link.
 
-**Locking is optional and permanent.** Tilde (tick **Lock it after writing**) and NFC Tools
+**Locking is optional and permanent.** Tilde (check **Lock it after writing**) and NFC Tools
 (Other → Lock tag) can lock a sticker so nobody can change it, but then you can't either, ever.
 Only lock it once the finished card works; you can lock it through the card.
 
@@ -227,7 +227,7 @@ Only lock it once the finished card works; you can lock it through the card.
 - **The white looks gray or has black specks:** increase the flushing volume from black to white
   (the **Flushing volumes** button next to the filament list).
 - **Small letters on the front are missing or didn't stick:** wash the plate with dish soap and
-  water (fingerprints stop small details sticking) and lower the initial layer speed, for example
+  water (fingerprints keep small details from sticking) and lower the initial layer speed, for example
   to 30 mm/s.
 - **There's a bump over the sticker:** the sticker is too thick for the pocket. Choose
   thick stickers, or use thinner stickers.

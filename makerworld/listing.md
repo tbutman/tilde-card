@@ -47,7 +47,7 @@ open pocket at the pause, with a sticker going in; a stack of cards on the plate
 | File | Caption |
 | --- | --- |
 | `01-cover.png` | Parametric NFC + QR business card: customize it in your browser |
-| `02-card-3d.png` | Four colors, printed in one go |
+| `02-card-3d.png` | Four colors in a single print |
 | `03-front.png` | The front: your name, your link and a QR code |
 | `04-back.png` | The back: a terminal window with your details |
 | `05-app-share.png` | Tilde: your card on your phone |
@@ -67,7 +67,7 @@ Tilde Card: Customizable NFC + QR Business Card (Free)
 ## Summary
 
 A free business card you customize and print: a QR code on the front, and an optional NFC
-sticker sealed inside so people can tap it too. Prints in one go on a multi-color printer (AMS
+sticker sealed inside so people can tap it too. Prints all at once on a multi-color printer (AMS
 or similar). Made for Tilde, the free, open-source Android app that turns your phone into the
 same card. Nobody you hand it to needs an app.
 
@@ -75,7 +75,7 @@ same card. Nobody you hand it to needs an app.
 
 Hand someone this card and they **scan the QR code** to open your website. Add an NFC sticker and
 they can **tap it with their phone** too. Their phone doesn't need an app: iPhones and Android
-phones with NFC read it straight away.
+phones with NFC read it right away.
 
 **Free, with nothing to sign up for.** The model is free (CC BY 4.0) and open source. There's no
 account, subscription or service in between: the card opens your own website, and the sticker holds
@@ -172,7 +172,7 @@ New to it? Print a QR card first (**No NFC sticker (QR code only)**): no pause, 
    (your website, your contact card, WhatsApp…), then hold the sticker to your phone. With NFC
    Tools: Write → Add a record → URL, then hold it to your phone.
 8. When the printer pauses, peel off the backing and place the sticker **sticky side down** on the
-   floor of the pocket, **flat and centered**. Which way up doesn't matter for tapping: the card
+   floor of the pocket, **flat and centered**. Which side is up doesn't matter for tapping: the card
    reads from both sides.
 
    **Before you resume:** smooth it out, with no bubbles, wrinkles or raised edges, and run a
@@ -227,8 +227,8 @@ Full instructions, troubleshooting and the source files:
 what the card does, from your phone. People tap their phone against yours, or scan the code on
 your screen. One tap on your screen switches what you share, to suit who you're talking to:
 
-- **Contact card:** your name, title, company, phone numbers, email, website and social links in
-  one go, ready to save to their contacts. (iPhones scan the code on your screen for this one.)
+- **Contact card:** your name, title, company, phone numbers, email, website and social links
+  all at once, ready to save to their contacts. (iPhones scan the code on your screen for this one.)
 - **A link:** your website, LinkedIn, GitHub, Instagram, X or any link you like.
 - **WhatsApp:** opens a chat with you, with a greeting ready to send.
 - **Guest Wi-Fi:** joins your network without typing the password.
