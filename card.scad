@@ -81,7 +81,7 @@ window_bar_color = "#8e9089"; // color
 /* [Printing] */
 // Your printer's nozzle. 0.2 mm prints the sharpest text; 0.4 mm is over three times faster.
 nozzle = 0.2; // [0.2:0.2 mm nozzle (sharpest), 0.4:0.4 mm nozzle (fastest)]
-// An NFC sticker sealed inside lets phones tap the card: round NTAG215, 22-25 mm across (25.5 mm at most). Measure yours to pick thin or thick.
+// An NFC sticker sealed inside lets phones tap the card: round, 22-25 mm (25.5 at most). Thin up to 0.20 mm, thick up to 0.40. Pause at layer 6 (thin) or 7 (thick) on a 0.4 mm nozzle, 11 or 13 on 0.2 mm.
 nfc_sticker = "thin"; // [none:No NFC sticker (QR code only), thin:Thin NFC stickers 0.10-0.20 mm (1.8 mm card), thick:Thick NFC stickers 0.20-0.40 mm (2.0 mm card)]
 
 /* [Hidden] */

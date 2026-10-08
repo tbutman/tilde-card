@@ -65,7 +65,7 @@ Two versions are built from the same model, `out/nozzle-0.2/` and `out/nozzle-0.
 | `out/nozzle-*/card-{top,back}-surface.png` | Each face as printed, rasterized from the STLs (the back as seen from behind); the QR check decodes the front. |
 | `out/nozzle-*/preview.png` | A 3/4 render of the front, from the color STLs. |
 | `out/local/` | Your own card, built from `card.local.scad` when it exists, in the same layout as `out/`. Git-ignored. |
-| `test/` | `inlay-test.scad`, a small strip with white squares inlaid 0.2, 0.4 and 0.6 mm deep in black, to see how deep an inlay must be to hide the black under it (`test/build-inlay-test.sh` exports the STLs and a 3MF into `test/out/`). |
+| `test/` | `sticker-test.scad`, the card-sized tile that chose the solid lid (see [Solid lid](#solid-lid-8-october-2026)); `test/build-sticker-test.sh` exports its STLs and a 3MF into `test/out/`, and `test/README.md` gives its pause layers. |
 | `fonts/` | Static instances of the site's variable fonts (SIL Open Font License; see the license files). |
 | `scripts/` | Checks (`verify.py`, `test_qr.py`), the preview render, the MakerWorld copy and the MakerWorld cover options (`make_covers.py`, into `makerworld/images/covers/`, and the chosen one to `makerworld/images/01-cover.png`). |
 
@@ -96,6 +96,10 @@ lid between it and the back's inlays, or less than 2 mm of wall to any edge. The
 limits to `verify.py`.
 
 ## Checks
+
+`build.sh` also runs `scripts/check_pause_docs.py`: the pause layers in the `nfc_sticker` help
+line (which MakerWorld's Customizer shows), the listing's table and plain lines, and PRINTING.md's
+table must match the model's computed `pause_layer` for every nozzle and sticker built.
 
 `scripts/verify.py` checks the exported STLs, not the source:
 
@@ -160,6 +164,39 @@ after it. `build.sh` prints the pocket and pause for
 every version. The model refuses to build if the tag would have fewer than two layers over it, or
 less than 0.2 mm of black between it and the front inlays.
 
+## Solid lid (8 October 2026)
+
+**What failed.** The first card printed with a sticker (7 October 2026) had the back's inlays
+straight over the pocket: the pocket's ceiling and the bottom of the 0.6 mm back inlays were the
+same height. So the first layers after the pause were the back's letters (`whoami`, the `$`, the
+name line), printed as small islands onto the sticker's smooth face, and they dragged into
+strings. That print also showed the sticker through the front's white QR field as a pale disc.
+`verify.py` only looked at finished surfaces, so it couldn't see either.
+
+**The test.** `test/sticker-test.scad`: a card-sized tile, 1.8 mm thick, printed front down on the
+0.4 mm nozzle, with two thin-sticker pockets:
+
+- **B:** 0.2 mm of black between the front's 0.6 mm white and the sticker, a 0.4 mm lid (two
+  layers) over it, then 0.4 mm back inlays.
+- **2:** 0.4 mm of black in front, a 0.2 mm lid (one layer), then 0.4 mm back inlays.
+
+Each had a white QR-like patch on the front and terminal-style letters right over it on the back,
+plus a strip of white squares 0.2, 0.4 and 0.6 mm deep.
+
+**Results** (Thomas, 8 October 2026, 0.4 mm nozzle):
+
+- No sticker showed through the front's white over either pocket, even in bright light.
+- The back's letters printed cleanly over both pockets.
+- The two-layer lid came out flat; the single-layer lid was rippled.
+- The 0.4 and 0.6 mm white squares looked the same; 0.2 mm was gray.
+
+**Why option B.** Two layers of lid print flat where one ripples. 0.2 mm of black in front of the
+sticker hid it on the tile, so the front stays as it was. And 0.4 mm of white is as opaque as 0.6.
+So a sticker card has 0.4 mm back inlays and a 0.4 mm lid, and is 0.2 mm thicker: 1.8 mm with thin
+stickers, 2.0 mm with thick. A QR card has no pocket and stays 1.6 mm with 0.6 mm back inlays.
+`card.scad` asserts the lid, and `verify.py` checks it in the STLs. Not yet tested: the 0.2 mm
+nozzle, and a full card with option B.
+
 ## Design notes
 
 - The QR encoder is OpenSCAD functions in `card.scad`, so MakerWorld's customizer (one file, no
@@ -220,3 +257,5 @@ log only goes back to when the container was last recreated; the report keeps lo
 | --- | --- | --- |
 | 2026-10-05 | 1, 0.4 mm nozzle, no tag, front face-down (design as of a1a15f1) | 75 minutes. Front: smooth and matte, crisp QR code, name and domain; the "tap" label and waves too small to read, and concentric first-layer rings in the black (fix: bottom surface pattern). Back, printed on top: legible but ridged and a little soft; `@`, `m` and `$` slightly blobby, as the 0.4 mm gap check predicted. Led to making front-down the default orientation and to the 0.2 mm version. QR and tap not yet tested on phones. |
 | 2026-10-05 | 1, 0.2 mm nozzle, front face-down, white "tap to connect" label | Significantly better than the 0.4 mm sample (Thomas, comparing photos): the back's small mono text is crisp, where the 0.4 mm sample's `@`, `m` and `$` were soft. He preferred this version's lighter label weight and asked for a shorter "tap" label in amber, now the design. Tag and phone tests still to come. |
+| 2026-10-07 | 1, Thomas's card with an NFC sticker | The back's letters over the pocket printed straight onto the sticker and dragged into strings, and the sticker showed through the front's white QR field as a pale disc. Led to the solid lid. |
+| 2026-10-08 | The sticker test tile, 0.4 mm nozzle, two pockets (B and 2) | No show-through over either pocket; clean letters over both; the two-layer lid flat, the one-layer lid rippled; 0.4 and 0.6 mm white the same, 0.2 mm gray. Option B chosen. See [Solid lid](#solid-lid-8-october-2026). |

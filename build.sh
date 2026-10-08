@@ -37,6 +37,8 @@ for sticker in thin thick; do
   done
   sort -u "$log" | grep -v PRINTER || true
   limits=$(grep -m1 PRINTER "$log")
+  pause=$(sed -n 's/.*pause before layer \([0-9]*\).*/\1/p' "$log" | head -1)
+  [[ $root == out && -n $pause ]] && pauses+=("$nozzle:$sticker:$pause")
   rm "$log"
   min_stroke=$(sed -n 's/.*min_stroke=\([0-9.]*\).*/\1/p' <<<"$limits")
   min_gap=$(sed -n 's/.*min_gap=\([0-9.]*\).*/\1/p' <<<"$limits")
@@ -52,7 +54,10 @@ done
 done
 }
 
+pauses=()
 build_cards out "$(link_in card.scad)"
+# The pause layers people read (the Customizer help, the listing, PRINTING.md) must be the model's.
+.venv/bin/python scripts/check_pause_docs.py ${pauses[@]+"${pauses[@]}"} || status=1
 
 # Your own card: each `setting = value;` line in card.local.scad becomes a -D flag.
 if [[ -f card.local.scad ]]; then
