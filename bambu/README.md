@@ -5,14 +5,16 @@ standard processes and change only what the card needs:
 
 | Preset | Builds on | Changes |
 | --- | --- | --- |
-| `Tilde card 0.4 mm` | 0.20mm Standard @BBL A1M | Sparse infill 100% with the Rectilinear pattern (`zig-zag` in the file), Arachne walls, Monotonic line bottom surface, and paint penetration layers top 2 / bottom 3 |
-| `Tilde card 0.2 mm` | 0.10mm Standard @BBL A1M 0.2 nozzle | The same, with paint penetration layers top 4 / bottom 6 |
+| `Tilde card 0.4 mm` | 0.20mm Standard @BBL A1M | Sparse infill 100% with the Rectilinear pattern (`zig-zag` in the file), Arachne walls, Monotonic line bottom surface, and paint penetration layers top 2 / bottom 2 |
+| `Tilde card 0.2 mm` | 0.10mm Standard @BBL A1M 0.2 nozzle | The same, with paint penetration layers top 4 / bottom 4 |
 
 The paint penetration layers matter for a 3MF from MakerWorld's Customize: its colors are painted
 onto one shape, and Bambu Studio paints each face this many layers deep. These values keep the
-back's colors to its 0.4 mm inlays, above the black lid over the sticker, and the front's to
-0.6 mm. With the defaults (top 5 on 0.4 mm, 7 on 0.2 mm) the back's letters go through the lid
-and print onto the sticker. The STL parts in `out/` aren't painted, so they're not affected.
+back's colors to its 0.4 mm inlays, above the black lid over the sticker. Bambu also paints the
+pocket's ceiling black upward as a bottom face, so the bottom value is 2 (4): more would fill the
+letters over the pocket with black. The front's white is then 0.4 mm with black behind it, which
+hides the sticker. With the defaults (top 5 on 0.4 mm, 7 on 0.2 mm) the back's letters go through
+the lid and print onto the sticker. The STL parts in `out/` aren't painted, so they're not affected.
 
 The 0.4 mm preset's infill, wall and surface settings are tested on a real print; its paint
 penetration layers are new (from the print that showed the problem, which used Bambu's standard

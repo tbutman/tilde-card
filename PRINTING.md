@@ -148,12 +148,16 @@ printers, follow the steps.
    | Sparse infill density | Strength | **100%** (from 15%), and pattern **Rectilinear**: Bambu Studio offers the switch when you set 100%, choose Yes | Makes the card solid all the way through |
    | Wall generator | Quality | **Arachne** (from Classic) | Fills thin letter strokes properly |
    | Bottom surface pattern | Strength | **Monotonic line** (from Monotonic) | Gives the front an even finish |
-   | Top / bottom paint penetration layers | Strength | **2 / 3** on a 0.4 mm nozzle, **4 / 6** on 0.2 mm (from 5 / 3 and 7 / 5) | A Customize 3MF's colors are painted on, and Bambu paints them this many layers deep: these stop the back's colors above the sticker's lid (0.4 mm deep) and take the front's 0.6 mm deep |
+   | Top / bottom paint penetration layers | Strength | **2 / 2** on a 0.4 mm nozzle, **4 / 4** on 0.2 mm (from 5 / 3 and 7 / 5) | Keeps the back's colors above the sticker's lid, keeps the black painted up from the pocket's ceiling out of the letters over the pocket, and gives the front 0.4 mm of white with black behind it, which hides the sticker |
 
    **Why the paint layers matter:** MakerWorld's Customize exports one shape with the colors
    painted on, and Bambu Studio colors each painted face this many layers deep. Its defaults (5 on
    a 0.4 mm nozzle, 7 on 0.2 mm) take the back's letters through the 0.4 mm black lid and onto the
-   sticker, where they drag into strings. The STLs in `out/` are separate parts, so they aren't
+   sticker, where they drag into strings. Bambu also counts the pocket's ceiling (the underside of
+   the lid) as a bottom face and paints its black upward, so a bottom value over 2 (0.4 mm) fills
+   the back's letters over the pocket with black. 2 / 2 (or 4 / 4) keeps the back's colors above
+   the lid, keeps that black out of the letters, and gives the front 0.4 mm of white with black
+   behind it, which hides the sticker. The STLs in `out/` are separate parts, so they aren't
    affected; on a QR card (no sticker) the new values are fine too, since 0.4 mm of white is as
    white as 0.6.
 
@@ -174,8 +178,10 @@ printers, follow the steps.
 7. **With an NFC sticker, check the lid before printing:** slice, open **Preview**, set the color
    scheme to **Filament**, and drag the layer slider to the lid layers, right after the pause:
    **6–7** on a 0.4 mm nozzle (**7–8** with thick stickers), **11–14** on 0.2 mm (**13–16** with
-   thick stickers). Over the pocket they must be all black. If you see the back's colors there,
-   the paint penetration layers are still at Bambu's defaults.
+   thick stickers). Over the pocket they must be all black. The next layer (**8**, or **9** with
+   thick stickers; **15** or **17** on 0.2 mm) must show the back's letter shapes over the pocket
+   too, not solid black. And layer **3** (**5** on 0.2 mm) must be black under the front's white.
+   If any of these is wrong, the paint penetration layers aren't 2 / 2 (or 4 / 4).
 
 **The card prints face-down, and that's correct.** The side touching the plate comes out
 smoothest, so the files are already turned over: you'll see the back facing up, upside down. Don't

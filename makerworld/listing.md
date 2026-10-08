@@ -178,8 +178,10 @@ New to it? Print a QR card first (**No NFC sticker (QR code only)**): no pause, 
 
 7. **Check the lid:** in **Preview**, set the color scheme to **Filament** and drag the slider to
    the layers right after the pause: 6–7 on a 0.4 mm nozzle (7–8 with thick stickers), 11–14 on
-   0.2 mm (13–16 with thick). Over the pocket they must be all black. If the back's colors show
-   there, set the paint penetration layers (see **Print settings**).
+   0.2 mm (13–16 with thick). Over the pocket they must be all black. The next layer (8, or 9 with
+   thick stickers; 15 or 17 on 0.2 mm) must show the letter shapes over the pocket, and layer 3
+   (5 on 0.2 mm) must be black under the front's white. If not, set the paint penetration layers
+   to 2 / 2 or 4 / 4 (see **Print settings**).
 8. Before printing, write the sticker. With Tilde: Settings → Write a sticker, choose what it opens
    (your website, your contact card, WhatsApp…), then hold the sticker to your phone. With NFC
    Tools: Write → Add a record → URL, then hold it to your phone.
@@ -220,7 +222,7 @@ four settings:
 | Sparse infill density | Strength | **100%** (from 15%), and pattern **Rectilinear**: Bambu Studio offers the switch when you set 100%, choose Yes | Makes the card solid all the way through |
 | Wall generator | Quality | **Arachne** (from Classic) | Fills thin letter strokes properly |
 | Bottom surface pattern | Strength | **Monotonic line** (from Monotonic) | Gives the front an even finish |
-| Top / bottom paint penetration layers | Strength | **2 / 3** on a 0.4 mm nozzle, **4 / 6** on 0.2 mm (from 5 / 3 and 7 / 5) | Keeps the back's colors above the sticker's lid |
+| Top / bottom paint penetration layers | Strength | **2 / 2** on a 0.4 mm nozzle, **4 / 4** on 0.2 mm (from 5 / 3 and 7 / 5) | Keeps the back's colors above the lid and the lid's black out of the letters over the pocket, and hides the sticker behind the front |
 
 - **Sparse infill density** (Strength): **100%**, from 15%, and pattern **Rectilinear**: Bambu
   Studio offers the switch when you set 100%, choose Yes. Makes the card solid all the way through.
@@ -228,13 +230,16 @@ four settings:
 - **Bottom surface pattern** (Strength): **Monotonic line**, from Monotonic. Gives the front an
   even finish.
 - **Top paint penetration layers** (Strength): **2** on a 0.4 mm nozzle, **4** on 0.2 mm, so the
-  back's colors stop above the sticker's lid. **Bottom paint penetration layers**: **3** (0.4 mm)
-  or **6** (0.2 mm).
+  back's colors stop above the sticker's lid. **Bottom paint penetration layers**: **2** (0.4 mm)
+  or **4** (0.2 mm).
 
 **Why the paint layers:** the 3MF from Customize has its colors painted on, and Bambu Studio paints
 them this many layers deep. Its defaults (5 on a 0.4 mm nozzle, 7 on 0.2 mm) take the back's
-letters through the black lid over the sticker and onto it, where they drag into strings. On a QR
-card (no sticker) the new values are fine too.
+letters through the black lid over the sticker and onto it, where they drag into strings. Bambu
+also paints the pocket's ceiling black upward, so more bottom layers fill the letters over the
+pocket with black. 2 / 2 (4 / 4 on 0.2 mm) keeps the back's colors above the lid, keeps that black
+out of the letters, and gives the front 0.4 mm of white with black behind it, which hides the
+sticker. On a QR card (no sticker) the new values are fine too.
 
 Already right in Bambu's standard profiles (check them if you've changed your defaults or use
 another printer): initial layer height the same as the layer height, elephant foot compensation 0,

@@ -1,5 +1,5 @@
 {
-    "bottom_color_penetration_layers": "6",
+    "bottom_color_penetration_layers": "4",
     "bottom_surface_pattern": "monotonicline",
     "from": "User",
     "inherits": "0.10mm Standard @BBL A1M 0.2 nozzle",

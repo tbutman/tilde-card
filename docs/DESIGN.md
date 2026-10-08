@@ -216,9 +216,9 @@ defaults.
 
 **The fix** is in the slicer settings, not the model:
 
-- The `bambu/` presets set top / bottom paint penetration layers to 2 / 3 on the 0.4 mm nozzle and
-  4 / 6 on 0.2 mm. That's 0.4 mm on the back, the depth of the back's inlays above the lid, and
-  0.6 mm on the front.
+- The `bambu/` presets set top / bottom paint penetration layers to 2 / 2 on the 0.4 mm nozzle and
+  4 / 4 on 0.2 mm: 0.4 mm on each face. (At first the bottom was 3 / 6, for a 0.6 mm front; see
+  below.)
 - PRINTING.md and the listing list them as a fourth setting to change, with the reason, and add a
   check before printing: in Preview (color scheme Filament), the lid layers right after the pause
   must be all black over the pocket.
@@ -231,6 +231,16 @@ thin-sticker card 2.4 mm. Raised letters wouldn't help either, because paint pen
 any top face. The `nfc_sticker` help line has no room left. So the safeguards are the presets,
 MakerWorld print profiles uploaded with the model (they carry these settings to anyone who opens
 the 3MF in Bambu Studio), and the listing's settings and Preview check.
+
+**The pocket's ceiling (8 October 2026, later).** With the bottom value at 3, Thomas's next print
+had the lid, but the back's letters over the pocket had no wells: they printed flat, as if filled
+in. In painted mode Bambu also counts the pocket's ceiling (the underside of the lid) as a bottom
+face, and painted its black 3 layers upward, through the 2-layer lid and into layer 8, where the
+letters start. With the bottom at 2 (4 on the 0.2 mm nozzle), that black stops at the lid's top.
+On a Customize print this also makes the front's white 0.4 mm instead of 0.6, with 0.4 mm of black
+behind it: like the tile's pocket 2, which hid the sticker. Thomas checked 2 / 2 in Preview. The
+Preview check now also looks at the first letter layer over the pocket and at layer 3 (black
+under the front's white).
 
 ## Design notes
 
@@ -297,3 +307,4 @@ log only goes back to when the container was last recreated; the report keeps lo
 | 2026-10-07 | 1, Thomas's card with an NFC sticker | The back's letters over the pocket printed straight onto the sticker and dragged into strings, and the sticker showed through the front's white QR field as a pale disc. Led to the solid lid. |
 | 2026-10-08 | The sticker test tile, 0.4 mm nozzle, two pockets (B and 2) | No show-through over either pocket; clean letters over both; the two-layer lid flat, the one-layer lid rippled; 0.4 and 0.6 mm white the same, 0.2 mm gray. Option B chosen. See [Solid lid](#solid-lid-8-october-2026). |
 | 2026-10-08 | 1, 0.4 mm nozzle, from a Parametric Model Maker 3MF with a sticker, Bambu's 0.20mm Standard process | The 0.4 mm lid printed, but the back's painted colors went 5 layers (1.0 mm) deep, through it and onto the sticker, and dragged into strings again. Led to the paint penetration settings. See [Painted colors from Customize](#painted-colors-from-customize-8-october-2026). |
+| 2026-10-08 | 1, 0.4 mm nozzle, from a Customize 3MF, paint penetration 2 / 3 | The lid held, but Bambu painted the pocket's ceiling black 3 layers up, so the back's letters over the pocket printed without their wells. Led to 2 / 2 (4 / 4 on 0.2 mm). |
