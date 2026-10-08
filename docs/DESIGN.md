@@ -232,6 +232,15 @@ any top face. The `nfc_sticker` help line has no room left. So the safeguards ar
 MakerWorld print profiles uploaded with the model (they carry these settings to anyone who opens
 the 3MF in Bambu Studio), and the listing's settings and Preview check.
 
+**Print time.** With paint penetration 2 / 2 (4 / 4 on the 0.2 mm nozzle), fewer layers have
+colors in them: 8 instead of 12 on the 0.2 mm nozzle, 4 instead of 6 on 0.4 mm. Color changes
+happen once per color layer for the whole plate and dominate the time, so a card got quicker:
+Bambu Studio estimates about 4 hours (3h55m, 21 color changes) for a thin-sticker card with the
+terminal back on the 0.2 mm nozzle, from a Customize 3MF with the Tilde card 0.2 mm preset (it
+was about 4½ hours). The 0.4 mm time is not yet measured with these settings (it was 75 minutes).
+The front and the back each have half the color layers, so a card with no back has roughly half
+the color changes.
+
 **The pocket's ceiling (8 October 2026, later).** With the bottom value at 3, Thomas's next print
 had the lid, but the back's letters over the pocket had no wells: they printed flat, as if filled
 in. In painted mode Bambu also counts the pocket's ceiling (the underside of the lid) as a bottom

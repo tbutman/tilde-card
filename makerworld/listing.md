@@ -121,8 +121,8 @@ Change it any time by writing it again, or lock it so nobody can (that's permane
 
 ### What you need
 
-- A multi-color printer (AMS, AMS lite or similar). The card changes color about 30 times
-  (roughly half that with no back design).
+- A multi-color printer (AMS, AMS lite or similar). The card changes color about 20 times on a
+  0.2 mm nozzle, fewer on 0.4 mm (roughly half that with no back design).
 - PLA in black, white and orange, plus gray for the window bar on the terminal back (optional).
 - A 0.2 mm or 0.4 mm nozzle.
 - **For NFC (optional):** round NTAG215 NFC stickers, 22–25 mm across (**25.5 mm at most**) and up
@@ -133,13 +133,16 @@ Change it any time by writing it again, or lock it so nobody can (that's permane
 
 The settings for each are listed below.
 
-- **0.2 mm nozzle:** the sharpest card: every letter prints exactly as designed. About 4½ hours
-  for one card.
-- **0.4 mm nozzle:** about 75 minutes for one card, and it's the nozzle most printers come with.
+- **0.2 mm nozzle:** the sharpest card: every letter prints exactly as designed. About 4 hours
+  for one card (Bambu Studio's estimate for a sticker card with the terminal back, about 21 color
+  changes).
+- **0.4 mm nozzle:** about an hour for one card (not yet measured with the current settings), and
+  it's the nozzle most printers come with.
   The front looks clean; the smallest letters on the back can come out slightly soft.
 
 Most of the time goes to color changes, which happen once per layer for the whole plate. So
-**two or three cards take barely longer than one**: fill the plate.
+**two or three cards take barely longer than one**: fill the plate. QR-only cards and plain or no
+backs are quicker.
 
 ### NFC stickers (optional)
 

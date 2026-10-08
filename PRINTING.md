@@ -10,8 +10,8 @@ QR card, and you can skip everything about stickers and the pause.
 ## What you need
 
 - **A printer that prints several colors in a single print**, such as a Bambu Lab printer with an AMS or
-  AMS lite. The card changes color about 30 times (roughly half that with no back design), which
-  is too many to do by hand.
+  AMS lite. The card changes color about 20 times on a 0.2 mm nozzle, fewer on 0.4 mm (roughly
+  half that with no back design), which is too many to do by hand.
 - **PLA in black, white and orange**, plus **gray** for the window bar on the terminal-style back
   (optional: use white or orange instead).
 - **A 0.2 mm or 0.4 mm nozzle.** See [Choose a nozzle](#choose-a-nozzle).
@@ -60,20 +60,21 @@ the difference is in the small text and the print time.
 | **Small text** | Sharp. Every letter prints exactly as designed | The front is clean. Small letters on the back (`m`, `@`, `$`) can come out a little soft or partly filled in |
 | **Tap label** ("tap" by default) | Inter Bold, 2.6 mm | Inter ExtraBold, 3 mm (the lighter weight is too fine for this nozzle) |
 | **Layers** | 16 layers of 0.1 mm (18 with thin stickers, 20 with thick) | 8 layers of 0.2 mm (9 with thin stickers, 10 with thick) |
-| **Color changes** | About 30 per plate | About half as many |
-| **Print time** | About 4½ hours for one card | About 75 minutes for one card |
-| **Filament** | About 9 g in the card, plus about 12 g purged during color changes | Similar in the card, less purge |
-| **Best for** | The best-looking card, if you have a 0.2 mm nozzle and the time | Most printers come with a 0.4 mm nozzle, and it's over three times faster |
+| **Color changes** | About 20 per plate (21 in Bambu Studio's estimate for a sticker card with the terminal back) | Fewer |
+| **Print time** | About 4 hours for one card (Bambu Studio's estimate for a sticker card with the terminal back, about 21 color changes) | About an hour (not yet measured with the current settings; it was 75 minutes before the paint-layer change) |
+| **Filament** | About 10 g in the card, plus the purge at each color change | Similar in the card, less purge |
+| **Best for** | The best-looking card, if you have a 0.2 mm nozzle and the time | Most printers come with a 0.4 mm nozzle, and it's several times faster |
 
 **The time is mostly color changes, not the cards.** Color changes happen once per layer for the
 whole plate, so printing two or three cards at once takes only a little longer than printing one,
-and wastes almost no extra filament. If you're printing a stack of cards, fill the plate.
+and wastes almost no extra filament. If you're printing a stack of cards, fill the plate. QR-only
+cards and plain or no backs are quicker: fewer layers have colors in them.
 
-The 0.2 mm figures are Bambu Studio's estimate for one card on an A1 mini (October 5, 2026); the
-0.4 mm time is a real print of one card on the same printer (an early sample, without the pause
-for a sticker). Your printer and settings may differ,
-and the thick-sticker versions take a little longer (two extra layers on the 0.2 mm nozzle, one on
-the 0.4 mm).
+The 0.2 mm figure is Bambu Studio's estimate for one thin-sticker card with the terminal back on an
+A1 mini, sliced from a Customize 3MF with the Tilde card 0.2 mm preset (October 8, 2026). The
+0.4 mm figure is an estimate: an early sample took 75 minutes, before the paint-layer change
+removed some color layers. Your printer and settings may differ, and the thick-sticker versions
+take a little longer (two extra layers on the 0.2 mm nozzle, one on the 0.4 mm).
 
 ## Buying NFC stickers
 
