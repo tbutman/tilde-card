@@ -157,6 +157,10 @@ New to it? Print a QR card first (**No NFC sticker (QR code only)**): no pause, 
    **Filament** list.
 3. Pick the process: on an A1 mini, the Tilde card preset, which already has the four changes; on
    other printers, the standard process, then change four settings. See **Print settings** below.
+   After opening the 3MF, choose the process again (Tilde card 0.4 mm or 0.2 mm, or your adjusted
+   standard process): the 3MF brings Bambu's standard process with it. If the name shows an
+   asterisk, re-select it and discard the changes. Then check Top paint penetration layers shows
+   2 (0.4 mm) or 4 (0.2 mm).
 4. Fill the plate: select the card, press **+** to add copies, then **Arrange** (**A**). Three
    cards take barely longer than one.
 5. **QR card (no NFC): that's it, print it.** With NFC, keep going.

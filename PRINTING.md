@@ -132,6 +132,10 @@ printers, follow the steps.
 2. Open your card:
    - **Your own card (a 3MF from MakerWorld or OpenSCAD):** open it, then check the four colors
      are assigned to the right filaments (black, white, orange, gray) in the **Filament** list.
+     After opening the 3MF, choose the process again (Tilde card 0.4 mm or 0.2 mm, or your
+     adjusted standard process): the 3MF brings Bambu's standard process with it. If the name
+     shows an asterisk, re-select it and discard the changes. Then check Top paint penetration
+     layers shows 2 (0.4 mm) or 4 (0.2 mm).
    - **The sample card (the STLs in `out/`):** drag in all four files from one version's folder at
      once (`card-body.stl`, `card-light.stl`, `card-accent.stl`, `card-chrome.stl`). When asked
      whether to load them as **a single object with multiple parts**, choose **Yes**.

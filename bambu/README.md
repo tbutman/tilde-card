@@ -28,5 +28,10 @@ pause for an NFC sticker is still added by hand (see [PRINTING.md](../PRINTING.m
 paint penetration layers shows 2 (0.4 mm) or 4 (0.2 mm) after importing. Bambu Studio may keep an
 existing preset with the same name, and an older export doesn't set the paint layers.
 
+**After opening the 3MF, choose the process again** (Tilde card 0.4 mm or 0.2 mm, or your adjusted
+standard process): the 3MF from Customize is a Bambu project file and brings Bambu's standard
+process with it. If the name shows an asterisk, re-select it and discard the changes. Then check
+Top paint penetration layers shows 2 (0.4 mm) or 4 (0.2 mm).
+
 On another printer, start from its own standard process and make the four changes by hand
 (see [PRINTING.md](../PRINTING.md#set-up-the-print-in-bambu-studio)).
