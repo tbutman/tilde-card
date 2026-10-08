@@ -138,7 +138,7 @@ on a print. The pause is still added by hand. On other printers, follow the step
 
    | Setting | Where | Change to | Why |
    | --- | --- | --- | --- |
-   | Sparse infill density | Strength | **100 %** (from 15 %), and pattern **Rectilinear**: Bambu Studio offers the switch when you set 100 %, choose Yes | Makes the card solid all the way through |
+   | Sparse infill density | Strength | **100%** (from 15%), and pattern **Rectilinear**: Bambu Studio offers the switch when you set 100%, choose Yes | Makes the card solid all the way through |
    | Wall generator | Quality | **Arachne** (from Classic) | Fills thin letter strokes properly |
    | Bottom surface pattern | Strength | **Monotonic line** (from Monotonic) | Gives the front an even finish |
 

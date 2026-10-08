@@ -5,7 +5,7 @@ standard processes and change only what the card needs:
 
 | Preset | Builds on | Changes |
 | --- | --- | --- |
-| `Tilde card 0.4 mm` | 0.20mm Standard @BBL A1M | Sparse infill 100 % with the Rectilinear pattern (`zig-zag` in the file), Arachne walls, Monotonic line bottom surface |
+| `Tilde card 0.4 mm` | 0.20mm Standard @BBL A1M | Sparse infill 100% with the Rectilinear pattern (`zig-zag` in the file), Arachne walls, Monotonic line bottom surface |
 | `Tilde card 0.2 mm` | 0.10mm Standard @BBL A1M 0.2 nozzle | The same |
 
 The 0.4 mm preset is tested on a real print; the 0.2 mm one has the same changes and is still to

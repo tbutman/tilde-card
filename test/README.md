@@ -9,7 +9,7 @@ front, 0.4 mm white letters over each on the back, and white squares 0.2, 0.4 an
     test/build-sticker-test.sh [folder]   # inlay-test-body.stl, inlay-test-light.stl, inlay-test.3mf
 
 Load both STLs as one object with multiple parts (body black, light white), with the card's
-settings (100 % Rectilinear infill, Arachne, bottom Monotonic line). Pause before the layer that
+settings (100% Rectilinear infill, Arachne, bottom Monotonic line). Pause before the layer that
 starts at 1.0 mm (sticker in B) and the one that starts at 1.2 mm (sticker in 2):
 
 | Nozzle and process | Pocket B | Pocket 2 |

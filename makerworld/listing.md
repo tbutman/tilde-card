@@ -122,7 +122,7 @@ The settings for each are listed below.
 - **0.4 mm nozzle:** about 75 minutes for one card, and it's the nozzle most printers come with.
   The front looks clean; the smallest letters on the back can come out slightly soft.
 
-Most of the time goes on color changes, which happen once per layer for the whole plate. So
+Most of the time goes to color changes, which happen once per layer for the whole plate. So
 **two or three cards take barely longer than one**: fill the plate.
 
 ### NFC stickers (optional)
@@ -132,11 +132,11 @@ there's only a little room; measure a sticker before you buy a batch. They cost 
 each ($5–10 for a small pack). Check how thick they are too, because it decides which option you
 choose:
 
-- **0.10–0.20 mm** (wet inlays and thin paper stickers): the **Thin NFC stickers** option, a 1.8 mm card. For
-  example [Seritag's 25 mm NTAG215 wet inlay](https://seritag.com/nfc-tags/25mm-ntag215-wet),
-  0.12 mm.
-- **0.20–0.40 mm** (most thicker paper stickers): the **Thick NFC stickers** option, a 2.0 mm card. For
-  example [GoToTags' 25 mm NTAG215 sticker](https://store.gototags.com/nfc-sticker-ntag215-25-mm-circle/),
+- **0.10–0.20 mm** (wet inlays and thin paper stickers): the **Thin NFC stickers** option, a
+  1.8 mm card. For example
+  [Seritag's 25 mm NTAG215 wet inlay](https://seritag.com/nfc-tags/25mm-ntag215-wet), 0.12 mm.
+- **0.20–0.40 mm** (most thicker paper stickers): the **Thick NFC stickers** option, a 2.0 mm
+  card. For example [GoToTags' 25 mm NTAG215 sticker](https://store.gototags.com/nfc-sticker-ntag215-25-mm-circle/),
   0.35 mm.
 - **Not sure?** Many multipacks don't list a thickness, like these on
   [Amazon](https://www.amazon.com/clp/B091FCQW7N) and [eBay](https://www.ebay.com/itm/307182392836).
@@ -155,7 +155,7 @@ New to it? Print a QR card first (**No NFC sticker (QR code only)**): no pause, 
    other printers, the standard process, then change three settings. See **Print settings** below.
 4. Fill the plate: select the card, press **+** to add copies, then **Arrange** (**A**). Three
    cards take barely longer than one.
-5. **QR card (no NFC): that's it, print it.** With NFC, carry on.
+5. **QR card (no NFC): that's it, print it.** With NFC, keep going.
 6. Add a pause so you can put the sticker in: slice, then drag the layer slider to the layer in
    this table for your nozzle and the NFC sticker option you chose in Customize (the first layer
    that covers the round pocket), right-click the **+** and choose **Add pause**.
@@ -203,12 +203,12 @@ three settings:
 
 | Setting | Where | Change to | Why |
 | --- | --- | --- | --- |
-| Sparse infill density | Strength | **100 %** (from 15 %), and pattern **Rectilinear**: Bambu Studio offers the switch when you set 100 %, choose Yes | Makes the card solid all the way through |
+| Sparse infill density | Strength | **100%** (from 15%), and pattern **Rectilinear**: Bambu Studio offers the switch when you set 100%, choose Yes | Makes the card solid all the way through |
 | Wall generator | Quality | **Arachne** (from Classic) | Fills thin letter strokes properly |
 | Bottom surface pattern | Strength | **Monotonic line** (from Monotonic) | Gives the front an even finish |
 
-- **Sparse infill density** (Strength): **100 %**, from 15 %, and pattern **Rectilinear**: Bambu
-  Studio offers the switch when you set 100 %, choose Yes. Makes the card solid all the way through.
+- **Sparse infill density** (Strength): **100%**, from 15%, and pattern **Rectilinear**: Bambu
+  Studio offers the switch when you set 100%, choose Yes. Makes the card solid all the way through.
 - **Wall generator** (Quality): **Arachne**, from Classic. Fills thin letter strokes properly.
 - **Bottom surface pattern** (Strength): **Monotonic line**, from Monotonic. Gives the front an
   even finish.
