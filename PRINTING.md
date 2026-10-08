@@ -98,7 +98,7 @@ you can't measure, choose thick stickers: thin stickers work in it too.
 **About the chip:** NTAG215 holds 504 bytes, enough for a link or a contact card. NTAG216 (888
 bytes) also works. NTAG213 (144 bytes) is enough for a link only.
 
-Some options, with prices as listed on 5 October 2026:
+Some options, with prices as listed on October 5, 2026:
 
 | Where | What | Thickness | Option | Price |
 | --- | --- | --- | --- | --- |
