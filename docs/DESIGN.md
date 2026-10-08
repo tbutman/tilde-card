@@ -65,6 +65,7 @@ Two versions are built from the same model, `out/nozzle-0.2/` and `out/nozzle-0.
 | `out/nozzle-*/card-{top,back}-surface.png` | Each face as printed, rasterized from the STLs (the back as seen from behind); the QR check decodes the front. |
 | `out/nozzle-*/preview.png` | A 3/4 render of the front, from the color STLs. |
 | `out/local/` | Your own card, built from `card.local.scad` when it exists, in the same layout as `out/`. Git-ignored. |
+| `bambu/` | Bambu Studio process presets for the A1 mini, one per nozzle (`Tilde card 0.4 mm`, `Tilde card 0.2 mm`), and the same two in a zip to import; see `bambu/README.md`. |
 | `test/` | `sticker-test.scad`, the card-sized tile that chose the solid lid (see [Solid lid](#solid-lid-8-october-2026)); `test/build-sticker-test.sh` exports its STLs and a 3MF into `test/out/`, and `test/README.md` gives its pause layers. |
 | `fonts/` | Static instances of the site's variable fonts (SIL Open Font License; see the license files). |
 | `scripts/` | Checks (`verify.py`, `test_qr.py`), the preview render, the MakerWorld copy and the MakerWorld cover options (`make_covers.py`, into `makerworld/images/covers/`, and the chosen one to `makerworld/images/01-cover.png`). |

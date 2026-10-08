@@ -1,0 +1,19 @@
+{
+    "bottom_surface_pattern": "monotonicline",
+    "from": "User",
+    "inherits": "0.10mm Standard @BBL A1M 0.2 nozzle",
+    "name": "Tilde card 0.2 mm",
+    "print_extruder_id": [
+        "1"
+    ],
+    "print_extruder_variant": [
+        "Direct Drive Standard"
+    ],
+    "print_settings_id": "Tilde card 0.2 mm",
+    "skeleton_infill_density": "100%",
+    "skin_infill_density": "100%",
+    "sparse_infill_density": "100%",
+    "sparse_infill_pattern": "zig-zag",
+    "version": "2.8.0.6",
+    "wall_generator": "arachne"
+}

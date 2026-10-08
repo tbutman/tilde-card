@@ -115,6 +115,13 @@ the listing before you buy.
 
 New to it? Print a QR card first (**NFC sticker: none**): no pause, nothing to buy.
 
+**On a Bambu Lab A1 mini, the presets do steps 1 and 4 for you.** In Bambu Studio, **File →
+Import → Import Configs**, choose `bambu/Tilde card process presets.zip` (or one of its `.json`
+files), then pick **Tilde card 0.4 mm** or **Tilde card 0.2 mm** under **Process**. They build on
+the A1 mini's standard processes with the three changes below; see [bambu/](bambu/). The 0.4 mm
+preset is tested on a real print; the 0.2 mm one has the same changes and is still to be confirmed
+on a print. The pause is still added by hand. On other printers, follow the steps.
+
 1. Fit the nozzle you chose. In Bambu Studio, pick your printer with that nozzle (for example
    **Bambu Lab A1 mini 0.2 nozzle**) and its standard process: **0.10mm Standard @BBL A1M 0.2
    nozzle** for the 0.2 mm nozzle, **0.20mm Standard @BBL A1M** for the 0.4 mm nozzle. Other

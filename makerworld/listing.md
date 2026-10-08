@@ -147,7 +147,8 @@ New to it? Print a QR card first (**NFC sticker: none**): no pause, nothing to b
    option. Then open it in Bambu Studio.
 2. Check the four colors are assigned to the right filaments (black, white, orange, gray) in the
    **Filament** list.
-3. Pick the process and change three settings: see **Print settings** below.
+3. Pick the process (on an A1 mini, the Tilde card preset) and change three settings: see **Print
+   settings** below.
 4. Fill the plate: select the card, press **+** to add copies, then **Arrange** (**A**). Three
    cards take barely longer than one.
 5. **QR card (no NFC): that's it, print it.** With NFC, carry on.
@@ -184,8 +185,17 @@ side on the plate comes out smoothest, so that's the front.
 
 ### Print settings
 
-Pick your printer with the nozzle you chose, and its standard process: **0.10mm Standard** for a
-0.2 mm nozzle, **0.20mm Standard** for a 0.4 mm nozzle. Then change three settings:
+**Bambu Lab A1 mini: use the presets.** Download `Tilde card process presets.zip` from
+[github.com/tbutman/tilde-card/tree/main/bambu](https://github.com/tbutman/tilde-card/tree/main/bambu),
+then in Bambu Studio choose **File → Import → Import Configs**, pick the zip, and select
+**Tilde card 0.4 mm** or **Tilde card 0.2 mm** under **Process**. They build on the A1 mini's
+standard processes with the three changes below. The 0.4 mm preset is tested on a real print; the
+0.2 mm one has the same changes and is still to be confirmed on a print. Add the pause by hand
+(step 6 above).
+
+**Other printers:** pick your printer with the nozzle you chose, and its standard process:
+**0.10mm Standard** for a 0.2 mm nozzle, **0.20mm Standard** for a 0.4 mm nozzle. Then change
+three settings:
 
 | Setting | Where | Change to | Why |
 | --- | --- | --- | --- |
