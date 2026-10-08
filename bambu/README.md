@@ -24,5 +24,9 @@ a sticker card, check the lid in Preview (see [PRINTING.md](../PRINTING.md#set-u
 **Tilde card 0.2 mm** under **Process**, with the A1 mini and the matching nozzle selected. The
 pause for an NFC sticker is still added by hand (see [PRINTING.md](../PRINTING.md#add-the-pause-for-the-nfc-sticker)).
 
+**Updating from an earlier version?** Delete the old Tilde card preset first, or check that Top
+paint penetration layers shows 2 (0.4 mm) or 4 (0.2 mm) after importing. Bambu Studio may keep an
+existing preset with the same name, and an older export doesn't set the paint layers.
+
 On another printer, start from its own standard process and make the four changes by hand
 (see [PRINTING.md](../PRINTING.md#set-up-the-print-in-bambu-studio)).

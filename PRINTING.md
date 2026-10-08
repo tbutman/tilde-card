@@ -120,7 +120,10 @@ Import → Import Configs**, choose `bambu/Tilde card process presets.zip` (or o
 files), then pick **Tilde card 0.4 mm** or **Tilde card 0.2 mm** under **Process**. They build on
 the A1 mini's standard processes with the four changes below; see [bambu/](bambu/). The 0.4 mm
 preset's infill, wall and surface settings are tested on a real print; its paint penetration
-layers, and the whole 0.2 mm preset, are still to be confirmed on a print. The pause is still added by hand. On other printers, follow the steps.
+layers, and the whole 0.2 mm preset, are still to be confirmed on a print. The pause is still
+added by hand. **Updating from an earlier version?** Delete the old Tilde card preset first, or
+check that Top paint penetration layers shows 2 (0.4 mm) or 4 (0.2 mm) after importing. On other
+printers, follow the steps.
 
 1. Install the nozzle you chose. In Bambu Studio, pick your printer with that nozzle (for example
    **Bambu Lab A1 mini 0.2 nozzle**) and its standard process: **0.10mm Standard @BBL A1M 0.2
