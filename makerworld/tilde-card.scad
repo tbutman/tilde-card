@@ -40,7 +40,7 @@ tap_label = "tap";
 tap_waves_color = "accent"; // [accent:Accent color, light:Light color, chrome:Window bar color]
 // Which of your colors the tap label uses, on the front and the back.
 tap_label_color = "light"; // [light:Light color, accent:Accent color, chrome:Window bar color]
-// Show the tap waves on the back too (only with an NFC sticker). Waves and label uses your tap label.
+// Show the tap waves on the back too (only with an NFC sticker). "Waves and label" uses your tap label.
 back_tap_mark = "no"; // [no:No, waves:Waves only, label:Waves and label]
 
 /* [Colors] */
@@ -102,7 +102,7 @@ qr_overlap = 0.02;      // grows dark modules so diagonal neighbors overlap inst
 // column left of the QR code, down to the smallest size that prints.
 text_x = 6.0;                         // left edge of the text column
 text_gap = 1.5;                       // text column to the QR field
-mark_prefix = "~/";                   // amber, like the ~/ in a terminal prompt
+mark_prefix = "~/";                   // accent, like the ~/ in a terminal prompt
 mark_name = handle;                   // light
 mark_font = "JetBrains Mono:style=ExtraBold";
 mark_size = 4.0;
@@ -112,7 +112,7 @@ name_font = "Inter:style=ExtraBold";
 name_size = 5.2;
 name_leading = 1.45;                  // baseline-to-baseline, as a multiple of the name's size
 name_baseline = 30.5;                 // baseline of the first name line, from the bottom edge
-accent_w = 10.0;                      // amber rule under the name
+accent_w = 10.0;                      // accent rule under the name
 accent_h = 0.8;
 accent_gap = 3.4;                     // last name baseline to the top of the rule
 // Tap marker in the strip right of the QR code, over the NFC tag: generic NFC waves (not the
@@ -134,9 +134,9 @@ domain_font = "Inter:style=ExtraBold";
 domain_size = 3.2;
 domain_bolden = fine ? 0 : 0.03;       // the "a" joint sits right at 0.5 mm
 
-// Back. Terminal style: lines as [amber prompt, light text]; the last line ends in an amber cursor
+// Back. Terminal style: lines as [accent prompt, light text]; the last line ends in an accent cursor
 // block. Plain style: the three lines in Inter, centered vertically: the first larger (light), the
-// second amber, the third light.
+// second accent, the third light.
 back_enabled = back_style != "none";
 back_mark_on = back_tap_mark != "no" && nfc_enabled;
 back_inked = back_enabled || back_mark_on;   // anything inlaid in the back
@@ -538,22 +538,22 @@ module tap_place(x = card_w - qr_right_margin / 2, label = tap_label != "") {
     translate([x, card_h / 2]) rotate(90) translate([-(start + end) / 2, 0]) children();
 }
 
-// The parts of the front's tap marker that go in the part `colour` names: the waves in
+// The parts of the front's tap marker that go in the part `part_color` names: the waves in
 // tap_waves_color, the label in tap_label_color.
-module front_tap_2d(colour) {
+module front_tap_2d(part_color) {
     if (nfc_enabled) tap_place() {
-        if (tap_waves_color == colour) tap_icon_2d();
-        if (tap_label_color == colour) tap_label_2d();
+        if (tap_waves_color == part_color) tap_icon_2d();
+        if (tap_label_color == part_color) tap_label_2d();
     }
 }
 
 // The same for the back tap mark, as seen from behind.
-module back_tap_2d(colour) {
+module back_tap_2d(part_color) {
     with_label = back_tap_mark == "label" && tap_label != "";
     if (back_mark_on)
         tap_place(qr_right_margin / 2, with_label) {
-            if (tap_waves_color == colour) tap_icon_2d();
-            if (with_label && tap_label_color == colour) tap_label_2d();
+            if (tap_waves_color == part_color) tap_icon_2d();
+            if (with_label && tap_label_color == part_color) tap_label_2d();
         }
 }
 
@@ -592,9 +592,9 @@ plain_baselines = [for (i = [0 : len(plain_lines) - 1])
 plain_height = len(plain_lines) == 0 ? 0 : plain_baselines[len(plain_lines) - 1] + 0.25 * plain_size_fit;
 plain_top = (card_h + plain_height) / 2;
 
-module plain_lines_2d(colour) {
+module plain_lines_2d(part_color) {
     if (len(plain_lines) > 0) for (i = [0 : len(plain_lines) - 1])
-        if (plain_lines[i][1] == colour)
+        if (plain_lines[i][1] == part_color)
             translate([back_left, plain_top - plain_baselines[i]])
                 offset(delta = plain_bolden)
                     text(plain_lines[i][0], size = plain_lines[i][2] ? plain_name_fit : plain_size_fit, font = plain_font);

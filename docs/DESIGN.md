@@ -23,7 +23,7 @@ The technical side of the card: how the model is built, checked and generated. T
   thick, or 2.0 mm with thick stickers. A tap marker (NFC waves, not the EMVCo payment symbol, and
   `tap_label`, "tap" by default), turned to read upwards, sits in the strip right of the QR code,
   over the tag. The waves and the label each take one of the card's colors (`tap_waves_color`,
-  `tap_label_color`: `accent`, `light` or `chrome`; by default amber waves and a light label), on
+  `tap_label_color`: `accent`, `light` or `chrome`; by default the accent color for the waves and the light color for the label), on
   both sides; each goes into that color's inlay part, flush with the face. A longer label shrinks to fit the QR code's height, down to the
   nozzle's smallest text (about 14 characters on 0.4 mm, 17 on 0.2 mm); an empty one leaves just
   the waves. `back_tap_mark` (`waves` or `label`) repeats the marker on the back: the waves, plus
@@ -39,7 +39,7 @@ The technical side of the card: how the model is built, checked and generated. T
   same three lines, `back_line_1` to `back_line_3`; an empty one is skipped. The terminal style is
   a window: a gray title bar (three dots and a rule), then a session (`$ ` and `terminal_command`,
   `whoami` by default, the three lines, a cursor) anchored under it, inlaid 0.6 mm (0.4 mm with a sticker). The plain style
-  prints the lines in Inter, centered vertically: the first larger, the second in amber. Both shrink
+  prints the lines in Inter, centered vertically: the first larger, the second in the accent color. Both shrink
   to fit like the front. The back reads correctly when the card is turned over sideways.
 - **Print orientation:** the front prints face-down (`face_down = "front"`), because the plate
   side came out flat and matte on the first sample and the top side came out ridged. The STLs
@@ -224,7 +224,9 @@ nozzle, and a full card with option B.
   joint, the `$` bar). The `*_bolden` parameters do that for the 0.4 version; for the 0.2 version
   they are all 0, so the letters print exactly as drawn.
 - The tap label was "tap to connect" in white. It printed cleanly on the 0.2 mm sample, but the
-  short "tap" in amber, matching the waves, reads better at a glance. The 0.2 mm version keeps that
+  short "tap" reads better at a glance. It was amber for a while, matching the waves; it's now its
+  own setting (`tap_label_color`), light by default, which stands out more against the accent
+  waves. The 0.2 mm version keeps that
   sample's lighter Inter Bold at 2.6 mm (Thomas preferred it); the 0.4 mm version uses ExtraBold at
   3 mm, since Bold's strokes are too fine for that nozzle. (Earlier note: at 2.6 mm, ExtraBold's
   `c` and `e` openings were about 0.15 mm and would have printed closed.)
@@ -257,6 +259,6 @@ log only goes back to when the container was last recreated; the report keeps lo
 | Date | Cards | Result |
 | --- | --- | --- |
 | 2026-10-05 | 1, 0.4 mm nozzle, no tag, front face-down (design as of a1a15f1) | 75 minutes. Front: smooth and matte, crisp QR code, name and domain; the "tap" label and waves too small to read, and concentric first-layer rings in the black (fix: bottom surface pattern). Back, printed on top: legible but ridged and a little soft; `@`, `m` and `$` slightly blobby, as the 0.4 mm gap check predicted. Led to making front-down the default orientation and to the 0.2 mm version. QR and tap not yet tested on phones. |
-| 2026-10-05 | 1, 0.2 mm nozzle, front face-down, white "tap to connect" label | Significantly better than the 0.4 mm sample (Thomas, comparing photos): the back's small mono text is crisp, where the 0.4 mm sample's `@`, `m` and `$` were soft. He preferred this version's lighter label weight and asked for a shorter "tap" label in amber, now the design. Tag and phone tests still to come. |
+| 2026-10-05 | 1, 0.2 mm nozzle, front face-down, white "tap to connect" label | Significantly better than the 0.4 mm sample (Thomas, comparing photos): the back's small mono text is crisp, where the 0.4 mm sample's `@`, `m` and `$` were soft. He preferred this version's lighter label weight and asked for a shorter "tap" label in amber (later changed to a light label by default; see Design notes). Tag and phone tests still to come. |
 | 2026-10-07 | 1, Thomas's card with an NFC sticker | The back's letters over the pocket printed straight onto the sticker and dragged into strings, and the sticker showed through the front's white QR field as a pale disc. Led to the solid lid. |
 | 2026-10-08 | The sticker test tile, 0.4 mm nozzle, two pockets (B and 2) | No show-through over either pocket; clean letters over both; the two-layer lid flat, the one-layer lid rippled; 0.4 and 0.6 mm white the same, 0.2 mm gray. Option B chosen. See [Solid lid](#solid-lid-8-october-2026). |

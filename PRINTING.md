@@ -38,7 +38,7 @@ The choices that change the print:
 
 | Setting | Options |
 | --- | --- |
-| **NFC sticker** | **None:** a QR card, with no pocket, no "tap" marker and no pause. **Thin** or **thick stickers:** a card people can tap too; see [Buying NFC stickers](#buying-nfc-stickers). |
+| **NFC sticker** | **No NFC sticker (QR code only):** a QR card, with no pocket, no "tap" marker and no pause. **Thin NFC stickers** or **Thick NFC stickers:** a card people can tap too; see [Buying NFC stickers](#buying-nfc-stickers). |
 | **Back of the card** | Three lines of your choice, such as your name, title and email. **Terminal window:** a command such as `$ whoami`, then your lines. **Plain:** just your lines. **None:** plain black, the quickest to print, with roughly half the color changes. Choose None to add your own text or logo in Bambu Studio: the back is the top face as it prints, so the text and color-painting tools work there, and the sticker's pause layer doesn't change. |
 | **Nozzle** | **0.2 mm** or **0.4 mm**; see [Choose a nozzle](#choose-a-nozzle). |
 | **Tap mark** | With NFC: the word by the tap waves ("tap", or your own, such as "tap to connect"; empty for just the waves); which of your colors the waves and the label use (by default the accent color for the waves and the light color for the label); and whether to repeat the mark on the back, in the strip over the sticker (waves only, or waves and label). The back's text moves a little right to make room. On a None back the mark brings back some color changes, and the window bar color, anywhere on the mark, needs that filament. |
@@ -113,7 +113,7 @@ the listing before you buy.
 
 ## Set up the print in Bambu Studio
 
-New to it? Print a QR card first (**NFC sticker: none**): no pause, nothing to buy.
+New to it? Print a QR card first (**No NFC sticker (QR code only)**): no pause, nothing to buy.
 
 **On a Bambu Lab A1 mini, the presets do steps 1 and 4 for you.** In Bambu Studio, **File →
 Import → Import Configs**, choose `bambu/Tilde card process presets.zip` (or one of its `.json`

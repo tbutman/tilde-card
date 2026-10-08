@@ -18,9 +18,9 @@ other.
 - [x] Tag thickness: standard pocket for 0.10–0.20 mm stickers, plus a thick-sticker option up to
       0.40 mm (a 2.0 mm card). Make it a setting in the customizer and a profile each.
 - [ ] Print and photograph real cards for both nozzles (shot list below).
-- [ ] Optional: make a print profile for each nozzle with the settings in. The page lists the
-      settings instead, and explains how to add the pause, which can't be stored in a customized
-      card.
+- [ ] Optional: upload MakerWorld print profiles too. The page links the A1 mini presets in
+      `bambu/` (the 0.2 mm one still unconfirmed on a print) and lists the three changes for other
+      printers; the pause can't be stored in a customized card.
 - [x] License: **CC BY 4.0** (anyone may print, remix and sell cards, with credit). The source
       repo is MIT.
 - [x] Publish Tilde on GitHub first, and this repo too (or drop its link), so the links below work.
@@ -128,27 +128,27 @@ there's only a little room; measure a sticker before you buy a batch. They cost 
 each ($5–10 for a small pack). Check how thick they are too, because it decides which option you
 choose:
 
-- **0.10–0.20 mm** (wet inlays and thin paper stickers): the **thin stickers** option, a 1.8 mm card. For
+- **0.10–0.20 mm** (wet inlays and thin paper stickers): the **Thin NFC stickers** option, a 1.8 mm card. For
   example [Seritag's 25 mm NTAG215 wet inlay](https://seritag.com/nfc-tags/25mm-ntag215-wet),
   0.12 mm.
-- **0.20–0.40 mm** (most thicker paper stickers): the **thick stickers** option, a 2.0 mm card. For
+- **0.20–0.40 mm** (most thicker paper stickers): the **Thick NFC stickers** option, a 2.0 mm card. For
   example [GoToTags' 25 mm NTAG215 sticker](https://store.gototags.com/nfc-sticker-ntag215-25-mm-circle/),
   0.35 mm.
 - **Not sure?** Many multipacks don't list a thickness, like these on
   [Amazon](https://www.amazon.com/clp/B091FCQW7N) and [eBay](https://www.ebay.com/itm/307182392836).
-  Measure one, or choose the thick stickers option: thin stickers work in it too.
+  Measure one, or choose **Thick NFC stickers**: thin stickers work in it too.
 - **Don't use** NFC coins, anti-metal tags or hard plastic discs. They're too thick.
 
 ### How to print
 
-New to it? Print a QR card first (**NFC sticker: none**): no pause, nothing to buy.
+New to it? Print a QR card first (**No NFC sticker (QR code only)**): no pause, nothing to buy.
 
 1. Click **Customize** and fill in your details. Under **Printing**, choose your nozzle and NFC
    option. Then open it in Bambu Studio.
 2. Check the four colors are assigned to the right filaments (black, white, orange, gray) in the
    **Filament** list.
-3. Pick the process (on an A1 mini, the Tilde card preset) and change three settings: see **Print
-   settings** below.
+3. Pick the process: on an A1 mini, the Tilde card preset, which already has the three changes; on
+   other printers, the standard process, then change three settings. See **Print settings** below.
 4. Fill the plate: select the card, press **+** to add copies, then **Arrange** (**A**). Three
    cards take barely longer than one.
 5. **QR card (no NFC): that's it, print it.** With NFC, carry on.
