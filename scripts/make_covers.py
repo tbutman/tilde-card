@@ -3,6 +3,8 @@
 - cover-card.png: the card on its own
 - cover-card-app.png: the card and the app on a phone (the layout of the first cover)
 - cover-card-title.png, cover-card-app-title.png: the same with a title
+- cover-card-title-portrait.png, cover-card-app-title-portrait.png: 3:4 (1200 x 1600) versions of
+  those two, for MakerWorld's web cover
 
 The chosen one, cover-card-app-title.png, is also copied to makerworld/images/01-cover.png, the
 model page's cover.
@@ -17,6 +19,7 @@ phone is drawn here.
 import shutil
 from pathlib import Path
 
+import cv2
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
@@ -64,10 +67,10 @@ def place_phone(cover, x, y, scale=1.0):
     """The phone with the Share screen, outer top-left at (x, y), and its shadow."""
     w, h = round(PHONE[0] * scale), round(PHONE[1] * scale)
     bezel, drop, blur = round(BEZEL * scale), SHADOW[0] * scale, SHADOW[1] * scale
-    shadow = Image.new("L", (W, H), 0)
+    shadow = Image.new("L", cover.size, 0)
     ImageDraw.Draw(shadow).rounded_rectangle([x, y + drop, x + w - 1, y + h - 1 + drop], PHONE_R * scale, fill=255)
     shadow = shadow.filter(ImageFilter.GaussianBlur(blur)).point(lambda v: round(v * SHADOW[2]))
-    cover.paste(Image.new("RGB", (W, H), (0, 0, 0)), (0, 0), shadow)
+    cover.paste(Image.new("RGB", cover.size, (0, 0, 0)), (0, 0), shadow)
     body = Image.new("RGB", (w, h), FRAME)
     sw, sh = w - 2 * bezel, h - 2 * bezel
     screen = Image.open(ROOT / "makerworld" / "images" / "05-app-share.png").convert("RGB").resize((sw, sh), Image.LANCZOS)
@@ -82,6 +85,23 @@ def place_card(cover, render, box, x, y, card_width):
     frame = render.resize((round(render.width * scale), round(render.height * scale)), Image.LANCZOS)
     cover.paste(frame, (round(x - box[0] * scale), round(y - box[1] * scale)))
     return round((box[3] - box[1]) * scale)
+
+
+def place_card_cutout(cover, render, box, x, y, card_width):
+    """Like place_card, but only the card itself, so it can overlap something else: the
+    background around the card (flood-filled from the frame's edges, so the card's own light
+    areas stay) is left out, with a soft edge."""
+    scale = card_width / (box[2] - box[0])
+    frame = render.resize((round(render.width * scale), round(render.height * scale)), Image.LANCZOS)
+    near_bg = (np.abs(np.asarray(frame).astype(int) - BACKGROUND).sum(axis=2) < 12).astype(np.uint8)
+    flood = np.zeros((frame.height + 2, frame.width + 2), np.uint8)
+    for seed in [(0, 0), (frame.width - 1, 0), (0, frame.height - 1), (frame.width - 1, frame.height - 1)]:
+        cv2.floodFill(near_bg, flood, seed, 2)
+    # Shrink by 2 px first: the edge pixels are blended with the light background, and would show
+    # as a halo over something dark.
+    mask = Image.fromarray(((near_bg != 2) * 255).astype(np.uint8)).filter(ImageFilter.MinFilter(5))
+    mask = mask.filter(ImageFilter.GaussianBlur(0.8))
+    cover.paste(frame, (round(x - box[0] * scale), round(y - box[1] * scale)), mask)
 
 
 def draw_title(cover, x, y, title_size, subtitle_size, subtitle_lines):
@@ -140,6 +160,30 @@ def main():
     for name in ["cover-card", "cover-card-app", "cover-card-title", "cover-card-app-title"]:
         print(f"wrote makerworld/images/covers/{name}.png")
     shutil.copyfile(OUT / "cover-card-app-title.png", ROOT / "makerworld" / "images" / "01-cover.png")
+
+    # 3:4 portrait covers: the title at the top, wrapped for the narrower frame.
+    PW, PH = 1200, 1600
+
+    # 5. The card alone, large, under the title.
+    cover = Image.new("RGB", (PW, PH), BACKGROUND)
+    width = 1080
+    height = round(card_h * width / card_w)
+    top = draw_title(cover, 80, 96, 92, 46, SUBTITLE)
+    place_card(cover, render, box, (PW - width) // 2, top + (PH - top - height) // 2 + 20, width)
+    draw_title(cover, 80, 96, 92, 46, SUBTITLE)  # again, on top of the render's background
+    cover.save(OUT / "cover-card-title-portrait.png", optimize=True)
+
+    # 6. Card and app: the phone on the right, the card lower left, its right end over the
+    # phone's lower-left corner only, so neither QR code nor the screen's middle is covered.
+    cover = Image.new("RGB", (PW, PH), BACKGROUND)
+    top = draw_title(cover, 80, 96, 92, 46, SUBTITLE)
+    place_phone(cover, 750, top + 40, 0.9)
+    width = 820
+    height = round(card_h * width / card_w)
+    place_card_cutout(cover, render, box, 44, PH - 48 - height, width)
+    cover.save(OUT / "cover-card-app-title-portrait.png", optimize=True)
+    for name in ["cover-card-title-portrait", "cover-card-app-title-portrait"]:
+        print(f"wrote makerworld/images/covers/{name}.png")
     print("wrote makerworld/images/01-cover.png (cover-card-app-title.png)")
 
 

@@ -54,6 +54,10 @@ open pocket at the pause, with a sticker going in; a stack of cards on the plate
 | `06-app-picker.png` | Choose what a tap shares |
 | `07-app-met.png` | Remember who you met |
 
+**Covers:** 4:3 cover: `covers/cover-card-app-title.png` (the same as `01-cover.png`); 3:4 web
+cover: `covers/cover-card-app-title-portrait.png`. `scripts/make_covers.py` builds both, plus the
+other options in `images/covers/`.
+
 ---
 
 ## Title
