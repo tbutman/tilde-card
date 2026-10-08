@@ -1,5 +1,6 @@
 brotli==1.2.0
 fonttools==4.60.2
+imageio-ffmpeg==0.6.0
 numpy==2.3.4
 opencv-python-headless==5.0.0.93
 pillow==11.3.0
