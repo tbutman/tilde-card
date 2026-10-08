@@ -23,8 +23,9 @@ other.
       Bambu Studio without reading the page (Bambu's defaults put the back's colors on the
       sticker). The page also links the A1 mini presets in `bambu/` and lists the changes; the
       pause can't be stored in a customized card.
-- [ ] Print a sticker card from a Customize 3MF with the paint penetration layers set (check the
-      lid in Preview first) and confirm the back prints clean over the sticker.
+- [x] Print a sticker card from a Customize 3MF with the paint penetration layers set (check the
+      lid in Preview first) and confirm the back prints clean over the sticker. Done October 8,
+      2026: 0.4 mm nozzle, the Tilde card 0.4 mm preset (2 / 2), pause at layer 6.
 - [x] License: **CC BY 4.0** (anyone may print, remix and sell cards, with credit). The source
       repo is MIT.
 - [x] Publish Tilde on GitHub first, and this repo too (or drop its link), so the links below work.
@@ -216,8 +217,8 @@ side on the plate comes out smoothest, so that's the front.
 [github.com/tbutman/tilde-card/tree/main/bambu](https://github.com/tbutman/tilde-card/tree/main/bambu),
 then in Bambu Studio choose **File → Import → Import Configs**, pick the zip, and select
 **Tilde card 0.4 mm** or **Tilde card 0.2 mm** under **Process**. They build on the A1 mini's
-standard processes with the four changes below. The 0.4 mm preset's infill, wall and surface
-settings are tested on a real print; its paint layers, and the 0.2 mm preset, are still to be
+standard processes with the four changes below. The 0.4 mm preset is fully tested on a real print
+(a sticker card from a Customize 3MF, paint layers included); the 0.2 mm one is still to be
 confirmed on a print. Add the pause by hand (step 6 above). **Updating from an earlier version?**
 Delete the old Tilde card preset first, or check that Top paint penetration layers shows 2
 (0.4 mm) or 4 (0.2 mm) after importing.

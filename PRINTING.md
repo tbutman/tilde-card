@@ -119,8 +119,8 @@ New to it? Print a QR card first (**No NFC sticker (QR code only)**): no pause, 
 Import → Import Configs**, choose `bambu/Tilde card process presets.zip` (or one of its `.json`
 files), then pick **Tilde card 0.4 mm** or **Tilde card 0.2 mm** under **Process**. They build on
 the A1 mini's standard processes with the four changes below; see [bambu/](bambu/). The 0.4 mm
-preset's infill, wall and surface settings are tested on a real print; its paint penetration
-layers, and the whole 0.2 mm preset, are still to be confirmed on a print. The pause is still
+preset is fully tested on a real print (a sticker card from a Customize 3MF, paint penetration
+layers included); the 0.2 mm one is still to be confirmed on a print. The pause is still
 added by hand. **Updating from an earlier version?** Delete the old Tilde card preset first, or
 check that Top paint penetration layers shows 2 (0.4 mm) or 4 (0.2 mm) after importing. On other
 printers, follow the steps.
