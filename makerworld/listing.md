@@ -1,7 +1,7 @@
 # MakerWorld page (draft)
 
 The text below the line is the model page, ready to paste into MakerWorld. Images are in
-[images/](images/), in the order they should appear. **Print settings** gives the three changes
+[images/](images/), in the order they should appear. **Print settings** gives the four changes
 twice, as a table and as plain lines: keep whichever MakerWorld's editor shows well, and delete the
 other.
 
@@ -18,9 +18,13 @@ other.
 - [x] Tag thickness: standard pocket for 0.10–0.20 mm stickers, plus a thick-sticker option up to
       0.40 mm (a 2.0 mm card). Make it a setting in the customizer and a profile each.
 - [ ] Print and photograph real cards for both nozzles (shot list below).
-- [ ] Optional: upload MakerWorld print profiles too. The page links the A1 mini presets in
-      `bambu/` (the 0.2 mm one still unconfirmed on a print) and lists the three changes for other
-      printers; the pause can't be stored in a customized card.
+- [ ] Upload MakerWorld print profiles too, one per nozzle, with the four changes. They're the
+      only way the paint penetration layers reach people who open the Customize 3MF straight in
+      Bambu Studio without reading the page (Bambu's defaults put the back's colors on the
+      sticker). The page also links the A1 mini presets in `bambu/` and lists the changes; the
+      pause can't be stored in a customized card.
+- [ ] Print a sticker card from a Customize 3MF with the paint penetration layers set (check the
+      lid in Preview first) and confirm the back prints clean over the sticker.
 - [x] License: **CC BY 4.0** (anyone may print, remix and sell cards, with credit). The source
       repo is MIT.
 - [x] Publish Tilde on GitHub first, and this repo too (or drop its link), so the links below work.
@@ -151,8 +155,8 @@ New to it? Print a QR card first (**No NFC sticker (QR code only)**): no pause, 
    option. Then open it in Bambu Studio.
 2. Check the four colors are assigned to the right filaments (black, white, orange, gray) in the
    **Filament** list.
-3. Pick the process: on an A1 mini, the Tilde card preset, which already has the three changes; on
-   other printers, the standard process, then change three settings. See **Print settings** below.
+3. Pick the process: on an A1 mini, the Tilde card preset, which already has the four changes; on
+   other printers, the standard process, then change four settings. See **Print settings** below.
 4. Fill the plate: select the card, press **+** to add copies, then **Arrange** (**A**). Three
    cards take barely longer than one.
 5. **QR card (no NFC): that's it, print it.** With NFC, keep going.
@@ -168,10 +172,14 @@ New to it? Print a QR card first (**No NFC sticker (QR code only)**): no pause, 
    Thin stickers: layer 11 (0.2 mm nozzle) or layer 6 (0.4 mm). Thick stickers: layer 13 (0.2 mm)
    or layer 7 (0.4 mm).
 
-7. Before printing, write the sticker. With Tilde: Settings → Write a sticker, choose what it opens
+7. **Check the lid:** in **Preview**, set the color scheme to **Filament** and drag the slider to
+   the layers right after the pause: 6–7 on a 0.4 mm nozzle (7–8 with thick stickers), 11–14 on
+   0.2 mm (13–16 with thick). Over the pocket they must be all black. If the back's colors show
+   there, set the paint penetration layers (see **Print settings**).
+8. Before printing, write the sticker. With Tilde: Settings → Write a sticker, choose what it opens
    (your website, your contact card, WhatsApp…), then hold the sticker to your phone. With NFC
    Tools: Write → Add a record → URL, then hold it to your phone.
-8. When the printer pauses, peel off the backing and place the sticker **sticky side down** on the
+9. When the printer pauses, peel off the backing and place the sticker **sticky side down** on the
    floor of the pocket, **flat and centered**. Which side is up doesn't matter for tapping: the card
    reads from both sides.
 
@@ -179,7 +187,7 @@ New to it? Print a QR card first (**No NFC sticker (QR code only)**): no pause, 
    fingernail around the rim. A lifted edge or bubble can catch the nozzle, which can drag the
    sticker, leave a bump on the card or knock the print loose, and a sticker that doesn't sit
    fully inside the pocket will be hit by the nozzle.
-9. Done. Tap it with your phone to try it.
+10. Done. Tap it with your phone to try it.
 
 **What fits:** a link of up to 53 characters. Long names shrink to fit; if one is still too long,
 the preview tells you what to change (such as splitting it between first name and last name).
@@ -193,25 +201,35 @@ side on the plate comes out smoothest, so that's the front.
 [github.com/tbutman/tilde-card/tree/main/bambu](https://github.com/tbutman/tilde-card/tree/main/bambu),
 then in Bambu Studio choose **File → Import → Import Configs**, pick the zip, and select
 **Tilde card 0.4 mm** or **Tilde card 0.2 mm** under **Process**. They build on the A1 mini's
-standard processes with the three changes below. The 0.4 mm preset is tested on a real print; the
-0.2 mm one has the same changes and is still to be confirmed on a print. Add the pause by hand
+standard processes with the four changes below. The 0.4 mm preset's infill, wall and surface
+settings are tested on a real print; its paint layers, and the 0.2 mm preset, are still to be
+confirmed on a print. Add the pause by hand
 (step 6 above).
 
 **Other printers:** pick your printer with the nozzle you chose, and its standard process:
 **0.10mm Standard** for a 0.2 mm nozzle, **0.20mm Standard** for a 0.4 mm nozzle. Then change
-three settings:
+four settings:
 
 | Setting | Where | Change to | Why |
 | --- | --- | --- | --- |
 | Sparse infill density | Strength | **100%** (from 15%), and pattern **Rectilinear**: Bambu Studio offers the switch when you set 100%, choose Yes | Makes the card solid all the way through |
 | Wall generator | Quality | **Arachne** (from Classic) | Fills thin letter strokes properly |
 | Bottom surface pattern | Strength | **Monotonic line** (from Monotonic) | Gives the front an even finish |
+| Top / bottom paint penetration layers | Strength | **2 / 3** on a 0.4 mm nozzle, **4 / 6** on 0.2 mm (from 5 / 3 and 7 / 5) | Keeps the back's colors above the sticker's lid |
 
 - **Sparse infill density** (Strength): **100%**, from 15%, and pattern **Rectilinear**: Bambu
   Studio offers the switch when you set 100%, choose Yes. Makes the card solid all the way through.
 - **Wall generator** (Quality): **Arachne**, from Classic. Fills thin letter strokes properly.
 - **Bottom surface pattern** (Strength): **Monotonic line**, from Monotonic. Gives the front an
   even finish.
+- **Top paint penetration layers** (Strength): **2** on a 0.4 mm nozzle, **4** on 0.2 mm, so the
+  back's colors stop above the sticker's lid. **Bottom paint penetration layers**: **3** (0.4 mm)
+  or **6** (0.2 mm).
+
+**Why the paint layers:** the 3MF from Customize has its colors painted on, and Bambu Studio paints
+them this many layers deep. Its defaults (5 on a 0.4 mm nozzle, 7 on 0.2 mm) take the back's
+letters through the black lid over the sticker and onto it, where they drag into strings. On a QR
+card (no sticker) the new values are fine too.
 
 Already right in Bambu's standard profiles (check them if you've changed your defaults or use
 another printer): initial layer height the same as the layer height, elephant foot compensation 0,

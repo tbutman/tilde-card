@@ -1,4 +1,5 @@
 {
+    "bottom_color_penetration_layers": "3",
     "bottom_surface_pattern": "monotonicline",
     "from": "User",
     "inherits": "0.20mm Standard @BBL A1M",
@@ -14,6 +15,7 @@
     "skin_infill_density": "100%",
     "sparse_infill_density": "100%",
     "sparse_infill_pattern": "zig-zag",
+    "top_color_penetration_layers": "2",
     "version": "2.8.0.6",
     "wall_generator": "arachne"
 }

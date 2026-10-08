@@ -65,7 +65,7 @@ Two versions are built from the same model, `out/nozzle-0.2/` and `out/nozzle-0.
 | `out/nozzle-*/card-{top,back}-surface.png` | Each face as printed, rasterized from the STLs (the back as seen from behind); the QR check decodes the front. |
 | `out/nozzle-*/preview.png` | A 3/4 render of the front, from the color STLs. |
 | `out/local/` | Your own card, built from `card.local.scad` when it exists, in the same layout as `out/`. Git-ignored. |
-| `bambu/` | Bambu Studio process presets for the A1 mini, one per nozzle (`Tilde card 0.4 mm`, `Tilde card 0.2 mm`), and the same two in a zip to import; see `bambu/README.md`. |
+| `bambu/` | Bambu Studio process presets for the A1 mini, one per nozzle (`Tilde card 0.4 mm`, `Tilde card 0.2 mm`), with the card's settings and paint penetration layers, and the same two in a zip to import; see `bambu/README.md`. |
 | `test/` | `sticker-test.scad`, the card-sized tile that chose the solid lid (see [Solid lid](#solid-lid-8-october-2026)); `test/build-sticker-test.sh` exports its STLs and a 3MF into `test/out/`, and `test/README.md` gives its pause layers. |
 | `fonts/` | Static instances of the site's variable fonts (SIL Open Font License; see the license files). |
 | `scripts/` | Checks (`verify.py`, `test_qr.py`), the preview render, the MakerWorld copy and the MakerWorld cover options (`make_covers.py`, into `makerworld/images/covers/`, and the chosen one to `makerworld/images/01-cover.png`). |
@@ -198,6 +198,40 @@ stickers, 2.0 mm with thick. A QR card has no pocket and stays 1.6 mm with 0.6 m
 `card.scad` asserts the lid, and `verify.py` checks it in the STLs. Not yet tested: the 0.2 mm
 nozzle, and a full card with option B.
 
+## Painted colors from Customize (8 October 2026)
+
+**What happened.** The next card with a sticker, printed on the 0.4 mm nozzle from a 3MF made by
+MakerWorld's Parametric Model Maker, had the 0.4 mm lid, but the back's letters still printed
+onto the sticker. The Model Maker doesn't export the four color parts: it exports one shape with
+the colors painted onto about 36,000 of its triangles (`paint_color` in the 3MF). Bambu Studio
+decides how deep painted colors go with **Top paint penetration layers**
+(`top_color_penetration_layers`) and **Bottom paint penetration layers**
+(`bottom_color_penetration_layers`). On 0.20mm Standard @BBL A1M they're 5 and 3, so the back's
+colors went 5 × 0.2 = 1.0 mm deep, through the lid and onto the sticker. On 0.10mm Standard
+@BBL A1M 0.2 nozzle they're 7 and 5 (0.7 and 0.5 mm).
+
+**How we found it.** The test tile and `verify.py` both use the STL parts, which aren't painted, so
+the lid held there. The 3MF's `Metadata/project_settings.config` showed the two settings at their
+defaults.
+
+**The fix** is in the slicer settings, not the model:
+
+- The `bambu/` presets set top / bottom paint penetration layers to 2 / 3 on the 0.4 mm nozzle and
+  4 / 6 on 0.2 mm. That's 0.4 mm on the back, the depth of the back's inlays above the lid, and
+  0.6 mm on the front.
+- PRINTING.md and the listing list them as a fourth setting to change, with the reason, and add a
+  check before printing: in Preview (color scheme Filament), the lid layers right after the pause
+  must be all black over the pocket.
+- QR cards are fine with the same values: 0.4 mm of white looked as white as 0.6 on the tile.
+
+**What the model can't do.** Paint depth is a slicer setting, and the 3MF from Customize carries
+the process the person picks, not ours. For the model alone to prevent it, the lid would have to
+be thicker than Bambu's default paint depth: 1.0 mm on the 0.4 mm nozzle, which would make a
+thin-sticker card 2.4 mm. Raised letters wouldn't help either, because paint penetrates down from
+any top face. The `nfc_sticker` help line has no room left. So the safeguards are the presets,
+MakerWorld print profiles uploaded with the model (they carry these settings to anyone who opens
+the 3MF in Bambu Studio), and the listing's settings and Preview check.
+
 ## Design notes
 
 - The QR encoder is OpenSCAD functions in `card.scad`, so MakerWorld's customizer (one file, no
@@ -262,3 +296,4 @@ log only goes back to when the container was last recreated; the report keeps lo
 | 2026-10-05 | 1, 0.2 mm nozzle, front face-down, white "tap to connect" label | Significantly better than the 0.4 mm sample (Thomas, comparing photos): the back's small mono text is crisp, where the 0.4 mm sample's `@`, `m` and `$` were soft. He preferred this version's lighter label weight and asked for a shorter "tap" label in amber (later changed to a light label by default; see Design notes). Tag and phone tests still to come. |
 | 2026-10-07 | 1, Thomas's card with an NFC sticker | The back's letters over the pocket printed straight onto the sticker and dragged into strings, and the sticker showed through the front's white QR field as a pale disc. Led to the solid lid. |
 | 2026-10-08 | The sticker test tile, 0.4 mm nozzle, two pockets (B and 2) | No show-through over either pocket; clean letters over both; the two-layer lid flat, the one-layer lid rippled; 0.4 and 0.6 mm white the same, 0.2 mm gray. Option B chosen. See [Solid lid](#solid-lid-8-october-2026). |
+| 2026-10-08 | 1, 0.4 mm nozzle, from a Parametric Model Maker 3MF with a sticker, Bambu's 0.20mm Standard process | The 0.4 mm lid printed, but the back's painted colors went 5 layers (1.0 mm) deep, through it and onto the sticker, and dragged into strings again. Led to the paint penetration settings. See [Painted colors from Customize](#painted-colors-from-customize-8-october-2026). |

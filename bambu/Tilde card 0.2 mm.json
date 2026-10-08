@@ -1,4 +1,5 @@
 {
+    "bottom_color_penetration_layers": "6",
     "bottom_surface_pattern": "monotonicline",
     "from": "User",
     "inherits": "0.10mm Standard @BBL A1M 0.2 nozzle",
@@ -14,6 +15,7 @@
     "skin_infill_density": "100%",
     "sparse_infill_density": "100%",
     "sparse_infill_pattern": "zig-zag",
+    "top_color_penetration_layers": "4",
     "version": "2.8.0.6",
     "wall_generator": "arachne"
 }
