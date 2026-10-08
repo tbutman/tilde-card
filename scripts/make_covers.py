@@ -10,7 +10,7 @@ The chosen one, cover-card-app-title.png, is also copied to makerworld/images/01
 model page's cover.
 
 From the repo's own assets: the sample card's render (out/makerworld-sample/preview.png, written
-by build.sh), the app screenshot makerworld/images/05-app-share.png and the fonts in fonts/. The
+by build.sh), the app screenshot makerworld/images/app/05-app-share.png and the fonts in fonts/. The
 phone is drawn here.
 
     .venv/bin/python scripts/make_covers.py
@@ -73,7 +73,7 @@ def place_phone(cover, x, y, scale=1.0):
     cover.paste(Image.new("RGB", cover.size, (0, 0, 0)), (0, 0), shadow)
     body = Image.new("RGB", (w, h), FRAME)
     sw, sh = w - 2 * bezel, h - 2 * bezel
-    screen = Image.open(ROOT / "makerworld" / "images" / "05-app-share.png").convert("RGB").resize((sw, sh), Image.LANCZOS)
+    screen = Image.open(ROOT / "makerworld" / "images" / "app" / "05-app-share.png").convert("RGB").resize((sw, sh), Image.LANCZOS)
     body.paste(screen, (bezel, bezel), rounded_mask((sw, sh), SCREEN_R * scale))
     cover.paste(body, (x, y), rounded_mask((w, h), PHONE_R * scale))
 

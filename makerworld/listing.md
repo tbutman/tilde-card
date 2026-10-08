@@ -46,21 +46,30 @@ other.
 the website opening; the 0.2 mm and 0.4 mm cards side by side, close up on the small text; the
 open pocket at the pause, with a sticker going in; a stack of cards on the plate.
 
-**Images:**
+**Images** (model pictures, in this order; MakerWorld has no caption fields, so the captions are
+for reference). All are 4:3, the ratio MakerWorld recommends, so its thumbnails show them whole.
+`scripts/make_listing_images.py` builds 02–07 from the sample card; the app screenshots it uses are
+in `images/app/`.
 
 | File | Caption |
 | --- | --- |
-| `01-cover.png` | Parametric NFC + QR business card: customize it in your browser |
-| `02-card-3d.png` | Four colors in a single print |
+| `02-both-sides.png` | Front and back: four colors in a single print |
 | `03-front.png` | The front: your name, your link and a QR code |
 | `04-back.png` | The back: a terminal window with your details |
-| `05-app-share.png` | Tilde: your card on your phone |
-| `06-app-picker.png` | Choose what a tap shares |
-| `07-app-met.png` | Remember who you met |
+| `05-sticker.png` | The NFC sticker goes in at a pause and is sealed inside |
+| `06-colors.png` | Your colors (keep the card dark, so the QR code scans) |
+| `07-tilde-app.png` | Made for Tilde: your card on your phone |
+
+**Real-life photos:** MakerWorld requires at least three, covering three views (the front, the
+back, the card in a hand). See the shot list above.
 
 **Covers:** 4:3 cover: `covers/cover-card-app-title.png` (the same as `01-cover.png`); 3:4 web
 cover: `covers/cover-card-app-title-portrait.png`. `scripts/make_covers.py` builds both, plus the
 other options in `images/covers/`.
+
+**Fields:** MakerWorld has no summary field, so the Summary below isn't used there; the
+description's first lines are what people see first. The model name is 50 characters at most, so
+the page uses "Tilde Card: Customizable NFC + QR Business Card" and leaves out "(Free)".
 
 ---
 
@@ -79,14 +88,16 @@ same card. Nobody you hand it to needs an app.
 
 Hand someone this card and they **scan the QR code** to open your website. Add an NFC sticker and
 they can **tap it with their phone** too. Their phone doesn't need an app: iPhones and Android
-phones with NFC read it right away.
+phones with NFC read it right away. It's credit-card size (85.6 × 54 mm), so it fits a wallet, and
+it prints all at once on a multi-color printer (AMS or similar).
 
 **Free, with nothing to sign up for.** The model is free (CC BY 4.0) and open source. There's no
 account, subscription or service in between: the card opens your own website, and the sticker holds
 whatever you write to it.
 
 **Make it yours.** Click **Customize** to type in your name, website, the lines on the back and the
-colors. The QR code is made for your link automatically, and long text shrinks to fit.
+colors (keep the card color dark, so the QR code scans). The QR code is made for your link
+automatically, and long text shrinks to fit.
 
 **Choose your card:**
 - **NFC sticker:** none (a QR card: no stickers, no pause), or thin or thick NFC stickers, sealed
@@ -155,14 +166,12 @@ New to it? Print a QR card first (**No NFC sticker (QR code only)**): no pause, 
    option. Then open it in Bambu Studio.
 2. Check the four colors are assigned to the right filaments (black, white, orange, gray) in the
    **Filament** list.
-3. Pick the process: on an A1 mini, the Tilde card preset, which already has the four changes; on
-   other printers, the standard process, then change four settings. See **Print settings** below.
-   After opening the 3MF, choose the process again (Tilde card 0.4 mm or 0.2 mm, or your adjusted
-   standard process): the 3MF brings Bambu's standard process with it. If the name shows an
-   asterisk, re-select it and discard the changes. Then check Top paint penetration layers shows
-   2 (0.4 mm) or 4 (0.2 mm).
-4. Fill the plate: select the card, press **+** to add copies, then **Arrange** (**A**). Three
-   cards take barely longer than one.
+3. Choose the process, even if one is already selected: the 3MF brings Bambu's standard process
+   with it. On an A1 mini, choose the Tilde card preset (0.4 mm or 0.2 mm), which already has the
+   four changes; on other printers, choose the standard process and make the four changes. See
+   **Print settings** below. If the name shows an asterisk, re-select it and discard the changes.
+   Then check that Top paint penetration layers shows 2 (0.4 mm) or 4 (0.2 mm).
+4. Fill the plate: select the card, press **+** to add copies, then **Arrange** (**A**).
 5. **QR card (no NFC): that's it, print it.** With NFC, keep going.
 6. Add a pause so you can put the sticker in: slice, then drag the layer slider to the layer in
    this table for your nozzle and the NFC sticker option you chose in Customize (the first layer

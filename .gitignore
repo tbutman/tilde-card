@@ -5,3 +5,4 @@ card.local.scad
 out/local/
 test/out/
 test/.tmp*
+out/listing/
