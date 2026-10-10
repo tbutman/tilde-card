@@ -221,8 +221,9 @@ side on the plate comes out smoothest, so that's the front.
 
 ### Print settings
 
-**Bambu Lab A1 mini: use the presets.** Download `Tilde card process presets.zip` from
-[github.com/tbutman/tilde-card/tree/main/bambu](https://github.com/tbutman/tilde-card/tree/main/bambu),
+**Bambu Lab A1 mini: use the presets.** Download `tilde_card_bambu_printer_settings.zip` from this
+page's files (or from
+[github.com/tbutman/tilde-card/tree/main/bambu](https://github.com/tbutman/tilde-card/tree/main/bambu)),
 then in Bambu Studio choose **File → Import → Import Configs**, pick the zip, and select
 **Tilde card 0.4 mm** or **Tilde card 0.2 mm** under **Process**. They build on the A1 mini's
 standard processes with the four changes below. Both presets are tested on real prints of a sticker card

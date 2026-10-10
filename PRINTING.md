@@ -124,7 +124,7 @@ the listing before you buy.
 New to it? Print a QR card first (**No NFC sticker (QR code only)**): no pause, nothing to buy.
 
 **On a Bambu Lab A1 mini, the presets do steps 1 and 4 for you.** In Bambu Studio, **File →
-Import → Import Configs**, choose `bambu/Tilde card process presets.zip` (or one of its `.json`
+Import → Import Configs**, choose `bambu/tilde_card_bambu_printer_settings.zip` (or one of its `.json`
 files), then pick **Tilde card 0.4 mm** or **Tilde card 0.2 mm** under **Process**. They build on
 the A1 mini's standard processes with the four changes below; see [bambu/](bambu/). Both
 presets are tested on real prints of a sticker card from a Customize 3MF, paint penetration layers

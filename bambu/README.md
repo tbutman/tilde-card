@@ -23,7 +23,7 @@ photos of the 0.2 mm card are still to come. Before printing
 a sticker card, check the lid in Preview (see [PRINTING.md](../PRINTING.md#set-up-the-print-in-bambu-studio), step 7).
 
 **To use them:** in Bambu Studio, **File → Import → Import Configs**, choose
-`Tilde card process presets.zip` (or one of the `.json` files), then pick **Tilde card 0.4 mm** or
+`tilde_card_bambu_printer_settings.zip` (or one of the `.json` files), then pick **Tilde card 0.4 mm** or
 **Tilde card 0.2 mm** under **Process**, with the A1 mini and the matching nozzle selected. The
 pause for an NFC sticker is still added by hand (see [PRINTING.md](../PRINTING.md#add-the-pause-for-the-nfc-sticker)).
 
