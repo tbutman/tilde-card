@@ -283,7 +283,7 @@ sticker.
 
 No account, no ads, no subscription and no internet permission: your details stay on your phone.
 The Tilde card is optional for Tilde users, and Tilde is optional for the card. Download Tilde at
-[tbutman.com/tilde](https://tbutman.com/tilde).
+[taptilde.com](https://taptilde.com).
 
 ### Get involved
 

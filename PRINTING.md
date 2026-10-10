@@ -229,7 +229,7 @@ When the printer pauses:
 Do this **before** the sticker goes in the card, so a faulty sticker only costs you the sticker.
 (You can also rewrite a sticker through the finished card later.)
 
-**On Android, with [Tilde](https://tbutman.com/tilde)** (free, the companion app):
+**On Android, with [Tilde](https://taptilde.com)** (free, the companion app):
 
 1. Fill in your card in Tilde, then go to **Settings** → **Write a sticker**.
 2. Choose what the card should open: your website, contact card, LinkedIn and so on.

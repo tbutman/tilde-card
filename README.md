@@ -1,6 +1,6 @@
 # Tilde card
 
-A business card you print yourself, made to go with [Tilde](https://tbutman.com/tilde), the
+A business card you print yourself, made to go with [Tilde](https://taptilde.com), the
 Android app that turns your phone into an NFC business card. The front has a QR code that opens your
 website. Add an NFC sticker, sealed inside during the print, and people can tap it with their phone
 too.
@@ -9,7 +9,7 @@ too.
 CC BY 4.0 on MakerWorld. No account, sign-up, subscription or payment, and no service in between:
 the card links straight to your own website. It works without the app too: phones read it on their
 own, and any NFC app can write the sticker. More about Tilde and the card:
-[tbutman.com/tilde](https://tbutman.com/tilde).
+[taptilde.com](https://taptilde.com).
 
 ![The card](out/nozzle-0.2/preview.png)
 
@@ -47,7 +47,7 @@ it.
 [Tilde](https://github.com/tbutman/tilde) is a free, open-source Android app (MIT, no account, no ads,
 no internet permission) that does what the card does, from your phone: people tap your phone, or scan the code on its screen, to get your website,
 contact card, WhatsApp or LinkedIn. It also writes your link onto the card's NFC sticker
-(**Settings → Write a sticker**). Get it at [tbutman.com/tilde](https://tbutman.com/tilde).
+(**Settings → Write a sticker**). Get it at [taptilde.com](https://taptilde.com).
 
 ## For developers
 
