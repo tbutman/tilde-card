@@ -134,7 +134,9 @@ Change it any time by writing it again, or lock it so nobody can (that's permane
 The Customizer starts on the **0.4 mm nozzle**: it's the faster print, the nozzle most printers
 come with, and the fully tested preset. Choose 0.2 mm only if your printer has that nozzle
 fitted: a 0.2 mm design printed on a 0.4 mm nozzle can lose thin strokes, while a 0.4 mm design
-on a 0.2 mm nozzle just comes out a little less sharp. The settings for each are listed below.
+on a 0.2 mm nozzle just comes out a little less sharp. 0.2 mm nozzles also clog more easily:
+Thomas's clogged on the last layer of a 4-hour print. If you're new to it, start with 0.4 mm (the
+default). The settings for each are listed below.
 
 - **0.2 mm nozzle:** the sharpest card: every letter prints exactly as designed. About 4 hours
   for one card (Bambu Studio's estimate for a sticker card with the terminal back, about 21 color
@@ -223,9 +225,9 @@ side on the plate comes out smoothest, so that's the front.
 [github.com/tbutman/tilde-card/tree/main/bambu](https://github.com/tbutman/tilde-card/tree/main/bambu),
 then in Bambu Studio choose **File → Import → Import Configs**, pick the zip, and select
 **Tilde card 0.4 mm** or **Tilde card 0.2 mm** under **Process**. They build on the A1 mini's
-standard processes with the four changes below. The 0.4 mm preset is fully tested on a real print
-(a sticker card from a Customize 3MF, paint layers included); the 0.2 mm one is still to be
-confirmed on a print. Add the pause by hand (step 6 above). **Updating from an earlier version?**
+standard processes with the four changes below. Both presets are tested on real prints of a sticker card
+from a Customize 3MF, paint layers included: the 0.4 mm one fully, the 0.2 mm one through to the
+last layer, where a nozzle clog stopped it. Add the pause by hand (step 6 above). **Updating from an earlier version?**
 Delete the old Tilde card preset first, or check that Top paint penetration layers shows 2
 (0.4 mm) or 4 (0.2 mm) after importing.
 

@@ -57,7 +57,8 @@ the difference is in the small text and the print time.
 The Customizer starts on the **0.4 mm nozzle**: it's the faster print, the nozzle most printers
 come with, and the fully tested preset. Choose 0.2 mm only if your printer has that nozzle fitted:
 a 0.2 mm design printed on a 0.4 mm nozzle can lose thin strokes, while a 0.4 mm design on a 0.2 mm
-nozzle just comes out a little less sharp.
+nozzle just comes out a little less sharp. 0.2 mm nozzles also clog more easily: Thomas's clogged
+on the last layer of a 4-hour print. If you're new to it, start with 0.4 mm (the default).
 
 | | 0.2 mm nozzle | 0.4 mm nozzle |
 | --- | --- | --- |
@@ -125,9 +126,10 @@ New to it? Print a QR card first (**No NFC sticker (QR code only)**): no pause, 
 **On a Bambu Lab A1 mini, the presets do steps 1 and 4 for you.** In Bambu Studio, **File →
 Import → Import Configs**, choose `bambu/Tilde card process presets.zip` (or one of its `.json`
 files), then pick **Tilde card 0.4 mm** or **Tilde card 0.2 mm** under **Process**. They build on
-the A1 mini's standard processes with the four changes below; see [bambu/](bambu/). The 0.4 mm
-preset is fully tested on a real print (a sticker card from a Customize 3MF, paint penetration
-layers included); the 0.2 mm one is still to be confirmed on a print. The pause is still
+the A1 mini's standard processes with the four changes below; see [bambu/](bambu/). Both
+presets are tested on real prints of a sticker card from a Customize 3MF, paint penetration layers
+included: the 0.4 mm one fully, the 0.2 mm one through to the last layer, where a nozzle clog
+stopped it. The pause is still
 added by hand. **Updating from an earlier version?** Delete the old Tilde card preset first, or
 check that Top paint penetration layers shows 2 (0.4 mm) or 4 (0.2 mm) after importing. On other
 printers, follow the steps.

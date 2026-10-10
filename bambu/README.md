@@ -16,8 +16,10 @@ letters over the pocket with black. The front's white is then 0.4 mm with black 
 hides the sticker. With the defaults (top 5 on 0.4 mm, 7 on 0.2 mm) the back's letters go through
 the lid and print onto the sticker. The STL parts in `out/` aren't painted, so they're not affected.
 
-The 0.4 mm preset is fully tested on a real print: a sticker card from a Customize 3MF, paint
-penetration layers included (October 8, 2026). The 0.2 mm one is still to be confirmed on a print. Before printing
+Both presets are tested on real prints of a sticker card from a Customize 3MF, paint penetration
+layers included (October 8, 2026): the 0.4 mm one fully, the 0.2 mm one through to the last layer,
+where the 0.2 mm nozzle clogged, so its back's white came out one layer short. A tap test and
+photos of the 0.2 mm card are still to come. Before printing
 a sticker card, check the lid in Preview (see [PRINTING.md](../PRINTING.md#set-up-the-print-in-bambu-studio), step 7).
 
 **To use them:** in Bambu Studio, **File → Import → Import Configs**, choose
