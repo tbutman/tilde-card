@@ -57,10 +57,14 @@ def projector(meshes, size=(WIDTH, HEIGHT), centre=None, fill=0.86):
     return project, rot
 
 
-def render(meshes, colors=PARTS, size=(WIDTH, HEIGHT), view=None, background=BACKGROUND):
+def render(meshes, colors=PARTS, size=(WIDTH, HEIGHT), view=None, background=BACKGROUND, local=None, texture=None):
     """Shade `meshes` ({part: mesh}, drawn in `colors`, which may name extra parts). Returns the
     image and the coverage (True where the card is), both at supersampled size. `view` is a
-    projector(); by default, projector(meshes, size)."""
+    projector(); by default, projector(meshes, size).
+
+    Optional surface texture: `local` holds the same meshes before they were moved (same
+    triangles, same order), and texture(part, points, normal) returns a brightness factor for
+    each of the points (n x 3, in `local`'s frame) on a face with that local normal."""
     project, rot = view or projector(meshes, size)
     light = LIGHT / np.linalg.norm(LIGHT)
     w, h = size[0] * SUPERSAMPLE, size[1] * SUPERSAMPLE
@@ -73,7 +77,10 @@ def render(meshes, colors=PARTS, size=(WIDTH, HEIGHT), view=None, background=BAC
         tris = project(mesh.triangles.reshape(-1, 3)).reshape(-1, 3, 3)
         normals = mesh.face_normals @ rot.T
         shade = 0.35 + 0.65 * np.clip(normals @ light, 0, 1)
-        for tri, normal, s in zip(tris, normals, shade):
+        textured = texture is not None and local is not None and name in local
+        local_tris = local[name].triangles if textured else [None] * len(tris)
+        local_normals = local[name].face_normals if textured else [None] * len(tris)
+        for tri, normal, s, ltri, lnormal in zip(tris, normals, shade, local_tris, local_normals):
             if normal[2] <= 0:
                 continue  # back face
             sx, sy = tri[:, 0], tri[:, 1]
@@ -94,7 +101,12 @@ def render(meshes, colors=PARTS, size=(WIDTH, HEIGHT), view=None, background=BAC
             region = depth[y0 : y1 + 1, x0 : x1 + 1]
             nearer = inside & (z > region + 1e-4)
             region[nearer] = z[nearer]
-            image[y0 : y1 + 1, x0 : x1 + 1][nearer] = np.array(color) * s
+            if textured and nearer.any():
+                points = w0[nearer, None] * ltri[0] + w1[nearer, None] * ltri[1] + w2[nearer, None] * ltri[2]
+                factor = texture(name, points, lnormal)
+                image[y0 : y1 + 1, x0 : x1 + 1][nearer] = np.array(color) * s * np.asarray(factor).reshape(-1, 1)
+            else:
+                image[y0 : y1 + 1, x0 : x1 + 1][nearer] = np.array(color) * s
     return image, depth > -np.inf
 
 
