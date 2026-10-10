@@ -79,7 +79,7 @@ for sample in default qr-only-plain; do
   if [[ $sample == qr-only-plain ]]; then dir+="-qr-only-plain"; extra=(-D 'nfc_sticker="none"' -D 'back_style="plain"' -D 'back_line_1="Jane Doe"'); fi
   mkdir -p "$dir"
   rm -f "$dir"/card-*.stl  # a part with nothing in it writes no file, so clear old ones
-  echo "== MakerWorld file, $sample, 0.2 mm nozzle -> $dir"
+  echo "== MakerWorld file, $sample, default nozzle -> $dir"
   log=$(mktemp)
   for part in body light accent chrome; do
     docker run --rm -v "$PWD":/w -w /w -e OPENSCAD_FONT_PATH=/w/fonts openscad/openscad:dev \
@@ -87,11 +87,17 @@ for sample in default qr-only-plain; do
       -o "$dir/card-$part.stl" makerworld/tilde-card.scad 2>&1 | grep -E '^(ECHO|WARNING|ERROR)' >>"$log" || true
   done
   sort -u "$log" | grep -E '^(ECHO: "(CARD|No NFC|NFC pocket)|WARNING|ERROR)' || true
-  pocket=(); pocket_top=$(grep -m1 PRINTER "$log" | sed -n 's/.*pocket_top=\([0-9.]*\).*/\1/p')
+  # The sample uses the file's default nozzle, so take the limits from its PRINTER line.
+  limits=$(grep -m1 PRINTER "$log")
   rm "$log"
-  [[ -n $pocket_top ]] && pocket=(--pocket-top "$pocket_top")
-  .venv/bin/python scripts/verify.py --dir "$dir" --face-down front --min-stroke 0.3 --min-gap 0.22 \
-    ${pocket[@]+"${pocket[@]}"} "$sample_url" || status=1
-  .venv/bin/python scripts/render_preview.py --dir "$dir" --face-down front
+  min_stroke=$(sed -n 's/.*min_stroke=\([0-9.]*\).*/\1/p' <<<"$limits")
+  min_gap=$(sed -n 's/.*min_gap=\([0-9.]*\).*/\1/p' <<<"$limits")
+  face_down=$(sed -n 's/.*face_down=\([a-z]*\).*/\1/p' <<<"$limits")
+  checks=(); grep -q 'strict_gaps=false' <<<"$limits" && checks=(--gaps-advisory)
+  pocket_top=$(sed -n 's/.*pocket_top=\([0-9.]*\).*/\1/p' <<<"$limits")
+  [[ -n $pocket_top ]] && checks+=(--pocket-top "$pocket_top")
+  .venv/bin/python scripts/verify.py --dir "$dir" --face-down "$face_down" --min-stroke "$min_stroke" --min-gap "$min_gap" \
+    ${checks[@]+"${checks[@]}"} "$sample_url" || status=1
+  .venv/bin/python scripts/render_preview.py --dir "$dir" --face-down "$face_down"
 done
 exit $status

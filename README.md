@@ -30,9 +30,11 @@ own, and any NFC app can write the sticker. More about Tilde and the card:
 - **Four colors of PLA**, printed all at once on a printer with an AMS (or another multi-color
   system). No painting or gluing.
 
-The files in `out/` are a sample card for Jane Doe, an example person. To make yours, type in your
-name, links and colors on MakerWorld (coming soon) or in OpenSCAD's Customizer: see
-[Make it yours](PRINTING.md#make-it-yours).
+The files in `out/` are a sample card for Jane Doe, an example person, linking to taptilde.com. To
+make yours, type in your name, links and colors on MakerWorld (coming soon) or in OpenSCAD's
+Customizer: see [Make it yours](PRINTING.md#make-it-yours). The Customizer starts on the 0.4 mm
+nozzle, the faster print and the one most printers come with; see
+[Choose a nozzle](PRINTING.md#choose-a-nozzle).
 
 ## Print one
 

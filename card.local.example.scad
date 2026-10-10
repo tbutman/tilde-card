@@ -5,8 +5,8 @@
 first_name = "Jane";
 last_name = "Doe";
 handle = "janedoe";
-qr_code_link = "https://example.com";
-website_on_card = "example.com";
+qr_code_link = "https://taptilde.com";
+website_on_card = "taptilde.com";
 back_style = "terminal";
 terminal_command = "whoami";
 back_line_1 = "jane doe";

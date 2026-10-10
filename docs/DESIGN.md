@@ -59,7 +59,7 @@ Two versions are built from the same model, `out/nozzle-0.2/` and `out/nozzle-0.
 | `card.scad` | The parametric model, one self-contained file. The Customizer sections at the top are the settings people change, one help line each (MakerWorld shows only one); `[Hidden]` holds the layout. The defaults are the sample card, Jane Doe. |
 | `card.local.example.scad` | A template for `card.local.scad` (git-ignored): your own settings, one `setting = value;` per line, which `build.sh` passes to OpenSCAD as `-D` flags. |
 | `makerworld/tilde-card.scad` | The copy uploaded to MakerWorld's customizer, written by `scripts/make_makerworld.py`: no font file lines, and the example person Jane Doe as the defaults. Never edited by hand. |
-| `out/makerworld-sample/`, `out/makerworld-sample-qr-only-plain/` | Cards built from the MakerWorld copy, to check it renders and passes the checks: the default, and one with no NFC sticker and the plain back (its first line typed as "Jane Doe"). |
+| `out/makerworld-sample/`, `out/makerworld-sample-qr-only-plain/` | Cards built from the MakerWorld copy, to check it renders and passes the checks: the default (on its default 0.4 mm nozzle, checked against that nozzle's limits), and one with no NFC sticker and the plain back (its first line typed as "Jane Doe"). |
 | `out/nozzle-{0.2,0.4}/card-{body,light,accent,chrome}.stl` | The sample card (Jane Doe): one STL per color (black, white, orange, gray), per nozzle, for stickers up to 0.2 mm. |
 | `out/nozzle-{0.2,0.4}-thick-sticker/` | The same for stickers up to 0.4 mm: a 2.0 mm card with a deeper pocket. |
 | `out/nozzle-*/card-{top,back}-surface.png` | Each face as printed, rasterized from the STLs (the back as seen from behind); the QR check decodes the front. |
@@ -250,6 +250,16 @@ On a Customize print this also makes the front's white 0.4 mm instead of 0.6, wi
 behind it: like the tile's pocket 2, which hid the sticker. Thomas checked 2 / 2 in Preview. The
 Preview check now also looks at the first letter layer over the pocket and at layer 3 (black
 under the front's white).
+
+## Defaults (October 10, 2026)
+
+The sample card is Jane Doe, an example person, linking to `https://taptilde.com` with
+`taptilde.com` printed under the name; her email on the back stays `jane@example.com`, since
+example.com is reserved and gets no mail. The Customizer starts on the 0.4 mm nozzle: it's the
+faster print, the nozzle most printers come with, and the fully tested preset. A 0.2 mm design
+printed on a 0.4 mm nozzle can lose its thin strokes, while a 0.4 mm design on a 0.2 mm nozzle just
+comes out a little less sharp, so the safer default is 0.4. `build.sh` checks the MakerWorld sample
+against the limits of whichever nozzle the file defaults to.
 
 ## Design notes
 

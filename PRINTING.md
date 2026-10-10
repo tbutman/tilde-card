@@ -28,7 +28,8 @@ details first:
 
 - **On MakerWorld (coming soon; the easiest):** open the model page, click **Customize**, and fill
   in your name, link, website, the back of the card and the colors. Under **Printing**, choose your
-  nozzle and whether to add an NFC sticker. The preview updates as you type; then open the result in
+  nozzle (it starts on 0.4 mm; see [Choose a nozzle](#choose-a-nozzle)) and whether to add an NFC
+  sticker. The preview updates as you type; then open the result in
   Bambu Studio.
 - **In OpenSCAD (free, [openscad.org](https://openscad.org)):** open `card.scad`, show the
   Customizer (**Window → Customizer**), change the settings in the first sections and export a
@@ -52,6 +53,11 @@ name between **first name** and **last name**. The 0.2 mm nozzle prints smaller 
 
 The card comes in two versions, one for each nozzle size. They look the same from arm's length;
 the difference is in the small text and the print time.
+
+The Customizer starts on the **0.4 mm nozzle**: it's the faster print, the nozzle most printers
+come with, and the fully tested preset. Choose 0.2 mm only if your printer has that nozzle fitted:
+a 0.2 mm design printed on a 0.4 mm nozzle can lose thin strokes, while a 0.4 mm design on a 0.2 mm
+nozzle just comes out a little less sharp.
 
 | | 0.2 mm nozzle | 0.4 mm nozzle |
 | --- | --- | --- |

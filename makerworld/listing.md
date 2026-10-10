@@ -38,8 +38,8 @@ other.
    (https://makerworld.com/en/makerlab/parametricModelMaker?pageType=generator), signed in. Start a
    new script and paste it in, or upload the file if the editor offers that. Nothing is public until
    you publish it as a model.
-3. Run it: the Jane Doe sample card should appear in four colors. Then try your own name, a long
-   name, a 40-character link, the 0.4 mm nozzle and thick stickers.
+3. Run it: the Jane Doe sample card (taptilde.com, 0.4 mm nozzle) should appear in four colors.
+   Then try your own name, a long name, a 40-character link, the 0.2 mm nozzle and thick stickers.
 4. Generate the 3MF and open it in Bambu Studio. Check that the fonts are Inter and JetBrains Mono
    (not a fallback), that the four colors can be assigned to filaments, and that nothing times out.
 
@@ -131,7 +131,10 @@ Change it any time by writing it again, or lock it so nobody can (that's permane
 
 ### 0.2 mm or 0.4 mm nozzle?
 
-The settings for each are listed below.
+The Customizer starts on the **0.4 mm nozzle**: it's the faster print, the nozzle most printers
+come with, and the fully tested preset. Choose 0.2 mm only if your printer has that nozzle
+fitted: a 0.2 mm design printed on a 0.4 mm nozzle can lose thin strokes, while a 0.4 mm design
+on a 0.2 mm nozzle just comes out a little less sharp. The settings for each are listed below.
 
 - **0.2 mm nozzle:** the sharpest card: every letter prints exactly as designed. About 4 hours
   for one card (Bambu Studio's estimate for a sticker card with the terminal back, about 21 color
@@ -166,8 +169,8 @@ choose:
 
 New to it? Print a QR card first (**No NFC sticker (QR code only)**): no pause, nothing to buy.
 
-1. Click **Customize** and fill in your details. Under **Printing**, choose your nozzle and NFC
-   option. Then open it in Bambu Studio.
+1. Click **Customize** and fill in your details. Under **Printing**, choose your nozzle (it starts
+   on 0.4 mm) and NFC option. Then open it in Bambu Studio.
 2. Check the four colors are assigned to the right filaments (black, white, orange, gray) in the
    **Filament** list.
 3. Choose the process, even if one is already selected: the 3MF brings Bambu's standard process
