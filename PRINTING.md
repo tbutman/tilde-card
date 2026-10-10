@@ -179,6 +179,7 @@ printers, follow the steps.
    | Elephant foot compensation | 0 mm | Keeps small gaps from opening around the front's letters |
    | Top surface pattern | Monotonic line | Gives the back an even finish |
    | Brim | None | |
+   | Support | Off (a Customize 3MF turns it on; choosing the process again turns it off) | Support in the pocket would block the sticker |
 
 5. Leave room on the plate for the **prime tower** (the small block the printer purges into when
    it changes color). Drag it onto an empty spot if it's off the plate.

@@ -222,7 +222,7 @@ side on the plate comes out smoothest, so that's the front.
 ### Print settings
 
 **Bambu Lab A1 mini: use the presets.** Download `tilde_card_bambu_printer_settings.zip` from this
-page's files (or from
+page's **Files & Guides → Other Files** (or from
 [github.com/tbutman/tilde-card/tree/main/bambu](https://github.com/tbutman/tilde-card/tree/main/bambu)),
 then in Bambu Studio choose **File → Import → Import Configs**, pick the zip, and select
 **Tilde card 0.4 mm** or **Tilde card 0.2 mm** under **Process**. They build on the A1 mini's
@@ -262,8 +262,9 @@ sticker. On a QR card (no sticker) the new values are fine too.
 
 Already right in Bambu's standard profiles (check them if you've changed your defaults or use
 another printer): initial layer height the same as the layer height, elephant foot compensation 0,
-top surface pattern Monotonic line. A textured PEI plate gives the front a matte finish with no
-glare on the QR code.
+top surface pattern Monotonic line, and support off (a Customize 3MF turns it on, and choosing the
+process again turns it off; support in the pocket would block the sticker). A textured PEI plate
+gives the front a matte finish with no glare on the QR code.
 
 Full instructions, troubleshooting and the source files:
 [github.com/tbutman/tilde-card](https://github.com/tbutman/tilde-card)
