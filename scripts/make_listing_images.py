@@ -25,7 +25,10 @@ import trimesh
 from PIL import Image, ImageDraw, ImageFilter
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from make_covers import AMBER, BACKGROUND, BEZEL, FRAME, INK, PHONE, PHONE_R, SCREEN_R, SHADOW, SUBTLE, font, rounded_mask  # noqa: E402
+from make_covers import BACKGROUND, BEZEL, FRAME, INK, PHONE, PHONE_R, SCREEN_R, SHADOW, SUBTLE, font, rounded_mask  # noqa: E402
+
+ORANGE = (255, 181, 71)     # Tilde orange (#ffb547), for marks on the dark card (tilde-media/brand/BRAND.md)
+ORANGE_DEEP = (168, 95, 0)  # Tilde orange on light grounds (#a85f00)
 from render_preview import PARTS, SUPERSAMPLE, load_parts, projector, render  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -121,20 +124,20 @@ def sticker(centre, z):
 
 
 def outline(draw, project, centre, d, z, dash=True):
-    """A dashed amber circle of diameter `d` at height z, in a render's supersampled pixels."""
+    """A dashed Tilde-orange circle of diameter `d` at height z, in a render's supersampled pixels."""
     t = np.linspace(0, 2 * np.pi, 121)
     pts = project(np.column_stack([centre[0] + d / 2 * np.cos(t), centre[1] + d / 2 * np.sin(t), np.full_like(t, z)]))
     width = 4 * SUPERSAMPLE
     for i in range(0, len(t) - 1, 2 if dash else 1):
-        draw.line([tuple(pts[i, :2]), tuple(pts[i + 1, :2])], fill=AMBER, width=width)
+        draw.line([tuple(pts[i, :2]), tuple(pts[i + 1, :2])], fill=ORANGE, width=width)
 
 
 def step_label(tile, number, text):
     draw = ImageDraw.Draw(tile)
     r = 30
-    draw.ellipse([40, 36, 40 + 2 * r, 36 + 2 * r], fill=AMBER)
+    draw.ellipse([40, 36, 40 + 2 * r, 36 + 2 * r], fill=ORANGE_DEEP)
     digit = font("Inter-ExtraBold.ttf", 36)
-    draw.text((40 + r, 36 + r), str(number), font=digit, fill=INK, anchor="mm")
+    draw.text((40 + r, 36 + r), str(number), font=digit, fill=(255, 255, 255), anchor="mm")
     draw.text((40 + 2 * r + 20, 36 + r), text, font=font("Inter-Bold.ttf", 38), fill=INK, anchor="lm")
 
 
@@ -201,7 +204,7 @@ def phone(canvas, screen, x, y, scale):
     canvas.paste(Image.new("RGB", canvas.size, (0, 0, 0)), (0, 0), shadow)
     body = Image.new("RGB", (w, h), FRAME)
     sw, sh = w - 2 * bezel, h - 2 * bezel
-    shot = Image.open(screen).convert("RGB").resize((sw, sh), Image.LANCZOS)
+    shot = (screen if isinstance(screen, Image.Image) else Image.open(screen)).convert("RGB").resize((sw, sh), Image.LANCZOS)
     body.paste(shot, (bezel, bezel), rounded_mask((sw, sh), SCREEN_R * scale))
     canvas.paste(body, (x, y), rounded_mask((w, h), PHONE_R * scale))
     return w, h

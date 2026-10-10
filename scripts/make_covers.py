@@ -29,9 +29,10 @@ W, H = 1600, 1200
 BACKGROUND = (214, 211, 204)  # render_preview.py's background
 INK = (22, 24, 27)            # #16181b, the card's black
 SUBTLE = (72, 74, 79)         # the subtitle's dark gray
-AMBER = (255, 159, 28)        # #ff9f1c
-BRAND = "~/tilde card"
-TITLE = ["Parametric NFC + QR", "Business Card"]
+AMBER = (255, 159, 28)        # #ff9f1c, the card's filament amber (renders only)
+ORANGE_DEEP = (168, 95, 0)    # #a85f00, Tilde orange on light grounds (tilde-media/brand/BRAND.md)
+BRAND = ("~/", "tilde card")  # the on-light wordmark: ~/ in deep orange, the name in ink
+TITLE = ["Customizable NFC + QR", "Business Card"]
 SUBTITLE = ["Your name, link and colors.", "Customize it in your browser. Free."]
 
 # The phone, at scale 1: measured from the original cover (a 540 x 1200 screenshot shown at 0.8).
@@ -104,13 +105,18 @@ def place_card_cutout(cover, render, box, x, y, card_width):
     cover.paste(frame, (round(x - box[0] * scale), round(y - box[1] * scale)), mask)
 
 
-def draw_title(cover, x, y, title_size, subtitle_size, subtitle_lines):
-    """Brand line, title and subtitle from (x, y); returns the bottom of the block."""
+def draw_title(cover, x, y, title_size, subtitle_size, subtitle_lines, max_width=None):
+    """Brand line, title and subtitle from (x, y); returns the bottom of the block. The title
+    shrinks until its longest line fits `max_width` (default: the same margin as `x` on the right)."""
     draw = ImageDraw.Draw(cover)
+    max_width = max_width or cover.width - 2 * x
+    while max(font("Inter-ExtraBold.ttf", title_size).getlength(line) for line in TITLE) > max_width:
+        title_size -= 2
     brand = font("JetBrainsMono-ExtraBold.ttf", round(title_size * 0.5))
     title = font("Inter-ExtraBold.ttf", title_size)
     subtitle = font("Inter-Bold.ttf", subtitle_size)
-    draw.text((x, y), BRAND, font=brand, fill=AMBER)
+    draw.text((x, y), BRAND[0], font=brand, fill=ORANGE_DEEP)
+    draw.text((x + brand.getlength(BRAND[0]), y), BRAND[1], font=brand, fill=INK)
     y += round(title_size * 0.85)
     for line in TITLE:
         draw.text((x, y), line, font=title, fill=INK)
@@ -155,7 +161,7 @@ def main():
     height = round(card_h * width / card_w)
     place_card(cover, render, box, 56, H - 96 - height, width)
     place_phone(cover, 1088, 112, 0.98)
-    draw_title(cover, 72, 88, 80, 44, SUBTITLE)
+    draw_title(cover, 72, 88, 80, 44, SUBTITLE, max_width=1088 - 72 - 56)
     cover.save(OUT / "cover-card-app-title.png", optimize=True)
     for name in ["cover-card", "cover-card-app", "cover-card-title", "cover-card-app-title"]:
         print(f"wrote makerworld/images/covers/{name}.png")
