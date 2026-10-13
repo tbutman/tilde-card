@@ -27,6 +27,7 @@ ROOT = Path(__file__).resolve().parent.parent
 CASES = [
     "https://example.com",
     "https://taptilde.com",
+    "https://taptilde.com/?from=card",
     "https://tbutman.com/hello",
     "a",
     "https://www.linkedin.com/in/janedoe",

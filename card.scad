@@ -42,7 +42,7 @@ last_name = "Doe";
 // Shown after ~/ at the top, like a folder in a terminal. Leave it empty to leave it out. Example: janedoe
 handle = "janedoe";
 // The link the QR code opens: up to 53 characters. Write the same one to your NFC sticker. Example: https://example.com
-qr_code_link = "https://taptilde.com";
+qr_code_link = "https://taptilde.com/?from=card";
 // Your website, printed under your name. Leave it empty to leave it out. Example: example.com
 website_on_card = "taptilde.com";
 

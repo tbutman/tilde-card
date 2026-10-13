@@ -20,7 +20,7 @@ EXAMPLE = {
     "first_name": "Jane",
     "last_name": "Doe",
     "handle": "janedoe",
-    "qr_code_link": "https://taptilde.com",
+    "qr_code_link": "https://taptilde.com/?from=card",
     "website_on_card": "taptilde.com",
     "terminal_command": "whoami",
     "back_line_1": "jane doe",

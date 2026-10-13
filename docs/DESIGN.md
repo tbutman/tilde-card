@@ -10,7 +10,8 @@ The technical side of the card: how the model is built, checked and generated. T
 - **QR code:** generated in `card.scad` from `qr_code_link`: byte mode, version 1–3 with error
   correction M (or L when M can't hold the link), up to 53 characters. The modules scale to fill a
   fixed 39.6 mm white field that includes the full 4-module quiet zone: 1.37 mm (version 1),
-  1.2 mm (version 2, as for `https://tbutman.com/hello`) or 1.07 mm (version 3). Black modules on
+  1.2 mm (version 2, as for `https://taptilde.com`) or 1.07 mm (version 3, as for the sample's
+  `https://taptilde.com/?from=card`). Black modules on
   white; the white is a 0.6 mm inlay, flush with the face.
 - **NFC (optional):** `nfc_sticker = "none"` leaves out the pocket and the tap marker, for a QR
   card with no pause; the QR code keeps its place. Otherwise, an NTAG215 sticker (22–25 mm across, 25.5 mm at most) in a 25.8 mm pocket against the right edge, under the QR code,
