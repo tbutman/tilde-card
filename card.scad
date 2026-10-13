@@ -1,4 +1,4 @@
-// Tilde card: a printable business card with your name and website on the front, a QR code that
+// Tilde Card: a printable business card with your name and website on the front, a QR code that
 // opens your link, an optional NFC sticker that does the same, and a choice of back.
 //
 // Open it in OpenSCAD's Customizer (or MakerWorld's) and fill in the first sections; everything
@@ -488,6 +488,14 @@ if (nfc_enabled)
              cover_layers, " layers over it; pause before layer ", pause_layer, " (top at ", pause_layer * layer_h, " mm)"));
 else
     echo("No NFC tag: no pocket, no tap marker and no pause");
+// The settings this card needs, in one line a person can follow (PRINTING.md, step 4): OpenSCAD's
+// console shows it, and so may MakerWorld's. Paint penetration is the lid's depth in layers (0.4 mm),
+// so a painted 3MF keeps the back's colors above the lid; on a QR card the same value is fine.
+paint_layers = round(nfc_lid_t / layer_h);
+echo(str("PRINT SETTINGS: ", nozzle, " mm nozzle, ", layer_h, " mm layers; top and bottom paint penetration layers ",
+         paint_layers, " / ", paint_layers, "; sparse infill 100% Rectilinear; Arachne walls; bottom surface ",
+         "Monotonic line; no support; ", nfc_enabled ? str("pause before layer ", pause_layer, " to put the sticker in")
+                                                      : "no pause (QR code only)"));
 down_t = face_down == "front" ? inlay_t : back_inlay_t;
 up_t = face_down == "front" ? back_inlay_t : inlay_t;
 if (back_inked)
