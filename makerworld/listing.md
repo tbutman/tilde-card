@@ -149,7 +149,7 @@ default). The settings for each are listed below.
 - **0.2 mm nozzle:** the sharpest card: every letter prints exactly as designed. About 4 hours
   for one card (Bambu Studio's estimate for a sticker card with the terminal back, about 21 color
   changes).
-- **0.4 mm nozzle:** about an hour for one card (not yet measured with the current settings), and
+- **0.4 mm nozzle:** about 53 minutes for one card (Bambu Studio's estimate for the same card), and
   it's the nozzle most printers come with.
   The front looks clean; the smallest letters on the back can come out slightly soft.
 

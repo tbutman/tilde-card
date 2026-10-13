@@ -68,7 +68,7 @@ on the last layer of a 4-hour print. If you're new to it, start with 0.4 mm (the
 | **Tap label** ("tap" by default) | Inter Bold, 2.6 mm | Inter ExtraBold, 3 mm (the lighter weight is too fine for this nozzle) |
 | **Layers** | 16 layers of 0.1 mm (18 with thin stickers, 20 with thick) | 8 layers of 0.2 mm (9 with thin stickers, 10 with thick) |
 | **Color changes** | About 20 per plate (21 in Bambu Studio's estimate for a sticker card with the terminal back) | Fewer |
-| **Print time** | About 4 hours for one card (Bambu Studio's estimate for a sticker card with the terminal back, about 21 color changes) | About an hour (not yet measured with the current settings; it was 75 minutes before the paint-layer change) |
+| **Print time** | About 4 hours for one card (Bambu Studio's estimate for a sticker card with the terminal back, about 21 color changes) | About 53 minutes for one card (Bambu Studio's estimate for a sticker card with the terminal back) |
 | **Filament** | About 10 g in the card, plus the purge at each color change | Similar in the card, less purge |
 | **Best for** | The best-looking card, if you have a 0.2 mm nozzle and the time | Most printers come with a 0.4 mm nozzle, and it's several times faster |
 
@@ -79,9 +79,10 @@ cards and plain or no backs are quicker: fewer layers have colors in them.
 
 The 0.2 mm figure is Bambu Studio's estimate for one thin-sticker card with the terminal back on an
 A1 mini, sliced from a Customize 3MF with the Tilde card 0.2 mm preset (October 8, 2026). The
-0.4 mm figure is an estimate: an early sample took 75 minutes, before the paint-layer change
-removed some color layers. Your printer and settings may differ, and the thick-sticker versions
-take a little longer (two extra layers on the 0.2 mm nozzle, one on the 0.4 mm).
+0.4 mm figure is its estimate for the same card on a 0.4 mm nozzle, with the Tilde card 0.4 mm
+settings (the MakerWorld print profile, October 10, 2026). Your printer and settings may differ,
+and the thick-sticker versions take a little longer (two extra layers on the 0.2 mm nozzle, one
+on the 0.4 mm).
 
 ## Buying NFC stickers
 
