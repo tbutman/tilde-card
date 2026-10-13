@@ -1,5 +1,7 @@
 # Tilde Card
 
+[![build](https://github.com/tbutman/tilde-card/actions/workflows/build.yml/badge.svg)](https://github.com/tbutman/tilde-card/actions/workflows/build.yml)
+
 A business card you print yourself, made to go with [Tilde](https://taptilde.com), the
 Android app that turns your phone into an NFC business card. The front has a QR code that opens your
 website. Add an NFC sticker, sealed inside during the print, and people can tap it with their phone

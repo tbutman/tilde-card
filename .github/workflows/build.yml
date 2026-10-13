@@ -1,0 +1,33 @@
+# Builds every card version with build.sh (OpenSCAD in Docker, then the checks: manifold, the QR
+# code decodes, strokes and gaps, the lid over the sticker, the pause layers in the docs) and runs
+# the QR encoder's tests. It also fails if the committed MakerWorld file is out of date.
+name: build
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Python packages
+        run: python -m venv .venv && .venv/bin/pip install -r requirements.txt
+      - name: OpenSCAD image
+        run: docker pull openscad/openscad:dev
+      - name: QR encoder tests
+        run: .venv/bin/python scripts/test_qr.py
+      - name: Build and check every card
+        run: ./build.sh
+      - name: The MakerWorld file is up to date
+        run: git diff --exit-code makerworld/tilde-card.scad
+      - name: Committed STLs (information only; the OpenSCAD dev image can change them slightly)
+        run: git status --short out/
