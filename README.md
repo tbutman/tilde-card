@@ -1,4 +1,4 @@
-# Tilde card
+# Tilde Card
 
 A business card you print yourself, made to go with [Tilde](https://taptilde.com), the
 Android app that turns your phone into an NFC business card. The front has a QR code that opens your
@@ -11,11 +11,11 @@ the card links straight to your own website. It works without the app too: phone
 own, and any NFC app can write the sticker. More about Tilde and the card:
 [taptilde.com](https://taptilde.com).
 
-![The card](out/nozzle-0.2/preview.png)
+![The Jane Doe sample card, front, in black, white, orange and gray](out/nozzle-0.4/preview.png)
 
 | Front | Back |
 | --- | --- |
-| ![Front](out/nozzle-0.2/card-top-surface.png) | ![Back](out/nozzle-0.2/card-back-surface.png) |
+| ![Front: name, website, QR code and tap mark](out/nozzle-0.4/card-top-surface.png) | ![Back: a terminal window with $ whoami and three lines](out/nozzle-0.4/card-back-surface.png) |
 
 - **Credit-card size** (85.6 × 54 mm), 1.6 mm thick (1.8 mm with an NFC sticker, 2.0 mm with a thick one), so it fits
   a wallet.

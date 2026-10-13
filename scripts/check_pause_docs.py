@@ -2,8 +2,8 @@
 
 build.sh passes the computed ones (from card.scad's "pause before layer" echo) as
 nozzle:sticker:layer, for example 0.4:thin:6. The documented ones are in card.scad's help line
-for nfc_sticker (which MakerWorld's Customizer shows), and in the pause tables and plain lines of
-makerworld/listing.md and PRINTING.md.
+for nfc_sticker (which MakerWorld's Customizer shows), and in the pause tables (and plain lines, where
+there are any) of makerworld/listing.md and PRINTING.md.
 
     .venv/bin/python scripts/check_pause_docs.py 0.2:thin:11 0.2:thick:13 0.4:thin:6 0.4:thick:7
 """
@@ -30,7 +30,7 @@ for name in ["makerworld/listing.md", "PRINTING.md"]:
             {("0.2", sticker): int(row[1]), ("0.4", sticker): int(row[2])} if row else {})
     plain = re.search(r"Thin stickers: layer (\d+) \(0\.2 mm nozzle\) or layer (\d+) \(0\.4 mm\)\. Thick stickers: layer (\d+)"
                       r" \(0\.2 mm\)\s+or layer (\d+) \(0\.4 mm\)", text)
-    if plain or name.startswith("makerworld"):  # the listing must have them, for editors without tables
+    if plain:  # plain lines are optional (MakerWorld's editor shows the tables)
         found[f"{name} plain lines"] = {("0.2", "thin"): int(plain[1]), ("0.4", "thin"): int(plain[2]),
                                         ("0.2", "thick"): int(plain[3]), ("0.4", "thick"): int(plain[4])} if plain else {}
 

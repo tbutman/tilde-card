@@ -1,4 +1,4 @@
-"""Check a 3MF against the Tilde card's print settings: a Customize download from MakerWorld, a
+"""Check a 3MF against the Tilde Card's print settings: a Customize download from MakerWorld, a
 print profile's file, or a project saved from Bambu Studio.
 
     .venv/bin/python scripts/check_3mf.py ~/Downloads/tilde-card.3mf
@@ -35,7 +35,7 @@ NAMES = {"zig-zag": "Rectilinear", "monotonicline": "Monotonic line", "monotonic
 
 
 def wanted(nozzle):
-    preset = json.loads((ROOT / "bambu" / f"Tilde card {nozzle} mm.json").read_text())
+    preset = json.loads((ROOT / "bambu" / f"Tilde Card {nozzle} mm.json").read_text())
     want = {key: [preset[key]] for key in FROM_PRESET}
     layer = f"{LAYER[nozzle]:g}"
     want.update({
@@ -101,7 +101,7 @@ def main():
     sticker = THICKNESS.get(round(top, 1))
 
     print(f"{args.path}")
-    print(f"  nozzle {nozzle} mm; card {top:.2f} mm thick ({sticker or 'not a Tilde card thickness'}); "
+    print(f"  nozzle {nozzle} mm; card {top:.2f} mm thick ({sticker or 'not a Tilde Card thickness'}); "
           f"{painted} painted triangles; process {first(project.get('print_settings_id', '-'))}")
     if objects:
         print(f"  objects: {', '.join(objects)}")
@@ -124,7 +124,7 @@ def main():
                     report("FAIL", label, found, shown)
     else:
         report("WARN", "settings", "no project settings in the 3MF (not saved by Bambu Studio)",
-               "pick the Tilde card process after opening it")
+               "pick the Tilde Card process after opening it")
 
     layer_h = LAYER[nozzle]
     if sticker in ("thin", "thick"):

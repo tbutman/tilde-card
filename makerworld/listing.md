@@ -1,9 +1,8 @@
 # MakerWorld page (draft)
 
 The text below the line is the model page, ready to paste into MakerWorld. Images are in
-[images/](images/), in the order they should appear. **Print settings** gives the four changes
-twice, as a table and as plain lines: keep whichever MakerWorld's editor shows well, and delete the
-other.
+[images/](images/), in the order they should appear. MakerWorld's editor shows tables well, so the
+pause and the print settings are tables only.
 
 **Before publishing** (the page is a private draft; the MakerWorld agent keeps its state in
 `tilde-review/makerworld-handoff.md`):
@@ -14,7 +13,7 @@ other.
 - [x] Try it in the Parametric Model Maker and download Customize 3MFs, from the draft and as a
       visitor. They open in Bambu Studio with four colors.
 - [x] Print sticker cards from Customize 3MFs with the paint penetration layers set (the lid
-      checked in Preview first): October 8, 2026, on both nozzles, with the Tilde card presets
+      checked in Preview first): October 8, 2026, on both nozzles, with the Tilde Card presets
       (2 / 2 and 4 / 4) and the pause at layer 6 or 11. The back prints clean over the sticker.
 - [x] Tag thickness: standard pocket for 0.10–0.20 mm stickers, plus a thick-sticker option up to
       0.40 mm (a 2.0 mm card).
@@ -184,7 +183,7 @@ New to it? Print a QR card first (**No NFC sticker (QR code only)**): no pause, 
 2. Check the four colors are assigned to the right filaments (black, white, orange, gray) in the
    **Filament** list.
 3. Choose the process, even if one is already selected: the 3MF brings Bambu's standard process
-   with it. On an A1 mini, choose the Tilde card preset (0.4 mm or 0.2 mm), which already has the
+   with it. On an A1 mini, choose the Tilde Card preset (0.4 mm or 0.2 mm), which already has the
    four changes; on other printers, choose the standard process and make the four changes. See
    **Print settings** below. If the name shows an asterisk, re-select it and discard the changes.
    Then check that Top paint penetration layers shows 2 (0.4 mm) or 4 (0.2 mm).
@@ -198,9 +197,6 @@ New to it? Print a QR card first (**No NFC sticker (QR code only)**): no pause, 
    | --- | --- | --- |
    | Thin stickers (0.10–0.20 mm, 1.8 mm card) | Layer 11 | Layer 6 |
    | Thick stickers (0.20–0.40 mm, 2.0 mm card) | Layer 13 | Layer 7 |
-
-   Thin stickers: layer 11 (0.2 mm nozzle) or layer 6 (0.4 mm). Thick stickers: layer 13 (0.2 mm)
-   or layer 7 (0.4 mm).
 
 7. **Check the lid:** in **Preview**, set the color scheme to **Filament** and drag the slider to
    the layers right after the pause: 6–7 on a 0.4 mm nozzle (7–8 with thick stickers), 11–14 on
@@ -231,14 +227,14 @@ side on the plate comes out smoothest, so that's the front.
 
 **Bambu Lab A1 mini: use the presets.** Download `tilde_card_bambu_printer_settings.zip` from this
 page's **Files & Guides → Other Files** (or from
-[github.com/tbutman/tilde-card/tree/main/bambu](https://github.com/tbutman/tilde-card/tree/main/bambu)),
-then in Bambu Studio choose **File → Import → Import Configs**, pick the zip, and select
-**Tilde card 0.4 mm** or **Tilde card 0.2 mm** under **Process**. They build on the A1 mini's
-standard processes with the four changes below. Both presets are tested on real prints of a sticker card
-from a Customize 3MF, paint layers included: the 0.4 mm one fully, the 0.2 mm one through to the
-last layer, where a nozzle clog stopped it. Add the pause by hand (step 6 above). **Updating from an earlier version?**
-Delete the old Tilde card preset first, or check that Top paint penetration layers shows 2
-(0.4 mm) or 4 (0.2 mm) after importing.
+[github.com/tbutman/tilde-card/tree/main/bambu](https://github.com/tbutman/tilde-card/tree/main/bambu)).
+In Bambu Studio, choose **File → Import → Import Configs**, pick the zip, then select
+**Tilde Card 0.4 mm** or **Tilde Card 0.2 mm** under **Process**. They're the A1 mini's standard
+processes with the four changes below, tested on real sticker cards from Customize. Add the pause
+by hand (step 6 above).
+
+**Updating from an earlier version?** Delete the old preset first, or check that Top paint
+penetration layers shows 2 (0.4 mm) or 4 (0.2 mm) after importing.
 
 **Other printers:** pick your printer with the nozzle you chose, and its standard process:
 **0.10mm Standard** for a 0.2 mm nozzle, **0.20mm Standard** for a 0.4 mm nozzle. Then change
@@ -249,16 +245,7 @@ four settings:
 | Sparse infill density | Strength | **100%** (from 15%), and pattern **Rectilinear**: Bambu Studio offers the switch when you set 100%, choose Yes | Makes the card solid all the way through |
 | Wall generator | Quality | **Arachne** (from Classic) | Fills thin letter strokes properly |
 | Bottom surface pattern | Strength | **Monotonic line** (from Monotonic) | Gives the front an even finish |
-| Top / bottom paint penetration layers | Strength | **2 / 2** on a 0.4 mm nozzle, **4 / 4** on 0.2 mm (from 5 / 3 and 7 / 5) | Keeps the back's colors above the lid and the lid's black out of the letters over the pocket, and hides the sticker behind the front |
-
-- **Sparse infill density** (Strength): **100%**, from 15%, and pattern **Rectilinear**: Bambu
-  Studio offers the switch when you set 100%, choose Yes. Makes the card solid all the way through.
-- **Wall generator** (Quality): **Arachne**, from Classic. Fills thin letter strokes properly.
-- **Bottom surface pattern** (Strength): **Monotonic line**, from Monotonic. Gives the front an
-  even finish.
-- **Top paint penetration layers** (Strength): **2** on a 0.4 mm nozzle, **4** on 0.2 mm, so the
-  back's colors stop above the sticker's lid. **Bottom paint penetration layers**: **2** (0.4 mm)
-  or **4** (0.2 mm).
+| Top / bottom paint penetration layers | Strength | **2 / 2** on a 0.4 mm nozzle, **4 / 4** on 0.2 mm (from 5 / 3 and 7 / 5) | Keeps the back's colors off the sticker (see below) |
 
 **Why the paint layers:** the 3MF from Customize has its colors painted on, and Bambu Studio paints
 them this many layers deep. Its defaults (5 on a 0.4 mm nozzle, 7 on 0.2 mm) take the back's
