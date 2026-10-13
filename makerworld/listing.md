@@ -99,9 +99,9 @@ they can **tap it with their phone** too. Their phone doesn't need an app: iPhon
 phones with NFC read it right away. It's credit-card size (85.6 × 54 mm), so it fits a wallet, and
 it prints all at once on a multi-color printer (AMS or similar).
 
-**Free, with nothing to sign up for.** The model is free (CC BY 4.0) and open source. There's no
-account, subscription or service in between: the card opens your own website, and the sticker holds
-whatever you write to it.
+**Free and open source.** The model is free (CC BY 4.0) and open source. There's no subscription
+or service in between: the card opens your own website, and the sticker holds whatever you write to
+it.
 
 **Make it yours.** Click **Customize** to type in your name, website, the lines on the back and the
 colors (keep the card color dark, so the QR code scans). The QR code is made for your link

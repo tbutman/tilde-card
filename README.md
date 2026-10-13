@@ -8,8 +8,8 @@ website. Add an NFC sticker, sealed inside during the print, and people can tap 
 too.
 
 **Free and open source.** The model is free to download, print and change: MIT for the source,
-CC BY 4.0 on MakerWorld. No account, sign-up, subscription or payment, and no service in between:
-the card links straight to your own website. It works without the app too: phones read it on their
+CC BY 4.0 on MakerWorld. No subscription or payment, and no service in between: the card links
+straight to your own website. It works without the app too: phones read it on their
 own, and any NFC app can write the sticker. More about Tilde and the card:
 [taptilde.com](https://taptilde.com).
 
