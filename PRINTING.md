@@ -185,7 +185,9 @@ printers, follow the steps.
 5. Leave room on the plate for the **prime tower** (the small block the printer purges into when
    it changes color). Drag it onto an empty spot if it's off the plate.
 6. Fill the plate: select the card, press **+** to add copies, then **Arrange** (**A**). Three
-   cards take barely longer than one, and fit comfortably on the A1 mini's plate.
+   cards take barely longer than one, and fit comfortably on the A1 mini's plate. For a batch of the
+   sample card, `scripts/make_plate.py` writes the three as one set of STLs, already laid out
+   (`out/plates/`; `--sticker none` for QR-only cards).
 7. **With an NFC sticker, check the lid before printing:** slice, open **Preview**, set the color
    scheme to **Filament**, and drag the layer slider to the lid layers, right after the pause:
    **6–7** on a 0.4 mm nozzle (**7–8** with thick stickers), **11–14** on 0.2 mm (**13–16** with
