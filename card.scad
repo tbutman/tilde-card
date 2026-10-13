@@ -87,7 +87,7 @@ nfc_sticker = "thin"; // [none:No NFC sticker (QR code only), thin:Thin NFC stic
 /* [Hidden] */
 part = "preview"; // preview, body, light, accent or chrome
 // Which face prints against the plate. The plate side comes out flatter and matte (the 0.4 mm
-// sample, 5 October 2026), so the front goes down. The output is in print orientation.
+// sample, October 5, 2026), so the front goes down. The output is in print orientation.
 face_down = "front"; // front or back
 qr_mask = -1; // QR mask pattern 0-7; -1 picks the one the standard scores best
 
@@ -101,7 +101,7 @@ min_cap = fine ? 2.5 : 3;
 
 // Card. With a sticker, the layers printed straight after the pause must be a solid black lid over
 // it (nfc_lid_t), not the back's inlays: small letters printed onto the sticker's smooth face drag
-// into strings (the first print with a sticker, 7 October 2026). So a sticker card has shallower
+// into strings (the first print with a sticker, October 7, 2026). So a sticker card has shallower
 // back inlays and is 0.2 mm thicker: 1.8 mm with thin stickers, 2.0 mm with thick ones ("thick"
 // adds 0.2 mm, so the same 0.2 mm of black still separates the tag from the white QR field). A
 // QR-only card stays 1.6 mm with 0.6 mm back inlays.
@@ -142,7 +142,7 @@ accent_h = 0.8;
 accent_gap = 3.4;                     // last name baseline to the top of the rule
 // Tap marker in the strip right of the QR code, over the NFC tag: generic NFC waves (not the
 // EMVCo payment symbol) and tap_label, each in its chosen color, turned to read upwards. The
-// 0.2 mm sample (5 October 2026) printed "tap to connect" cleanly, but the short label reads better
+// 0.2 mm sample (October 5, 2026) printed "tap to connect" cleanly, but the short label reads better
 // at a glance. The 0.2 nozzle keeps that sample's lighter Bold at 2.6 mm; the 0.4 nozzle needs
 // ExtraBold at 3 mm. A longer label shrinks to fit the QR code's height, down to min_cap.
 tap_font = fine ? "Inter:style=Bold" : "Inter:style=ExtraBold";

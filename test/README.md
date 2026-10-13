@@ -1,6 +1,6 @@
 # Sticker test tile
 
-`sticker-test.scad` is the card-sized tile used on 8 October 2026 to choose how a sticker card's
+`sticker-test.scad` is the card-sized tile used on October 8, 2026, to choose how a sticker card's
 layers are stacked (see "Solid lid" in [docs/DESIGN.md](../docs/DESIGN.md)). It is 1.8 mm thick,
 printed front down, with two thin-sticker pockets: **B** (0.2 mm of black in front of the sticker,
 a 0.4 mm lid behind it) and **2** (0.4 mm and 0.2 mm), a white QR-like patch over each on the

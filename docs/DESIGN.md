@@ -165,9 +165,9 @@ after it. `build.sh` prints the pocket and pause for
 every version. The model refuses to build if the tag would have fewer than two layers over it, or
 less than 0.2 mm of black between it and the front inlays.
 
-## Solid lid (8 October 2026)
+## Solid lid (October 8, 2026)
 
-**What failed.** The first card printed with a sticker (7 October 2026) had the back's inlays
+**What failed.** The first card printed with a sticker (October 7, 2026) had the back's inlays
 straight over the pocket: the pocket's ceiling and the bottom of the 0.6 mm back inlays were the
 same height. So the first layers after the pause were the back's letters (`whoami`, the `$`, the
 name line), printed as small islands onto the sticker's smooth face, and they dragged into
@@ -184,7 +184,7 @@ strings. That print also showed the sticker through the front's white QR field a
 Each had a white QR-like patch on the front and terminal-style letters right over it on the back,
 plus a strip of white squares 0.2, 0.4 and 0.6 mm deep.
 
-**Results** (Thomas, 8 October 2026, 0.4 mm nozzle):
+**Results** (Thomas, October 8, 2026, 0.4 mm nozzle):
 
 - No sticker showed through the front's white over either pocket, even in bright light.
 - The back's letters printed cleanly over both pockets.
@@ -195,10 +195,10 @@ plus a strip of white squares 0.2, 0.4 and 0.6 mm deep.
 sticker hid it on the tile, so the front stays as it was. And 0.4 mm of white is as opaque as 0.6.
 So a sticker card has 0.4 mm back inlays and a 0.4 mm lid, and is 0.2 mm thicker: 1.8 mm with thin
 stickers, 2.0 mm with thick. A QR card has no pocket and stays 1.6 mm with 0.6 mm back inlays.
-`card.scad` asserts the lid, and `verify.py` checks it in the STLs. Not yet tested: the 0.2 mm
-nozzle, and a full card with option B.
+`card.scad` asserts the lid, and `verify.py` checks it in the STLs. Full cards with option B
+printed correctly on both nozzles on October 8, 2026 (see the print log).
 
-## Painted colors from Customize (8 October 2026)
+## Painted colors from Customize (October 8, 2026)
 
 **What happened.** The next card with a sticker, printed on the 0.4 mm nozzle from a 3MF made by
 MakerWorld's Parametric Model Maker, had the 0.4 mm lid, but the back's letters still printed
@@ -237,11 +237,12 @@ colors in them: 8 instead of 12 on the 0.2 mm nozzle, 4 instead of 6 on 0.4 mm. 
 happen once per color layer for the whole plate and dominate the time, so a card got quicker:
 Bambu Studio estimates about 4 hours (3h55m, 21 color changes) for a thin-sticker card with the
 terminal back on the 0.2 mm nozzle, from a Customize 3MF with the Tilde card 0.2 mm preset (it
-was about 4½ hours). The 0.4 mm time is not yet measured with these settings (it was 75 minutes).
-The front and the back each have half the color layers, so a card with no back has roughly half
+was about 4½ hours). On the 0.4 mm nozzle it estimates 53 minutes for the same card, from the
+MakerWorld print profile (an early sample with no sticker took 75 minutes, before the paint-layer
+change). The front and the back each have half the color layers, so a card with no back has roughly half
 the color changes.
 
-**The pocket's ceiling (8 October 2026, later).** With the bottom value at 3, Thomas's next print
+**The pocket's ceiling (October 8, 2026, later).** With the bottom value at 3, Thomas's next print
 had the lid, but the back's letters over the pocket had no wells: they printed flat, as if filled
 in. In painted mode Bambu also counts the pocket's ceiling (the underside of the lid) as a bottom
 face, and painted its black 3 layers upward, through the 2-layer lid and into layer 8, where the
@@ -304,7 +305,7 @@ against the limits of whichever nozzle the file defaults to.
 ## Counting scans
 
 The site promises 0 cookies and 0 trackers, so there are no analytics scripts. Visits are counted
-from nginx's own access log instead: since 5 October 2026 the site's server keeps that log (four
+from nginx's own access log instead: since October 5, 2026, the site's server keeps that log (four
 weeks) and builds a private GoAccess report from it every 15 minutes, with `/hello` among the
 pages and referring sites (see the site repository's `deploy/README.md`). For a quick count on the
 server, in the site's Docker Compose directory:

@@ -44,11 +44,11 @@ HEADER = """\
 # card.scad comments that only make sense in the repo, and what makers see instead ("" drops them).
 COMMENTS = {
     """// Which face prints against the plate. The plate side comes out flatter and matte (the 0.4 mm
-// sample, 5 October 2026), so the front goes down. The output is in print orientation.""":
+// sample, October 5, 2026), so the front goes down. The output is in print orientation.""":
     """// Which face prints against the plate. The plate side comes out flatter and matte, so the front
 // goes down. The output is in print orientation.""",
     """ The
-// 0.2 mm sample (5 October 2026) printed "tap to connect" cleanly, but the short label reads better
+// 0.2 mm sample (October 5, 2026) printed "tap to connect" cleanly, but the short label reads better
 // at a glance. The 0.2 nozzle keeps that sample's lighter Bold at 2.6 mm; the 0.4 nozzle needs
 // ExtraBold at 3 mm. A longer label shrinks to fit the QR code's height, down to min_cap.""":
     """

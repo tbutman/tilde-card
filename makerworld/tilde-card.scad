@@ -76,7 +76,7 @@ min_cap = fine ? 2.5 : 3;
 
 // Card. With a sticker, the layers printed straight after the pause must be a solid black lid over
 // it (nfc_lid_t), not the back's inlays: small letters printed onto the sticker's smooth face drag
-// into strings (the first print with a sticker, 7 October 2026). So a sticker card has shallower
+// into strings (the first print with a sticker, October 7, 2026). So a sticker card has shallower
 // back inlays and is 0.2 mm thicker: 1.8 mm with thin stickers, 2.0 mm with thick ones ("thick"
 // adds 0.2 mm, so the same 0.2 mm of black still separates the tag from the white QR field). A
 // QR-only card stays 1.6 mm with 0.6 mm back inlays.

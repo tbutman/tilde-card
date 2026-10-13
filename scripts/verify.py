@@ -52,18 +52,18 @@ OFF_CARD = (255, 0, 255)  # matches no print color
 QR_FIELD_X_MM = (38.5, 78.6)  # the QR field's light area; light text sits on either side of it
 # Acute inner corners always fill a little when "closed", whatever their size: the gap check
 # cannot tell them from a real narrow gap. Each reviewed corner is listed here as (face, x, y) in
-# mm; a change to the text moves them and brings the check back. Reviewed 5 October 2026:
+# mm; a change to the text moves them and brings the check back. Reviewed October 5, 2026:
 KNOWN_ACUTE_CORNERS = [
     ("back", 13.5, 37.8),  # the middle V of the mono "w" in "whoami"; it rounds slightly, still reads as a w
     # The same V with the back tap mark on, which moves the back's text 2.69 mm right (back_shift:
     # qr_right_margin + text_gap - back_x). Shifted, it rasterizes as its two inner corners.
-    # Reviewed 7 October 2026:
+    # Reviewed October 7, 2026:
     ("back", 16.2, 37.8),
     ("back", 16.7, 37.8),
 ]
 # Pointed stroke ends can lose more than a sliver to the stroke check's opening, though the stroke
 # itself is wide enough. Each reviewed tip is listed here the same way, matched by position.
-# Reviewed 7 October 2026, the Jane Doe sample on the 0.4 mm nozzle (0.5 mm opening):
+# Reviewed October 7, 2026, the Jane Doe sample on the 0.4 mm nozzle (0.5 mm opening):
 KNOWN_THIN_TIPS = [
     # The four outer arm tips of the mono "x" in "jane@example.com" on the back: each loses
     # 0.072 mm^2 and prints slightly blunt; the x still reads as an x.
@@ -71,7 +71,7 @@ KNOWN_THIN_TIPS = [
     ("back", 26.7, 20.2),
     ("back", 24.2, 17.5),
     ("back", 26.8, 17.5),
-    # The same tips with the back tap mark on, 2.69 mm right. Reviewed 7 October 2026:
+    # The same tips with the back tap mark on, 2.69 mm right. Reviewed October 7, 2026:
     ("back", 27.0, 20.2),
     ("back", 29.4, 20.2),
     ("back", 26.9, 17.5),
@@ -165,7 +165,7 @@ for name, mesh in meshes.items():
 
 # The layers printed straight after the pause cover the NFC tag. They must be solid body (black) for
 # LID_MM before any inlay starts: an inlay's small islands printed onto the sticker's smooth face
-# drag into strings (the first print with a sticker, 7 October 2026).
+# drag into strings (the first print with a sticker, October 7, 2026).
 LID_MM = 0.4
 if args.pocket_top is not None:
     body = meshes["body"]
