@@ -9,6 +9,13 @@ another), each with a .jpg poster (the end card):
   - tilde-card-16x9.mp4 and .webm: 1920 x 1080, for tbutman.com/tilde
   - tilde-card-1x1.mp4 and .webm: 1080 x 1080, for X and LinkedIn feeds
   - tilde-card-9x16.mp4: 1080 x 1920, for Reels, Shorts and Stories
+- --lang pt: the Portuguese cut for tbutman.com/pt/tilde, tilde-card-pt-16x9 and -1x1 (.mp4, .webm),
+  in the exports folder.
+- --cut short: an 8-second loop (the tap, the page opening, the end card) for social feeds,
+  tilde-card-short-1x1 and -9x16 (.mp4), in the exports folder.
+- --cut hero: a quiet 8-second loop with no captions (the card turns over, then shows its colors)
+  for the tilde-card README: tilde-card-hero.gif (800 px wide) and tilde-card-hero-16x9.mp4.
+- --formats picks some of a cut's formats.
 
 The scenes (tilde-media/video/card-v4-storyboard.md):
 
@@ -32,21 +39,25 @@ falloff and, on its printed top face, the 45-degree lines of the top layer; ever
 places those poses with its own framing. Renders are cached in out/video/v4/, so a second run
 only lays out and encodes the frames.
 
-The phones show a mock of tbutman.com/tilde (where taptilde.com redirects) with its "Scanned a
-Tilde Card? Make your own" strip. Put a 1080 x 2400 (or 540 x 1200) screenshot at makerworld/video/taptilde-page.png and the
-phones show it instead.
+The phones open tbutman.com/tilde (where taptilde.com redirects), with its "Scanned a Tilde Card?
+Make your own" strip: a 1080 x 2160 screenshot of the page at a phone's width under a drawn status
+bar and address bar (makerworld/video/taptilde-page.png, and taptilde-page-pt.png for /pt/tilde;
+made by tilde-media/video/page/shoot.mjs). Without one, the phones show a drawn mock of the page.
 
 Colors and sizes follow tilde-media/brand/BRAND.md: Tilde orange #ffb547 for drawn accents,
 #a85f00 for orange text on the beige backdrop, captions 72 / 42 px on a 1080 px short side.
 
-    .venv/bin/python scripts/make_listing_video.py [--exports DIR]
+    .venv/bin/python scripts/make_listing_video.py [--exports DIR] [--lang en|pt] [--cut full|short]
+        [--cut full|short|hero] [--formats 16x9,1x1]
 """
 
 import argparse
+import hashlib
 import json
 import math
 import os
 import re
+import shutil
 import subprocess
 import sys
 from collections import OrderedDict
@@ -71,7 +82,7 @@ CARD_DIR = CACHE / "card"
 LAYER_DIR = CACHE / "layers"
 POSES = CACHE / "poses"
 VIDEO = ROOT / "makerworld" / "video"
-PAGE_SHOT = VIDEO / "taptilde-page.png"
+PAGE_SHOTS = {"en": VIDEO / "taptilde-page.png", "pt": VIDEO / "taptilde-page-pt.png"}
 FPS = 30
 FADE = 10  # frames of crossfade between scenes
 
@@ -92,17 +103,59 @@ PHONE_STEPS = 16
 LINE_PITCH = 0.42           # mm between the top layer's lines
 
 EXPORTS = ROOT / "out" / "video" / "exports"  # git-ignored; --exports DIR writes them elsewhere
-# Each output: its layout, size, file (None: in the exports folder, under this name), encoder quality
-# and, for MakerWorld, the end card that says to click Customize. Only the MakerWorld file lives in
-# the repo.
+# Each output: its layout, size, file (none: in the exports folder, named by out_name), encoder
+# quality and, for MakerWorld, the end card that says to click Customize. Only the MakerWorld file
+# lives in the repo.
 FORMATS = {
     "4x3-makerworld": {"layout": "4x3", "size": (1440, 1080), "path": VIDEO / "tilde-card.mp4", "crf": 20,
                        "makerworld": True},
-    "4x3": {"layout": "4x3", "size": (1440, 1080), "name": "tilde-card-4x3.mp4", "crf": 20},
-    "16x9": {"layout": "16x9", "size": (1920, 1080), "name": "tilde-card-16x9.mp4", "crf": 25, "webm": True},
-    "1x1": {"layout": "1x1", "size": (1080, 1080), "name": "tilde-card-1x1.mp4", "crf": 23, "webm": True},
-    "9x16": {"layout": "9x16", "size": (1080, 1920), "name": "tilde-card-9x16.mp4", "crf": 23},
+    "4x3": {"layout": "4x3", "size": (1440, 1080), "crf": 20},
+    "16x9": {"layout": "16x9", "size": (1920, 1080), "crf": 25, "webm": True},
+    "1x1": {"layout": "1x1", "size": (1080, 1080), "crf": 23, "webm": True},
+    "9x16": {"layout": "9x16", "size": (1080, 1920), "crf": 23},
+    # The README loop: 16:9 with no captions, so the card has the whole frame.
+    "hero": {"layout": "16x9", "size": (1920, 1080), "crf": 23, "captionless": True},
 }
+
+
+# Every word on screen, per language. PT: European Portuguese, informal "tu", in the site's and the
+# app's vocabulary (ligação, autocolante NFC, gravar).
+TEXT = {
+    "en": {
+        "tap": ("Share your details with a tap", None),
+        "print": ("One print, four colors", None),
+        "back": ("Your details on the back", None),
+        "yours": ("Make it yours", "Your name, your link, your colors"),
+        "scan": ("Anyone can scan it", "Any phone camera opens your link"),
+        "nfc": ("Add NFC to tap", "An optional sticker goes in at a pause"),
+        "sealed": ("Sealed inside", "Write it with the free Tilde app (Android) or NFC Tools"),
+        "open": "Open in browser",
+        "address": "tbutman.com/tilde",
+        "end": ["taptilde.com", "Free · Open source", "by Thomas Butman"],
+        "end_makerworld": ["Click Customize to make yours", "Free · Open source · taptilde.com", "by Thomas Butman"],
+    },
+    "pt": {
+        "tap": ("Partilha os teus dados com um toque", None),
+        "print": ("Uma impressão, quatro cores", None),
+        "back": ("Os teus dados no verso", None),
+        "yours": ("Faz o teu", "O teu nome, a tua ligação, as tuas cores"),
+        "scan": ("Qualquer pessoa o pode ler", "Qualquer câmara de telemóvel abre a tua ligação"),
+        "nfc": ("Junta NFC para encostar", "Um autocolante opcional entra numa pausa da impressão"),
+        "sealed": ("Selado lá dentro", "Grava-o com a app Tilde, grátis (Android), ou com o NFC Tools"),
+        "open": "Abrir no navegador",
+        "address": "tbutman.com/pt/tilde",
+        "end": ["taptilde.com", "Grátis · Código aberto", "por Thomas Butman"],
+    },
+}
+# The formats each cut and language makes by default (keys of FORMATS).
+DEFAULT_FORMATS = {("full", "en"): list(FORMATS), ("full", "pt"): ["16x9", "1x1"], ("short", "en"): ["1x1", "9x16"],
+                   ("short", "pt"): ["1x1", "9x16"], ("hero", "en"): ["hero"], ("hero", "pt"): ["hero"]}
+
+
+def out_name(fmt, cut, lang):
+    """tilde-card-16x9.mp4, tilde-card-pt-16x9.mp4, tilde-card-short-1x1.mp4, ..."""
+    tags = ([] if lang == "en" else [lang]) + ([] if cut == "full" else [cut])
+    return "-".join(["tilde-card", *tags, FORMATS[fmt]["layout"]]) + ".mp4"
 
 
 def ease(t):
@@ -122,6 +175,18 @@ def openscad(*args, entry=None):
     else:
         cmd += ["openscad/openscad:dev", "openscad", "--backend=manifold", *args]
     return subprocess.run(cmd, check=True, capture_output=True, text=True)
+
+
+def fresh_cache():
+    """The renders belong to one version of the model: when makerworld/tilde-card.scad changes (its
+    defaults, the QR link, the geometry), start the cache again."""
+    stamp = hashlib.sha256((ROOT / SCAD).read_bytes()).hexdigest()
+    mark = CACHE / "model.sha256"
+    if CACHE.exists() and (not mark.exists() or mark.read_text() != stamp):
+        print("the model changed: rendering from scratch")
+        shutil.rmtree(CACHE)
+    CACHE.mkdir(parents=True, exist_ok=True)
+    mark.write_text(stamp)
 
 
 def model_facts():
@@ -344,7 +409,12 @@ def shadow_mask(meshes, project, r, size, table_z, key=0.5, ambient=0.26):
     return Image.fromarray(out.clip(0, 255).astype(np.uint8), "L")
 
 
-def pose_specs(facts, flips):
+def tap_pose(lang):
+    """The phone on the tap mark, its screen showing the link notification: one pose per language."""
+    return "phone-tap" if lang == "en" else f"phone-tap-{lang}"
+
+
+def pose_specs(facts, flips, lang="en"):
     """Every pose to render: name -> (kind, args)."""
     specs = {f"front-{k}": ("front", k) for k in range(len(COLOR_SETS))}
     specs.update({f"flip-{a:06.2f}": ("flip", a) for a in flips})
@@ -355,7 +425,7 @@ def pose_specs(facts, flips):
         specs[f"drop-{i:02d}"] = ("layer", facts["pause"] - 1, floor_z + 9 * (1 - ease(i / (DROP_STEPS - 1))))
     for i in range(PHONE_STEPS):
         specs[f"phone-{i:02d}"] = ("phone", i / (PHONE_STEPS - 1), "lock")
-    specs["phone-tap"] = ("phone", 1.0, "banner")
+    specs[tap_pose(lang)] = ("phone", 1.0, f"banner-{lang}")  # the notification is in the video's language
     specs["camera"] = ("camera",)
     return specs
 
@@ -486,7 +556,7 @@ def lock_screen():
     return s
 
 
-def banner(s, t=1.0):
+def banner(s, t=1.0, lang="en"):
     """The link notification sliding down from the top (t: 0 hidden, 1 in place)."""
     s = s.copy()
     y = round(-260 + 400 * ease(t))
@@ -499,7 +569,7 @@ def banner(s, t=1.0):
     d.ellipse([cx - 14, cy - 32, cx + 14, cy + 32], outline=(70, 76, 86), width=4)
     d.line([(cx - 32, cy), (cx + 32, cy)], fill=(70, 76, 86), width=4)
     d.text((230, y + 82), "taptilde.com", font=font("Inter-ExtraBold.ttf", 46), fill=INK, anchor="lm")
-    d.text((230, y + 142), "Open in browser", font=font("Inter-Bold.ttf", 36), fill=(90, 94, 100), anchor="lm")
+    d.text((230, y + 142), TEXT[lang]["open"], font=font("Inter-Bold.ttf", 36), fill=(90, 94, 100), anchor="lm")
     s.paste(layer, (0, 0), layer)
     return s
 
@@ -538,13 +608,10 @@ def greedy(text, f, width):
     return lines + [line]
 
 
-def page_screen(card_still):
+def page_screen(card_still, lang="en"):
     """The page a tap or scan opens: tbutman.com/tilde (where taptilde.com redirects), with its
-    sample-card strip. A screenshot replaces it when there is one."""
-    if PAGE_SHOT.exists():
-        shot = Image.open(PAGE_SHOT).convert("RGB")
-        k = max(SW / shot.width, SH / shot.height)
-        return shot.resize((round(shot.width * k), round(shot.height * k)), Image.LANCZOS).crop((0, 0, SW, SH))
+    sample-card strip, under a status bar and the browser's address bar. A screenshot of the page
+    (PAGE_SHOTS) fills the rest; without one, a drawn mock does."""
     s = Image.new("RGB", (SW, SH), SITE_BG)
     d = ImageDraw.Draw(s)
     status_bar(d, SITE_TEXT)
@@ -553,7 +620,13 @@ def page_screen(card_still):
     lx, ly = 100, 165  # a padlock
     d.rounded_rectangle([lx - 14, ly - 4, lx + 14, ly + 20], 4, fill=SITE_MUTED)
     d.arc([lx - 10, ly - 24, lx + 10, ly + 4], 180, 360, fill=SITE_MUTED, width=5)
-    d.text((136, ly), "tbutman.com/tilde", font=font("Inter-Bold.ttf", 42), fill=SITE_TEXT, anchor="lm")
+    d.text((136, ly), TEXT[lang]["address"], font=font("Inter-Bold.ttf", 42), fill=SITE_TEXT, anchor="lm")
+    shot_path = PAGE_SHOTS[lang]
+    if shot_path.exists():
+        shot = Image.open(shot_path).convert("RGB")
+        shot = shot.resize((SW, round(shot.height * SW / shot.width)), Image.LANCZOS)
+        s.paste(shot.crop((0, 0, SW, SH - 240)), (0, 240))
+        return s
     d.rectangle([0, 240, SW, 384], fill=ORANGE)
     d.text((60, 290), "Scanned a Tilde Card?", font=font("Inter-Bold.ttf", 38), fill=INK, anchor="lm")
     d.text((60, 342), "Make your own →", font=font("Inter-ExtraBold.ttf", 38), fill=INK, anchor="lm")
@@ -658,9 +731,12 @@ def caption_alpha(i, n, lead=8, tail=FADE):
     return min(1, max(0, (i - lead) / 8)) * min(1, max(0, (n - 1 - i) / tail))
 
 
-def timeline(flips):
-    frames = []
+def timeline(flips, lang="en", cut="full"):
+    """The frames of the full video, or of the short cut: the tap, the page opening, the end card."""
+    T = TEXT[lang]
     scenes = []
+    if cut == "hero":
+        return hero_timeline(flips)
 
     def scene(fs):
         scenes.append(fs)
@@ -672,9 +748,9 @@ def timeline(flips):
         t = ease(i / 44)
         d = ease((i - 8) / 40)
         f = {"card": [("front-0", 1)], "place": ("mix", "end", "tap", t, 0.02 * max(0, i - 44) / 32),
-             "caption": ("Share your details with a tap", None, caption_alpha(i, n, lead=14))}
+             "caption": (*T["tap"], caption_alpha(i, n, lead=14))}
         if i >= 8:
-            f["phone3d"] = "phone-tap" if i >= 48 else f"phone-{round(d * (PHONE_STEPS - 1)):02d}"
+            f["phone3d"] = tap_pose(lang) if i >= 48 else f"phone-{round(d * (PHONE_STEPS - 1)):02d}"
             f["phone_t"] = d
             f["phone_a"] = ease((i - 8) / 8)
         if i >= 48:
@@ -685,10 +761,21 @@ def timeline(flips):
         fs.append({"screen": ("tap", (i - 14) / 16), "phone_zoom": 0.02 * i / 63})
     scene(fs)
 
+    if cut == "short":
+        # The end card straight after the page: the card, already front up, fades in at the end
+        # framing, then the lines; the last frame is the first again.
+        fs = []
+        n = 110
+        for i in range(n):
+            fs.append({"card": [("front-0", 1)], "place": ("at", "end", 0),
+                       "end": (i - 16, max(0, 1 - (i - 96) / 13) if i >= 96 else 1)})
+        scene(fs)
+        return join_scenes(scenes)
+
     # 2a. One print, four colors.
     n = 76
     scene([{"card": [("front-0", 1)], "place": ("at", "home", 0.03 * i / (n - 1)),
-            "caption": ("One print, four colors", None, caption_alpha(i, n))} for i in range(n)])
+            "caption": (*T["print"], caption_alpha(i, n))} for i in range(n)])
 
     # 2b. It turns over: the back.
     fs = []
@@ -697,7 +784,7 @@ def timeline(flips):
         hold = max(0, i - 6 - len(flips))
         # The caption waits for the turn: mid-turn the card needs the whole frame.
         fs.append({"card": [(f"flip-{a:06.2f}", 1)], "place": ("at", "home", 0.03 * hold / 60), "fit": True,
-                   "caption": ("Your details on the back", None, caption_alpha(i, len(seq), lead=6 + len(flips)))})
+                   "caption": (*T["back"], caption_alpha(i, len(seq), lead=6 + len(flips)))})
     scene(fs)
 
     # 3. Make it yours: the other color sets, then back to the sample's.
@@ -716,13 +803,13 @@ def timeline(flips):
                            "place": ("at", "home", 0.03 * i / (n - 1))})
                 i += 1
     for i, f in enumerate(fs):
-        f["caption"] = ("Make it yours", "Your name, your link, your colors", caption_alpha(i, n))
+        f["caption"] = (*T["yours"], caption_alpha(i, n))
     scene(fs)
 
     # 4. Anyone can scan it: the phone's view.
     n = 120
     scene([{"screen": ("scan", i), "phone_zoom": 0.02 * i / (n - 1),
-            "caption": ("Anyone can scan it", "Any phone camera opens your link", caption_alpha(i, n))} for i in range(n)])
+            "caption": (*T["scan"], caption_alpha(i, n))} for i in range(n)])
 
     # 5a. The pause: the half-printed card on the plate, the sticker drops in.
     fs = []
@@ -731,7 +818,7 @@ def timeline(flips):
         pose = "layer-05" if i < 20 else f"drop-{min(DROP_STEPS - 1, round((i - 20) / 22 * (DROP_STEPS - 1))):02d}"
         fs.append({"card": [(pose, 1)], "place": ("mix", "home", "pocket", ease(i / 34), 0),
                    "pocket": ease((i - 6) / 10) * (1 - ease((i - 36) / 8)),
-                   "caption": ("Add NFC to tap", "An optional sticker goes in at a pause", caption_alpha(i, n))})
+                   "caption": (*T["nfc"], caption_alpha(i, n))})
     scene(fs)
 
     # 5b. The last layers seal it; a see-through moment shows the sticker inside.
@@ -746,8 +833,7 @@ def timeline(flips):
             x = ease((i - 40) / 10) * (1 - ease((i - 62) / 12))
             card = [("layer-09", 1 - 0.65 * x), (last, 0.65 * x)]
         fs.append({"card": card, "pocket": x if i >= 36 else 0, "place": ("mix", "pocket", "home", ease((i - 24) / 50), 0),
-                   "caption": ("Sealed inside", "Write it with the free Tilde app (Android) or NFC Tools",
-                               caption_alpha(i, n, lead=36))})
+                   "caption": (*T["sealed"], caption_alpha(i, n, lead=36))})
     scene(fs)
 
     # 6. The end card: the card turns front up, settles into the end framing, the lines fade in
@@ -761,11 +847,29 @@ def timeline(flips):
         fs.append({"card": [(name, 1)], "place": ("mix", "home", "end", ease((i - 18) / 28), 0), "fit": i < len(back),
                    "end": (i - 40, max(0, 1 - (i - 116) / 13) if i >= 116 else 1)})
     scene(fs)
+    return join_scenes(scenes, dips={5})
 
-    # Crossfade each scene's last FADE frames into the next one's first; from the phone's view to
-    # the print (scene 5a), dip through the background instead, so the plate never lies over the
-    # phone.
-    dips = {5}
+
+def hero_timeline(flips):
+    """The README loop: the card front up, turning over to the back and front up again, then its
+    four color sets, ending where it started. No captions, no camera drift, so it loops cleanly."""
+    still = lambda name, n: [{"card": [(name, 1)], "place": ("at", "home", 0)} for _ in range(n)]
+    turn = lambda angles: [{"card": [(f"flip-{a:06.2f}", 1)], "place": ("at", "home", 0), "fit": True} for a in angles]
+    frames = still("front-0", 24) + turn(flips) + still(f"flip-{flips[-1]:06.2f}", 36) + turn(list(reversed(flips)))
+    order = [0, 1, 2, 3, 0]
+    for k, s in enumerate(order[:-1]):
+        frames += still(f"front-{s}", 20 if k else 6)
+        for j in range(10):
+            w = ease((j + 1) / 11)
+            frames.append({"card": [(f"front-{s}", 1 - w), (f"front-{order[k + 1]}", w)], "place": ("at", "home", 0)})
+    return frames + still("front-0", 6)
+
+
+def join_scenes(scenes, dips=()):
+    """Crossfade each scene's last FADE frames into the next one's first; into the scenes in `dips`
+    (from the phone's view to the print, scene 5a), dip through the background instead, so the plate
+    never lies over the phone."""
+    frames = []
     for k, fs in enumerate(scenes):
         if k == 0:
             frames.extend(fs)
@@ -784,9 +888,11 @@ def timeline(flips):
 class Layout:
     """Places and draws frames for one format."""
 
-    def __init__(self, fmt, facts):
+    def __init__(self, fmt, facts, lang="en"):
+        fmt_key = fmt
         self.fmt = FORMATS[fmt]["layout"]
         self.makerworld = FORMATS[fmt].get("makerworld", False)
+        self.lang = lang
         self.W, self.H = FORMATS[fmt]["size"]
         self.tall = self.fmt == "9x16"
         fmt = self.fmt
@@ -798,6 +904,9 @@ class Layout:
         if self.tall:
             self.area = (40, 600, W - 40, 1420)
             home = 0.78 * W
+        elif FORMATS[fmt_key].get("captionless"):
+            self.area = (0.04 * W, 0.08 * H, 0.96 * W, 0.92 * H)
+            home = 0.62 * W
         else:
             self.area = (0.04 * W, 0.05 * H, 0.96 * W, 0.66 * H)
             home = 0.62 * W if fmt in ("16x9", "4x3") else 0.78 * W
@@ -852,8 +961,8 @@ class Layout:
             # The card and the phone touching it, together as large as fits the card area, so the
             # phone (which reaches toward the camera) stays clear of the caption.
             card = self.bbox("front-0")
-            k_phone = POSE_SCALE / json.loads((POSES / "phone-tap.json").read_text())["scale"]
-            ph = [v * k_phone for v in self.bbox("phone-tap")]
+            k_phone = POSE_SCALE / json.loads((POSES / f"{tap_pose(self.lang)}.json").read_text())["scale"]
+            ph = [v * k_phone for v in self.bbox(tap_pose(self.lang))]
             u = (min(card[0], ph[0]), min(card[1], ph[1]), max(card[2], ph[2]), max(card[3], ph[3]))
             ax0, ay0, ax1, ay1 = self.area
             k = 0.96 * min((ax1 - ax0) / (u[2] - u[0]), (ay1 - ay0) / (u[3] - u[1]))
@@ -1018,9 +1127,9 @@ class Layout:
             front = Image.open(POSES / "front-0.png")
             box = front.getbbox()
             still = front.crop(box)
-            self.screens["page"] = page_screen(still)
+            self.screens["page"] = page_screen(still, self.lang)
             self.screens["lock"] = Image.open(CACHE / "screen-lock.png").convert("RGB")
-            self.screens["banner"] = Image.open(CACHE / "screen-banner.png").convert("RGB")
+            self.screens["banner"] = Image.open(CACHE / f"screen-banner-{self.lang}.png").convert("RGB")
             self.screens["camera"] = Image.open(POSES / "camera.png").convert("RGB")
             self.qr_box = json.loads((POSES / "camera.json").read_text())["qr"]
         if kind == "tap":
@@ -1065,12 +1174,13 @@ class Layout:
                 ty += round(ss * 1.3)
         frame.alpha_composite(layer)
 
-    END_LINES = [("mark", 96), ("taptilde.com", 64), ("Free · Open source", 40), ("by Thomas Butman", 30)]
-    END_MAKERWORLD = [("mark", 96), ("Click Customize to make yours", 64),
-                      ("Free · Open source · taptilde.com", 40), ("by Thomas Butman", 30)]
+    END_SIZES = [96, 64, 40, 30]
 
     def end_lines(self):
-        return self.END_MAKERWORLD if self.makerworld else self.END_LINES
+        """The end card: the wordmark, then taptilde.com (or, for MakerWorld, "Click Customize to make
+        yours"), "Free · Open source" and "by Thomas Butman"."""
+        lines = TEXT[self.lang]["end_makerworld" if self.makerworld else "end"]
+        return list(zip(["mark", *lines], self.END_SIZES))
     END_GAPS = [0, 34, 22, 26]
 
     def end_block_height(self):
@@ -1103,15 +1213,15 @@ class Layout:
 
 
 def encode(args):
-    fmt, frames, geo, path = args
+    fmt, frames, geo, path, lang = args
     facts = model_facts()
-    lay = Layout(fmt, facts)
+    lay = Layout(fmt, facts, lang)
     lay.tap_px, lay.pocket_px, ring = geo["tap"], geo["pocket"], geo["ring"]
     lay.pocket_rim = geo["rim"]
     tx, ty = lay.tap_px
     lay.ring = lambda r: [(tx + x * r / 10, ty + y * r / 10) for x, y in ring]
     fits = lay.fit_curve(frames)
-    spec = dict(FORMATS[fmt], path=path)
+    spec = dict(FORMATS[fmt], path=path, gif=geo.get("gif", False))
     spec["path"].parent.mkdir(parents=True, exist_ok=True)
     w = imageio_ffmpeg.write_frames(str(spec["path"]), spec["size"], fps=FPS, codec="libx264", pix_fmt_out="yuv420p",
                                     quality=None, macro_block_size=8,
@@ -1125,7 +1235,14 @@ def encode(args):
         w.send(np.asarray(im, dtype=np.uint8).tobytes())
     w.close()
     poster.save(spec["path"].with_suffix(".jpg"), quality=88)
-    if spec.get("webm"):
+    if spec.get("gif"):
+        ffmpeg = imageio_ffmpeg.get_ffmpeg_exe()
+        # 800 px wide, 15 fps.
+        vf = ("fps=15,scale=800:-1:flags=lanczos,split[a][b];"
+              "[a]palettegen=stats_mode=diff:max_colors=160[p];[b][p]paletteuse=dither=bayer:bayer_scale=4:diff_mode=rectangle")
+        subprocess.run([ffmpeg, "-y", "-loglevel", "error", "-i", str(spec["path"]), "-vf", vf,
+                        str(spec["path"].with_name("tilde-card-hero.gif"))], check=True)
+    elif spec.get("webm"):
         ffmpeg = imageio_ffmpeg.get_ffmpeg_exe()
         subprocess.run([ffmpeg, "-y", "-loglevel", "error", "-i", str(spec["path"]), "-c:v", "libvpx-vp9", "-b:v", "0",
                         "-crf", "38", "-row-mt", "1", "-an", str(spec["path"].with_suffix(".webm"))], check=True)
@@ -1133,7 +1250,9 @@ def encode(args):
 
 
 def check_qr():
-    """The sample's QR code must open taptilde.com: decode it from the front render."""
+    """The sample's QR code must open its link (qr_code_link in the model, https://taptilde.com, with
+    ?from=card once the defaults say so): decode it from the front render."""
+    want = re.search(r'^qr_code_link = "([^"]+)"', (ROOT / SCAD).read_text(), re.M).group(1)
     im = Image.open(POSES / "camera.png").convert("L")
     text = ""
     for k in (1, 0.6, 0.4):  # OpenCV's detector misses large codes; try smaller copies too
@@ -1141,7 +1260,7 @@ def check_qr():
         text = cv2.QRCodeDetector().detectAndDecode(small)[0]
         if text:
             break
-    if text != "https://taptilde.com":
+    if text != want:
         raise SystemExit(f"QR check failed: decoded {text!r}")
     print(f"QR decodes to {text}")
 
@@ -1150,17 +1269,27 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("--exports", type=Path, default=EXPORTS,
                         help="folder for the web and social files (default: out/video/exports, git-ignored)")
-    exports = parser.parse_args().exports.expanduser().resolve()
-    paths = {fmt: spec.get("path") or exports / spec["name"] for fmt, spec in FORMATS.items()}
-    CACHE.mkdir(parents=True, exist_ok=True)
+    parser.add_argument("--lang", choices=sorted(TEXT), default="en")
+    parser.add_argument("--cut", choices=["full", "short", "hero"], default="full")
+    parser.add_argument("--formats", help="comma-separated, from: " + ", ".join(FORMATS))
+    args = parser.parse_args()
+    exports = args.exports.expanduser().resolve()
+    fmts = args.formats.split(",") if args.formats else DEFAULT_FORMATS[(args.cut, args.lang)]
+    for fmt in fmts:
+        if fmt not in FORMATS:
+            parser.error(f"unknown format {fmt}")
+        if FORMATS[fmt].get("makerworld") and (args.cut, args.lang) != ("full", "en"):
+            parser.error("the MakerWorld file is the full English cut")
+    paths = {fmt: FORMATS[fmt].get("path") or exports / out_name(fmt, args.cut, args.lang) for fmt in fmts}
+    fresh_cache()
     POSES.mkdir(parents=True, exist_ok=True)
     facts = model_facts()
     print(f"model: {facts['layers']} layers of {facts['layer_h']} mm, pause before layer {facts['pause']}")
     build_card(facts)
     flips = sorted({round(180 * ease(i / (FLIP_STEPS - 1)), 2) for i in range(FLIP_STEPS)})
     lock_screen().save(CACHE / "screen-lock.png")
-    banner(lock_screen()).save(CACHE / "screen-banner.png")
-    specs = pose_specs(facts, flips)
+    banner(lock_screen(), lang=args.lang).save(CACHE / f"screen-banner-{args.lang}.png")
+    specs = pose_specs(facts, flips, args.lang)
     todo = [(k, v) for k, v in specs.items() if not (POSES / f"{k}.png").exists()]
     print(f"{len(specs)} poses, {len(todo)} to render")
     # Big canvases first (the phone poses), so the pool stays busy at the end.
@@ -1186,15 +1315,16 @@ def main():
     rim_r = facts["pocket_d"] / 2
     rim = np.column_stack([pc[0] + rim_r * np.cos(t), pc[1] + rim_r * np.sin(t), np.full_like(t, facts["pocket_top"])])
     rim = (project(trimesh.transform_points(rim, back_up()))[:, :2] / SS - mid).tolist()
-    frames = timeline(flips)
+    frames = timeline(flips, args.lang, args.cut)
     poster = len(frames) - 30
-    geo = {"tap": tap_px.tolist(), "pocket": pocket_px.tolist(), "ring": ring, "rim": rim, "poster": poster}
-    print(f"{len(frames)} frames, {len(frames) / FPS:.1f} s; encoding {len(FORMATS)} files")
-    with Pool(len(FORMATS)) as pool:
-        for fmt in pool.imap_unordered(encode, [(fmt, frames, geo, paths[fmt]) for fmt in FORMATS]):
+    geo = {"tap": tap_px.tolist(), "pocket": pocket_px.tolist(), "ring": ring, "rim": rim, "poster": poster,
+           "gif": args.cut == "hero"}
+    print(f"{len(frames)} frames, {len(frames) / FPS:.1f} s; encoding {len(paths)} files ({args.cut}, {args.lang})")
+    with Pool(len(paths)) as pool:
+        for fmt in pool.imap_unordered(encode, [(fmt, frames, geo, path, args.lang) for fmt, path in paths.items()]):
             print(f"  {fmt} done")
     for path in paths.values():
-        for p in [path, path.with_suffix(".webm"), path.with_suffix(".jpg")]:
+        for p in [path, path.with_suffix(".webm"), path.with_suffix(".jpg"), path.with_name("tilde-card-hero.gif")]:
             if p.exists():
                 print(f"  {p}  {p.stat().st_size // 1024} KB")
 
