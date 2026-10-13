@@ -1244,8 +1244,12 @@ def encode(args):
                         str(spec["path"].with_name("tilde-card-hero.gif"))], check=True)
     elif spec.get("webm"):
         ffmpeg = imageio_ffmpeg.get_ffmpeg_exe()
-        subprocess.run([ffmpeg, "-y", "-loglevel", "error", "-i", str(spec["path"]), "-c:v", "libvpx-vp9", "-b:v", "0",
-                        "-crf", "38", "-row-mt", "1", "-an", str(spec["path"].with_suffix(".webm"))], check=True)
+        webm = spec["path"].with_suffix(".webm")
+        for crf in range(38, 46):  # web video stays under 3 MB (BRAND.md section 10)
+            subprocess.run([ffmpeg, "-y", "-loglevel", "error", "-i", str(spec["path"]), "-c:v", "libvpx-vp9", "-b:v", "0",
+                            "-crf", str(crf), "-row-mt", "1", "-an", str(webm)], check=True)
+            if webm.stat().st_size < 3_000_000:
+                break
     return fmt
 
 
