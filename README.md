@@ -13,7 +13,7 @@ straight to your own website. It works without the app too: phones read it on th
 own, and any NFC app can write the sticker. More about Tilde and the card:
 [taptilde.com](https://taptilde.com).
 
-![The Jane Doe sample card, front, in black, white, orange and gray](out/nozzle-0.4/preview.png)
+![A rendered loop of the Jane Doe sample card: it turns from the back to the front, then changes color sets](docs/tilde-card-hero.gif)
 
 | Front | Back |
 | --- | --- |

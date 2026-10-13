@@ -69,6 +69,7 @@ Two versions are built from the same model, `out/nozzle-0.2/` and `out/nozzle-0.
 | `out/local/` | Your own card, built from `card.local.scad` when it exists, in the same layout as `out/`. Git-ignored. |
 | `bambu/` | Bambu Studio process presets for the A1 mini, one per nozzle (`Tilde Card 0.4 mm`, `Tilde Card 0.2 mm`), with the card's settings and paint penetration layers, and the same two in a zip to import; see `bambu/README.md`. |
 | `test/` | `sticker-test.scad`, the card-sized tile that chose the solid lid (see [Solid lid](#solid-lid-october-8-2026)); `test/build-sticker-test.sh` exports its STLs and a 3MF into `test/out/`, and `test/README.md` gives its pause layers. |
+| `docs/tilde-card-hero.gif` | The README's loop, a copy of media's `--cut hero` export from `scripts/make_listing_video.py`. |
 | `fonts/` | Static instances of the site's variable fonts (SIL Open Font License; see the license files). |
 | `scripts/` | Checks (`verify.py`, `test_qr.py`, `check_pause_docs.py`, and `check_3mf.py`, which checks a Customize download, a print profile's file or a saved project against the presets in `bambu/`, the standard-process settings and the pause), the preview render, the batch plate (`make_plate.py`), the MakerWorld copy and the MakerWorld cover options (`make_covers.py`, into `makerworld/images/covers/`, and the chosen one to `makerworld/images/01-cover.png`) and the MakerWorld model pictures (`make_listing_images.py`, `makerworld/images/02`–`07`). |
 
