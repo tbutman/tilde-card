@@ -6,6 +6,16 @@ printed front down, with two thin-sticker pockets: **B** (0.2 mm of black in fro
 a 0.4 mm lid behind it) and **2** (0.4 mm and 0.2 mm), a white QR-like patch over each on the
 front, 0.4 mm white letters over each on the back, and white squares 0.2, 0.4 and 0.6 mm deep.
 
+**Result (history):** B won, and the card uses it: no show-through over either pocket and clean
+letters over both, but B's two-layer lid printed flat where 2's one-layer lid rippled, and 0.4 mm
+of white was as opaque as 0.6 (the print log in [docs/DESIGN.md](../docs/DESIGN.md)). The tile
+isn't needed to print a card.
+
+**When to print it again:** before a batch on a printer, filament or sticker brand the card hasn't
+been printed with. In one print, before you spend stickers on cards, it shows whether the front
+hides the sticker and whether the lid over pocket B prints flat. Only pocket B matters now; pocket
+2 is the rejected option.
+
     test/build-sticker-test.sh [folder]   # inlay-test-body.stl, inlay-test-light.stl, inlay-test.3mf
 
 Load both STLs as one object with multiple parts (body black, light white), with the card's
